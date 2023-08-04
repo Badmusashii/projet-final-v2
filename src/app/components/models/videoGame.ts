@@ -6,6 +6,6 @@ export interface VideoGame {
   genre: string;
   numberOfPlayers: number;
   platform: string[];
-  rating?: number; // ou utilisez une interface distincte pour les évaluations si elles sont plus complexes
+  rating?: number;
   coverImage?: string;
 }

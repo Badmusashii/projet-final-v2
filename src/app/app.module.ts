@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -8,6 +8,7 @@ import { ConnexionComponent } from './pages/connexion/connexion.component';
 import { PlatformsComponent } from './pages/platforms/platforms.component';
 import { CardComponent } from './components/card/card.component';
 import { SearchbarComponent } from './components/searchbar/searchbar.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -16,13 +17,11 @@ import { SearchbarComponent } from './components/searchbar/searchbar.component';
     ConnexionComponent,
     PlatformsComponent,
     CardComponent,
-    SearchbarComponent
+    SearchbarComponent,
+    SettingsComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

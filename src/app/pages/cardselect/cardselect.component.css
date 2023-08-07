@@ -1,0 +1,15 @@
+.cardselected-container {
+  /* background-color: #04043c; */
+}
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(
+    4,
+    1fr
+  ); /* crée une grille avec 4 colonnes de largeur égale */
+  /* gap: 1rem; */
+  /* border: 3px solid red; */
+  width: 100%;
+  justify-items: center; /* centre les items sur l'axe x */
+  margin-top: 5rem;
+}

@@ -1,0 +1,15 @@
+<!-- <button (click)="handleToggle()">
+  {{ on ? "On" : "Off" }}
+</button>
+<div>
+  <label class="switch">
+    <input type="checkbox" />
+    <span class="slider"></span>
+  </label>
+  Switch 3
+</div> -->
+
+<label class="switch">
+  <input type="checkbox" [checked]="on" (change)="handleToggle()" />
+  <span class="slider"></span>
+</label>

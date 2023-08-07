@@ -1,5 +1,12 @@
 <ul>
   <li *ngFor="let platform of platforms">
-    {{ platform.name }}
+    <!-- {{ platform.name }} -->
+    <div class="platforms">
+      <img [src]="'/assets/platforms-icon/' + platform.name + '.png'" alt="" />
+      <app-toggle-button
+        [on]="toggles[platform.id]"
+        (toggle)="handleToggle(platform.id)"
+      ></app-toggle-button>
+    </div>
   </li>
 </ul>

@@ -1,0 +1,6 @@
+.platforms {
+  display: flex;
+  height: 6rem;
+  justify-content: space-evenly;
+  border: 2px solid red;
+}

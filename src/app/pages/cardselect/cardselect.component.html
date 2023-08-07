@@ -1,0 +1,9 @@
+<div class="cardselected-container">
+  <div class="card-container">
+    <div *ngFor="let platform of platforms">
+      <app-card *ngIf="toggles[platform.id]" [platform]="platform">
+        <!-- <img [src]="'/assets/platforms-icon/' + platform.name + '.png'" alt="" /> -->
+      </app-card>
+    </div>
+  </div>
+</div>

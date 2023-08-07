@@ -11,6 +11,9 @@ export class GetplatformsService {
   getPlatforms(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
   }
+  getPlatform(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
 }
 
 export interface Platform {

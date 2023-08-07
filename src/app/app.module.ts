@@ -11,6 +11,8 @@ import { SearchbarComponent } from './components/searchbar/searchbar.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { ToggleButtonComponent } from './components/toggle-button/toggle-button.component';
 import { CardselectComponent } from './pages/cardselect/cardselect.component';
+import { PlatformdetailComponent } from './pages/platformdetail/platformdetail.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,8 +25,9 @@ import { CardselectComponent } from './pages/cardselect/cardselect.component';
     SettingsComponent,
     ToggleButtonComponent,
     CardselectComponent,
+    PlatformdetailComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

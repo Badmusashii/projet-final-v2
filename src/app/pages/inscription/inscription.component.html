@@ -1,0 +1,39 @@
+<form [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" id="username" formControlName="username" />
+  </div>
+
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" id="name" formControlName="name" />
+  </div>
+
+  <div class="form-group">
+    <label for="surname">Surname</label>
+    <input type="text" id="surname" formControlName="surname" />
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" formControlName="email" />
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" formControlName="password" />
+  </div>
+
+  <div class="form-group">
+    <label for="confirmPassword">Confirm Password</label>
+    <input
+      type="password"
+      id="confirmPassword"
+      formControlName="confirmPassword"
+    />
+  </div>
+
+  <div *ngIf="passwordMismatch()">Les mots de passe ne correspondent pas.</div>
+
+  <button type="submit" [disabled]="!inscriptionForm.valid">Inscrire</button>
+</form>

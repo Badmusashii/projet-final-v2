@@ -13,6 +13,9 @@ import { ToggleButtonComponent } from './components/toggle-button/toggle-button.
 import { CardselectComponent } from './pages/cardselect/cardselect.component';
 import { PlatformdetailComponent } from './pages/platformdetail/platformdetail.component';
 import { FormsModule } from '@angular/forms';
+import { LoginComponent } from './pages/login/login.component';
+import { InscriptionComponent } from './pages/inscription/inscription.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -26,8 +29,16 @@ import { FormsModule } from '@angular/forms';
     ToggleButtonComponent,
     CardselectComponent,
     PlatformdetailComponent,
+    LoginComponent,
+    InscriptionComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

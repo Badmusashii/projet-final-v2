@@ -1,2 +1,15 @@
 <h1 *ngIf="platform">Gestion de la collection {{ platform.name }}</h1>
 <app-searchbar (search)="onSearch($event)"></app-searchbar>
+<!-- <div>
+  <p>Ajouter un jeu</p>
+  <form (ngSubmit)="onAddMedia()">
+    <label for="mediaTitle">Titre du média:</label>
+    <input
+      type="text"
+      id="mediaTitle"
+      [(ngModel)]="mediaTitle"
+      name="mediaTitle"
+    />
+    <button type="submit">Ajouter le média</button>
+  </form>
+</div> -->

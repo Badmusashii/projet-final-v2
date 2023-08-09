@@ -9,6 +9,7 @@ import { GetplatformsService } from 'src/app/services/getplatforms.service';
 })
 export class PlatformdetailComponent implements OnInit {
   platform: any;
+  mediaTitle: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -26,5 +27,19 @@ export class PlatformdetailComponent implements OnInit {
   }
   onSearch(searchText: string) {
     console.log(searchText); // searchText sera la valeur actuelle de l'input
+  }
+  onAddMedia() {
+    // Ici, envoyez les données du formulaire à votre serveur
+    const newMedia = {
+      title: this.mediaTitle,
+      // Ajoutez d'autres propriétés ici
+    };
+
+    this.platformService
+      .addMediaToPlatform(this.platform.id, newMedia)
+      .subscribe((response) => {
+        console.log('Média ajouté avec succès!', response);
+        // Peut-être mettre à jour la liste des médias de cette plateforme
+      });
   }
 }

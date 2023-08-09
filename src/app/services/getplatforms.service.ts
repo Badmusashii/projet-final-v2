@@ -14,6 +14,11 @@ export class GetplatformsService {
   getPlatform(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
+  addMediaToPlatform(platformId: number, mediaData: any) {
+    // Remplacez par votre URL d'API et ajustez selon vos besoins
+    const url = `${this.apiUrl}/${platformId}/medias`;
+    return this.http.post(url, mediaData);
+  }
 }
 
 export interface Platform {

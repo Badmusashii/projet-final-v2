@@ -28,10 +28,11 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const loginData = this.loginForm.value;
       this.http
-        .post('http://localhost:8080/api/userdg/login', loginData)
+        .post('http://localhost:8080/api/auth/login', loginData)
         .subscribe({
-          next: (res) => {
+          next: (res: any) => {
             console.log(res);
+            localStorage.setItem('token', res.accessToken);
             this.router.navigate(['/settings']);
           },
           error: (err) => {

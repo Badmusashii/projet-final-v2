@@ -1,5 +1,6 @@
 <h1 *ngIf="platform">Gestion de la collection {{ platform.name }}</h1>
 <app-searchbar (search)="onSearch($event)"></app-searchbar>
+<app-putmediabar></app-putmediabar>
 <!-- <div>
   <p>Ajouter un jeu</p>
   <form (ngSubmit)="onAddMedia()">

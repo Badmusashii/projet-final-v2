@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './pages/login/login.component';
 import { InscriptionComponent } from './pages/inscription/inscription.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PutmediabarComponent } from './components/putmediabar/putmediabar.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     PlatformdetailComponent,
     LoginComponent,
     InscriptionComponent,
+    PutmediabarComponent,
   ],
   imports: [
     BrowserModule,

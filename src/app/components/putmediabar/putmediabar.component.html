@@ -1,0 +1,6 @@
+<input
+  [(ngModel)]="searchText"
+  (keyup)="onKeyup()"
+  (keyup.enter)="addMediaToUserAndPlatform()"
+  placeholder="Ajouter un titre"
+/>

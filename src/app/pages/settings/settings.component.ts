@@ -10,7 +10,7 @@ import { ToggleService } from 'src/app/services/toggleservice.service';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css'],
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
   platforms: Platform[] = [];
   toggles: { [key: number]: boolean } = {};
 
@@ -159,5 +159,18 @@ export class SettingsComponent implements OnInit {
     // this.toggleService.toggle(platformId, this.toggles[platformId]);
     this.toggleService.updateToggle(platformId, this.toggles[platformId]);
     // console.log(this.toggles);
+  }
+  ngOnDestroy(): void {
+    const togglesStates = this.toggleService.getCurrentToggles();
+    this.toggleService.savePlatformStates(togglesStates).subscribe(
+      (response) => {
+        console.log(
+          'Les états des toggles ont bien été sauvegarder' + response
+        );
+      },
+      (err) => {
+        console.error('Erreur lors de la sauvegarde des états' + err);
+      }
+    );
   }
 }

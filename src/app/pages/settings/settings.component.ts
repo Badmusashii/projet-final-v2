@@ -136,10 +136,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
   // }
 
   ngOnInit(): void {
-    this.platformsService.getPlatforms().subscribe((data) => {
+    const userId = this.platformsService.getPlatforms().subscribe((data) => {
       this.platforms = data;
 
-      this.toggles = this.toggleService.getCurrentToggles();
+      // this.toggles = this.toggleService.getCurrentToggles();
 
       // for (const platform of this.platforms) {
       //   if (this.toggles[platform.id] === undefined) {
@@ -169,7 +169,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
         );
       },
       (err) => {
-        console.error('Erreur lors de la sauvegarde des états' + err);
+        console.error(
+          'Erreur lors de la sauvegarde des états',
+          err.message,
+          "Détails de l'erreur:",
+          JSON.stringify(err, null, 2)
+        );
       }
     );
   }

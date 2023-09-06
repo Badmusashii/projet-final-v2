@@ -12,18 +12,18 @@ export class MediaService {
     const token = localStorage.getItem('token');
     console.log(mediaData, "l'input envoyé");
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-      }),
-    };
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     Authorization: `Bearer ${token}`,
+    //   }),
+    // };
 
     const payload = {
       platformId,
       mediaData,
     };
 
-    this.http.post(apiUrl, payload, httpOptions).subscribe({
+    this.http.post(apiUrl, payload).subscribe({
       next: (response: any) => {
         // Gérez la réponse du serveur ici
         console.log('Média ajouté:', response);

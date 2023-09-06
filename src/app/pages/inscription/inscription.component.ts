@@ -56,7 +56,7 @@ export class InscriptionComponent implements OnInit {
   onSubmit(): void {
     if (this.inscriptionForm.valid) {
       const user = this.inscriptionForm.value;
-      this.http.post('http://localhost:8080/api/auth/create', user).subscribe(
+      this.http.post('http://localhost:8080/api/auth/register', user).subscribe(
         (res) => {
           console.log('Utilisateur ajouter : ', res);
         },

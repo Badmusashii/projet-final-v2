@@ -25,12 +25,32 @@ export class ToggleService {
   }
   savePlatformStates(platformStates: { [id: number]: boolean }) {
     // Ici, on suppose que ton API accepte ces données et que ton token d'authentification est correctement configuré dans les intercepteurs HTTP ou ailleurs
-    return this.http.post('/api/savePlatformStates', { platformStates }).pipe(
-      catchError((error) => {
-        // Gère les erreurs ici
-        console.log(error);
-        throw error;
-      })
+    console.log(
+      'les toggles envoyé depuis le front => ' + JSON.stringify(platformStates)
     );
+    return this.http
+      .post('http://localhost:8080/api/platforms/assignUserToPlatform', {
+        platformStates,
+      })
+      .pipe(
+        catchError((error) => {
+          // Gère les erreurs ici
+          console.log(error);
+          throw error;
+        })
+      );
+  }
+  fetchInitialToggles() {
+    return this.http
+      .get<{ [id: number]: boolean }>(
+        `http://localhost:8080/api/user_platforms/`
+      )
+      .pipe(
+        catchError((error) => {
+          // Gérer les erreurs ici
+          console.log(error);
+          throw error;
+        })
+      );
   }
 }

@@ -7,9 +7,9 @@ import { Injectable } from '@angular/core';
 export class MediaService {
   constructor(private http: HttpClient) {}
   addMediaToUserAndPlatform(platformId: number, mediaData: any): void {
-    console.log("envoyé de l'input" + mediaData);
+    console.log("envoyé de l'input" + JSON.stringify(mediaData));
     const apiUrl = `http://localhost:8080/api/platforms/${platformId}/medias`; // Remplacer par l'URL de votre API
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
     console.log(mediaData, "l'input envoyé");
 
     // const httpOptions = {
@@ -18,12 +18,12 @@ export class MediaService {
     //   }),
     // };
 
-    const payload = {
-      platformId,
-      mediaData,
-    };
+    // const payload = {
+    //   platformId,
+    //   mediaData,
+    // };
 
-    this.http.post(apiUrl, payload).subscribe({
+    this.http.post(apiUrl, mediaData).subscribe({
       next: (response: any) => {
         // Gérez la réponse du serveur ici
         console.log('Média ajouté:', response);

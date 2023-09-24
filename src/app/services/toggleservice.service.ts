@@ -43,7 +43,7 @@ export class ToggleService {
   fetchInitialToggles() {
     return this.http
       .get<{ [id: number]: boolean }>(
-        `http://localhost:8080/api/user_platforms/`
+        `http://localhost:8080/api/platforms/toggle`
       )
       .pipe(
         catchError((error) => {
@@ -51,6 +51,23 @@ export class ToggleService {
           console.log(error);
           throw error;
         })
+      );
+  }
+  fetchAndSetTogglesForUser() {
+    this.http
+      .get<{ [id: number]: boolean }>(
+        `http://localhost:8080/api/platforms/toggle`
+      )
+      .subscribe(
+        (data) => {
+          this.togglesSubject.next(data);
+        },
+        (error) => {
+          console.log(
+            'Erreur lors de la récupération des états des toggles :',
+            error
+          );
+        }
       );
   }
 }

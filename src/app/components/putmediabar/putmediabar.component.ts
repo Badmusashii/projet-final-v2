@@ -22,11 +22,9 @@ export class PutmediabarComponent {
     this.search.emit(this.searchText);
   }
   addMediaToUserAndPlatform() {
-    this.mediaservice.addMediaToUserAndPlatform(
-      this.platformId,
-      // this.searchText
-      { title: this.searchText }
-    );
+    this.mediaservice.addMediaToUserAndPlatform(this.platformId, {
+      title: this.searchText,
+    });
     // console.log('platform id : ' + this.platformId);
     // console.log('le media : ' + this.searchText);
   }

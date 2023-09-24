@@ -147,9 +147,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
       //   }
       // }
 
-      this.toggleService.toggles$.subscribe((toggles) => {
-        this.toggles = toggles;
+      // this.toggleService.toggles$.subscribe((toggles) => {
+      //   this.toggles = toggles;
+      // });
+      this.toggleService.fetchInitialToggles().subscribe((response) => {
+        console.log('le retour des toggles du back' + JSON.stringify(response));
+        this.toggles = response;
       });
+      console.log('les etat des totototot' + JSON.stringify(this.toggles));
     });
   }
 

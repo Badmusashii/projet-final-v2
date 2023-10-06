@@ -13,5 +13,6 @@ export class SearchbarComponent {
 
   onKeyup() {
     this.search.emit(this.searchText);
+    // console.log(this.searchText);
   }
 }

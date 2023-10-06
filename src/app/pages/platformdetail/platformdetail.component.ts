@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GetplatformsService } from 'src/app/services/getplatforms.service';
+import { MediaService } from 'src/app/services/mediaservice.service';
 
 @Component({
   selector: 'app-platformdetail',
@@ -10,10 +11,12 @@ import { GetplatformsService } from 'src/app/services/getplatforms.service';
 export class PlatformdetailComponent implements OnInit {
   platform: any;
   mediaTitle: string = '';
+  mediaList: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
-    private platformService: GetplatformsService
+    private platformService: GetplatformsService,
+    private mediaService: MediaService
   ) {}
 
   ngOnInit(): void {
@@ -25,9 +28,7 @@ export class PlatformdetailComponent implements OnInit {
       });
     }
   }
-  onSearch(searchText: string) {
-    console.log(searchText); // searchText sera la valeur actuelle de l'input
-  }
+
   onAddMedia() {
     // Ici, envoyez les données du formulaire à votre serveur
     const newMedia = {
@@ -40,6 +41,16 @@ export class PlatformdetailComponent implements OnInit {
       .subscribe((response) => {
         console.log('Média ajouté avec succès!', response);
         // Peut-être mettre à jour la liste des médias de cette plateforme
+      });
+  }
+
+  onSearch(searchText: string) {
+    // const searchText = event.searchText; // searchText sera la valeur actuelle de l'input
+    console.log(+this.platform.id);
+    this.mediaService
+      .searchMedia(searchText, +this.platform.id)
+      .subscribe((data) => {
+        this.mediaList = data;
       });
   }
 }

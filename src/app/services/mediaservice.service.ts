@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -33,5 +34,12 @@ export class MediaService {
         console.error("Erreur lors de l'ajout du média:", err);
       },
     });
+  }
+
+  searchMedia(title: string, platformId: number): Observable<any> {
+    const apiUrl = `http://localhost:8080/api/search/${platformId}`; // Remplacer par l'URL de votre API de recherche
+    const body = { title: title };
+
+    return this.http.post<any>(apiUrl, body);
   }
 }

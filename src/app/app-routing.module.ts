@@ -5,6 +5,7 @@ import { CardselectComponent } from './pages/cardselect/cardselect.component';
 import { PlatformdetailComponent } from './pages/platformdetail/platformdetail.component';
 import { LoginComponent } from './pages/login/login.component';
 import { InscriptionComponent } from './pages/inscription/inscription.component';
+import { IntermediareComponent } from './pages/intermediare/intermediare.component';
 
 const routes: Routes = [
   { path: 'settings', component: SettingsComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'platform/:id', component: PlatformdetailComponent },
   { path: 'login', component: LoginComponent },
   { path: 'inscription', component: InscriptionComponent },
+  { path: 'intermediaire', component: IntermediareComponent },
 ];
 
 @NgModule({

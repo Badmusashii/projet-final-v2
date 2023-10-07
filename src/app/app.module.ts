@@ -19,6 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PutmediabarComponent } from './components/putmediabar/putmediabar.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { IntermediareComponent } from './pages/intermediare/intermediare.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
     LoginComponent,
     InscriptionComponent,
     PutmediabarComponent,
+    IntermediareComponent,
   ],
   imports: [
     BrowserModule,

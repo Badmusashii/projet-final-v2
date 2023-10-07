@@ -8,6 +8,9 @@ import {
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
+import { Store } from '@ngrx/store';
+import * as fromActions from 'store/encryption.action';
+import { keyReducer } from 'store/key.reducer';
 // import * as bcrypt from 'bcryptjs';
 
 @Component({
@@ -18,7 +21,11 @@ import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
 export class InscriptionComponent implements OnInit {
   inscriptionForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+    private store: Store
+  ) {
     this.inscriptionForm = formBuilder.group(
       {
         username: ['', [Validators.required, Validators.maxLength(100)]],
@@ -92,15 +99,45 @@ export class InscriptionComponent implements OnInit {
         byteString += String.fromCharCode(byteArray[i]);
       }
       const encryptedTextBase64 = btoa(byteString);
+      const urlSafeBase64 = encodeURIComponent(encryptedTextBase64);
+
+      // Besoin de convertir le vecteur de type Unit8Array en tableau normal
+      const ivArray = Array.from(iv);
+      // const test = this.store.select(keyReducer);
+      console.log(new fromActions.SetKey(key));
+      this.store.dispatch(new fromActions.SetKey(key));
+      console.log(new fromActions.SetIV(ivArray));
+      this.store.dispatch(new fromActions.SetIV(ivArray));
 
       console.log('Encrypted Text:', encryptedTextBase64);
+      const base64Regex =
+        /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$/;
+      if (base64Regex.test(encryptedTextBase64)) {
+        console.log('Ceci est une chaîne Base64 valide');
+      } else {
+        console.log("Ceci n'est pas une chaîne Base64 valide");
+      }
       console.log(user);
       let templateParam = {
         to_name: user.surname,
         to_email: user.email,
-        URL: 'http://localhost:8080/api/intermediare',
+        URL: `http://localhost:4200/intermediaire?encryptData=${urlSafeBase64}`,
       };
-      // emailjs.send('service_1yxiu5o', 'template_trhzfbr');
+      emailjs
+        .send(
+          'service_1yxiu5o',
+          'template_trhzfbr',
+          templateParam,
+          'pRgmNyucZbYDPmZZz'
+        )
+        .then(
+          (result: EmailJSResponseStatus) => {
+            console.log(result.text);
+          },
+          (error) => {
+            console.log(error.text);
+          }
+        );
     }
   }
 }

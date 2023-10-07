@@ -20,6 +20,11 @@ import { PutmediabarComponent } from './components/putmediabar/putmediabar.compo
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { IntermediareComponent } from './pages/intermediare/intermediare.component';
+import { StoreFeatureModule } from 'store/storeFeatureModule';
+import { StoreModule, META_REDUCERS } from '@ngrx/store';
+
+// import { storeFreeze}
+export const metaReducers = [];
 
 @NgModule({
   declarations: [
@@ -44,6 +49,8 @@ import { IntermediareComponent } from './pages/intermediare/intermediare.compone
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    StoreModule.forRoot({}, { metaReducers }),
+    StoreFeatureModule,
   ],
   providers: [
     {

@@ -9,8 +9,10 @@ import {
 import { HttpClient } from '@angular/common/http';
 import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
 import { Store } from '@ngrx/store';
-import * as fromActions from 'store/encryption.action';
-import { keyReducer } from 'store/key.reducer';
+// import * as fromActions from 'store/encryption.action';
+import { setIv, setEncryptionKey } from 'store/crypto.action';
+import { CryptoService } from 'src/app/services/store-initializer-service.service';
+// import { keyReducer } from 'store/key.reducer';
 // import * as bcrypt from 'bcryptjs';
 
 @Component({
@@ -24,7 +26,8 @@ export class InscriptionComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private store: Store
+    private store: Store,
+    private cryptoService: CryptoService
   ) {
     this.inscriptionForm = formBuilder.group(
       {
@@ -65,6 +68,7 @@ export class InscriptionComponent implements OnInit {
   async onSubmit(): Promise<void> {
     if (this.inscriptionForm.valid) {
       const user = this.inscriptionForm.value;
+      // await this.cryptoService.initializeEncryption();
       // this.http.post('http://localhost:8080/api/auth/register', user).subscribe(
       //   (res) => {
       //     console.log('Utilisateur ajouter : ', res);
@@ -104,10 +108,12 @@ export class InscriptionComponent implements OnInit {
       // Besoin de convertir le vecteur de type Unit8Array en tableau normal
       const ivArray = Array.from(iv);
       // const test = this.store.select(keyReducer);
-      console.log(new fromActions.SetKey(key));
-      this.store.dispatch(new fromActions.SetKey(key));
-      console.log(new fromActions.SetIV(ivArray));
-      this.store.dispatch(new fromActions.SetIV(ivArray));
+      console.log('Dispatching setEncryptionKey with key:', key);
+      // console.log('Dispatching setEncryptionKey');
+      this.store.dispatch(setEncryptionKey({ encryptionKey: key }));
+
+      console.log('Dispatching setIv with ivArray:', ivArray);
+      this.store.dispatch(setIv({ iv: ivArray }));
 
       console.log('Encrypted Text:', encryptedTextBase64);
       const base64Regex =

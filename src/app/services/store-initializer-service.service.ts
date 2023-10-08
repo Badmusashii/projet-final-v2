@@ -1,21 +1,26 @@
-// import { Injectable } from '@angular/core';
-// import { Store } from '@ngrx/store';
-// import { selectEncryptionKey } from 'store/selectors';
-// import { selectIV } from 'store/selectors';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { setIv, setEncryptionKey } from 'store/crypto.action';
 
-// @Injectable({
-//   providedIn: 'root',
-// })
-// export class StoreInitializerServiceService {
-//   constructor(private store: Store) {}
+@Injectable({
+  providedIn: 'root',
+})
+export class CryptoService {
+  constructor(private store: Store) {}
 
-//   initializeStore(): Promise<void> {
-//     return new Promise<void>((resolve) => {
-//       this.store.select(selectEncryptionKey, selectIV).subscribe((key) => {
-//         if (key) {
-//           resolve();
-//         }
-//       });
-//     });
-//   }
-// }
+  async initializeEncryption(): Promise<void> {
+    const key = await window.crypto.subtle.generateKey(
+      {
+        name: 'AES-GCM',
+        length: 256,
+      },
+      true,
+      ['encrypt', 'decrypt']
+    );
+
+    const iv = window.crypto.getRandomValues(new Uint8Array(12));
+
+    this.store.dispatch(setEncryptionKey({ encryptionKey: key }));
+    this.store.dispatch(setIv({ iv: Array.from(iv) }));
+  }
+}

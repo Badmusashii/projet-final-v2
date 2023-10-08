@@ -20,8 +20,10 @@ import { PutmediabarComponent } from './components/putmediabar/putmediabar.compo
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { IntermediareComponent } from './pages/intermediare/intermediare.component';
-import { StoreFeatureModule } from 'store/storeFeatureModule';
-import { StoreModule, META_REDUCERS } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
+import { cryptoReducer } from 'store/crypto.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../../environment/environemnt';
 
 // import { storeFreeze}
 export const metaReducers = [];
@@ -49,8 +51,9 @@ export const metaReducers = [];
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    StoreModule.forRoot({}, { metaReducers }),
-    StoreFeatureModule,
+    StoreModule.forRoot({}),
+    StoreModule.forFeature('cryptoReducer', cryptoReducer), // Store de fonctionnalité
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
   ],
   providers: [
     {

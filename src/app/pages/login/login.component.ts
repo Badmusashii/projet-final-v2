@@ -29,12 +29,15 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const loginData = this.loginForm.value;
       this.http
-        .post('http://localhost:8080/api/auth/login', loginData)
+        .post('http://localhost:8080/api/auth/login', loginData, {
+          withCredentials: true,
+        })
         .subscribe({
           next: (res: any) => {
             localStorage.setItem('token', res.accessToken);
             this.toggleService.fetchAndSetTogglesForUser();
             this.router.navigate(['/settings']);
+            console.log('Réponse du serveur:', res);
           },
           error: (err) => {
             console.log('Erreur lors du login : ', err);

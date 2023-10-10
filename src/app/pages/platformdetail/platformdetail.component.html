@@ -1,6 +1,42 @@
-<h1 *ngIf="platform">Gestion de la collection {{ platform.name }}</h1>
-<app-searchbar (search)="onSearch($event)"></app-searchbar>
-<app-putmediabar></app-putmediabar>
+<h1 *ngIf="platform">La collection {{ platform.name }}</h1>
+<div class="search-container">
+  <app-searchbar (search)="onSearch($event)"></app-searchbar>
+  <app-putmediabar></app-putmediabar>
+</div>
+<!-- <ul>
+  <li *ngFor="let media of mediaList">
+    {{ media.title }}
+    Utilise les propriétés de l'objet 'media' comme tu le souhaites
+  </li>
+</ul> -->
+<div class="list-container">
+  <ul>
+    <li *ngFor="let media of mediaList">
+      <div class="title-container" [ngClass]="{ hovered: media.isHovered }">
+        <div>
+          <p class="title">{{ media.title }}</p>
+        </div>
+        <div class="button-container">
+          <button
+            (mouseover)="toggleHover(media, true)"
+            (mouseout)="toggleHover(media, false)"
+            (click)="modifier(media.id)"
+          >
+            Modifier
+          </button>
+          <button
+            (mouseover)="toggleHover(media, true)"
+            (mouseout)="toggleHover(media, false)"
+            (click)="supprimer(media.id)"
+          >
+            Supprimer
+          </button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
 <!-- <div>
   <p>Ajouter un jeu</p>
   <form (ngSubmit)="onAddMedia()">

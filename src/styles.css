@@ -7,3 +7,44 @@
 body {
   background-color: #04043c;
 }
+
+body input::placeholder {
+  font-family: "CIND" !important;
+}
+button,
+input {
+  font-family: "CIND" !important;
+}
+
+input::placeholder {
+  font-family: "CIND" !important;
+}
+
+/* Pour la compatibilité avec différents navigateurs */
+input::-webkit-input-placeholder {
+  font-family: "CIND" !important;
+}
+input::-moz-placeholder {
+  font-family: "CIND" !important;
+}
+input:-ms-input-placeholder {
+  font-family: "CIND" !important;
+}
+input:-moz-placeholder {
+  font-family: "CIND" !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  font-family: "CIND";
+}
+
+@font-face {
+  font-family: "CIND";
+  src: url("src/assets/font/CIND.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}

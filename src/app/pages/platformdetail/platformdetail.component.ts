@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GetplatformsService } from 'src/app/services/getplatforms.service';
+import { MediaService } from 'src/app/services/mediaservice.service';
 
 @Component({
   selector: 'app-platformdetail',
@@ -10,10 +11,13 @@ import { GetplatformsService } from 'src/app/services/getplatforms.service';
 export class PlatformdetailComponent implements OnInit {
   platform: any;
   mediaTitle: string = '';
+  mediaList: any[] = [];
+  isHovered = false;
 
   constructor(
     private route: ActivatedRoute,
-    private platformService: GetplatformsService
+    private platformService: GetplatformsService,
+    private mediaService: MediaService
   ) {}
 
   ngOnInit(): void {
@@ -24,10 +28,35 @@ export class PlatformdetailComponent implements OnInit {
         this.platform = platform;
       });
     }
+
+    this.mediaService
+      .getAllMediaByPlatformAndUser(id)
+      .subscribe((mediaWithPlatforms) => {
+        this.mediaList = mediaWithPlatforms;
+      });
+  }
+  toggleHover(media: { isHovered: boolean }, value: boolean) {
+    media.isHovered = value;
   }
   onSearch(searchText: string) {
-    console.log(searchText); // searchText sera la valeur actuelle de l'input
+    const platformId = this.platform.id;
+    console.log(searchText);
+    this.mediaService
+      .searchMediaByTitle(searchText, platformId)
+      .subscribe((data) => {
+        if (
+          Array.isArray(data) &&
+          data.length > 0 &&
+          data[0].hasOwnProperty('yearofrelease')
+        ) {
+          this.mediaList = data;
+        } else {
+          this.mediaList = [];
+        }
+        console.log(data);
+      });
   }
+
   onAddMedia() {
     // Ici, envoyez les données du formulaire à votre serveur
     const newMedia = {
@@ -41,5 +70,14 @@ export class PlatformdetailComponent implements OnInit {
         console.log('Média ajouté avec succès!', response);
         // Peut-être mettre à jour la liste des médias de cette plateforme
       });
+  }
+  modifier(id: string) {
+    console.log('Modifier l’élément avec l’ID:', id);
+    // Insère ici le code pour modifier l'élément
+  }
+
+  supprimer(id: string) {
+    console.log('Supprimer l’élément avec l’ID:', id);
+    // Insère ici le code pour supprimer l'élément
   }
 }

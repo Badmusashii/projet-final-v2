@@ -12,7 +12,7 @@ export class GetplatformsService {
     return this.http.get<any>(this.apiUrl);
   }
   getPlatform(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/detail/platform/${id}`);
   }
   addMediaToPlatform(platformId: number, mediaData: any) {
     // Remplacez par votre URL d'API et ajustez selon vos besoins

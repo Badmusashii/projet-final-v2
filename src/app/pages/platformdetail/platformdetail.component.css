@@ -1,3 +1,69 @@
 p {
   color: white;
 }
+h1 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #49c7d8;
+  text-align: center;
+  font-family: "CIND";
+  font-size: 2rem;
+}
+.search-container {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1.5rem;
+}
+.list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.list-container li {
+  list-style: none;
+  margin-bottom: 0.5rem;
+}
+.title-container {
+  display: flex;
+  list-style: none;
+  font-family: "CIND";
+  flex-direction: row;
+  justify-content: space-between;
+  width: 35rem;
+}
+
+.button-container {
+  /* border: 3px solid red; */
+  width: 18rem;
+  display: flex;
+  justify-content: space-between;
+}
+button {
+  width: 8rem;
+}
+
+button:hover,
+button:focus {
+  /* box-shadow: 0px 0px 5px 3px #b5236d; */
+  background-color: #b5236d;
+  transition: 0.5s ease-out;
+}
+
+/* .title-container:focus-within .title {
+  border-bottom: 2px solid #b5236d;
+  text-shadow: 0px 0px 50px #b5236d;
+}
+
+.title {
+  transition: border-bottom 0.5s ease, text-shadow 0.5s ease;
+} */
+
+.title-container.hovered .title,
+.title-container:focus-within .title {
+  border-bottom: 2px solid #b5236d;
+  text-shadow: 0px 0px 50px #b5236d;
+}
+
+.title {
+  transition: border-bottom 0.2s ease, text-shadow 0.5s ease;
+}

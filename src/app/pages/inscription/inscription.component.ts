@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
+import { Token } from '@angular/compiler';
 // import * as bcrypt from 'bcryptjs';
 
 @Component({
@@ -17,6 +18,7 @@ import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
 })
 export class InscriptionComponent implements OnInit {
   inscriptionForm!: FormGroup;
+  uniqueToken!: string;
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {
     this.inscriptionForm = formBuilder.group(
@@ -55,52 +57,88 @@ export class InscriptionComponent implements OnInit {
     );
   }
 
+  // async onSubmit(): Promise<void> {
+  //   if (this.inscriptionForm.valid) {
+  //     const user = this.inscriptionForm.value;
+  //     this.http
+  //       .post<{ token: string }>(
+  //         'http://localhost:8080/api/auth/confirmation',
+  //         user
+  //       )
+  //       .subscribe(
+  //         (res) => {
+  //           console.log('Utilisateur ajouter : ', res);
+  //           this.uniqueToken = res.token;
+  //           console.log(this.uniqueToken);
+  //         },
+  //         (err) => {
+  //           console.log("Erreur lors de l'ajout de l'utilisateur");
+  //         }
+  //       );
+
+  //     let templateParam = {
+  //       to_name: user.surname,
+  //       to_email: user.email,
+  //       URL: `http://localhost:4200/intermediaire?token=${this.uniqueToken}`,
+  //     };
+  //     emailjs
+  //       .send(
+  //         'service_1yxiu5o',
+  //         'template_trhzfbr',
+  //         templateParam,
+  //         'pRgmNyucZbYDPmZZz'
+  //       )
+  //       .then(
+  //         (result: EmailJSResponseStatus) => {
+  //           console.log(result.text);
+  //         },
+  //         (error) => {
+  //           console.log(error.text);
+  //         }
+  //       );
+  //   }
+  // }
+
   async onSubmit(): Promise<void> {
     if (this.inscriptionForm.valid) {
       const user = this.inscriptionForm.value;
-      // this.http.post('http://localhost:8080/api/auth/register', user).subscribe(
-      //   (res) => {
-      //     console.log('Utilisateur ajouter : ', res);
-      //   },
-      //   (err) => {
-      //     console.log("Erreur lors de l'ajout de l'utilisateur");
-      //   }
-      // );
-      // const salt = bcrypt.genSaltSync(10);
-      // const encryptedUser = bcrypt.hashSync(JSON.stringify(user), salt);
-      const textBuffer = new TextEncoder().encode(JSON.stringify(user));
-      const key = await window.crypto.subtle.generateKey(
-        {
-          name: 'AES-GCM',
-          length: 256,
-        },
-        true,
-        ['encrypt', 'decrypt']
-      );
-      const iv = window.crypto.getRandomValues(new Uint8Array(12));
-      const encryptedData = await window.crypto.subtle.encrypt(
-        {
-          name: 'AES-GCM',
-          iv: iv,
-        },
-        key,
-        textBuffer
-      );
-      const byteArray = new Uint8Array(encryptedData);
-      let byteString = '';
-      for (let i = 0; i < byteArray.byteLength; i++) {
-        byteString += String.fromCharCode(byteArray[i]);
-      }
-      const encryptedTextBase64 = btoa(byteString);
+      this.http
+        .post<{ token: string }>(
+          'http://localhost:8080/api/auth/confirmation',
+          user
+        )
+        .subscribe(
+          (res) => {
+            console.log('Utilisateur ajouté : ', res);
+            this.uniqueToken = res.token;
+            console.log(this.uniqueToken);
 
-      console.log('Encrypted Text:', encryptedTextBase64);
-      console.log(user);
-      let templateParam = {
-        to_name: user.surname,
-        to_email: user.email,
-        URL: 'http://localhost:8080/api/intermediare',
-      };
-      // emailjs.send('service_1yxiu5o', 'template_trhzfbr');
+            // Déplacer le code pour envoyer l'e-mail ici
+            let templateParam = {
+              to_name: user.surname,
+              to_email: user.email,
+              URL: `http://localhost:4200/intermediaire?token=${this.uniqueToken}`,
+            };
+            emailjs
+              .send(
+                'service_1yxiu5o',
+                'template_trhzfbr',
+                templateParam,
+                'pRgmNyucZbYDPmZZz'
+              )
+              .then(
+                (result: EmailJSResponseStatus) => {
+                  console.log(result.text);
+                },
+                (error) => {
+                  console.log(error.text);
+                }
+              );
+          },
+          (err) => {
+            console.log("Erreur lors de l'ajout de l'utilisateur");
+          }
+        );
     }
   }
 }

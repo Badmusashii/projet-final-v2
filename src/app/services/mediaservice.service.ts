@@ -1,5 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { MediaWithPlatform } from '../components/models/myApiResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -33,5 +35,20 @@ export class MediaService {
         console.error("Erreur lors de l'ajout du média:", err);
       },
     });
+  }
+  searchMediaByTitle(title: string, platformId: number): Observable<any> {
+    return this.http.post(
+      `http://localhost:8080/api/media/search/${platformId}`,
+      {
+        title,
+      }
+    );
+  }
+  getAllMediaByPlatformAndUser(
+    platformId: number
+  ): Observable<MediaWithPlatform[]> {
+    return this.http.get<MediaWithPlatform[]>(
+      `http://localhost:8080/api/media/all/${platformId}`
+    );
   }
 }

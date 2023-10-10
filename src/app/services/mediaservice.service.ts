@@ -37,10 +37,12 @@ export class MediaService {
     });
   }
   searchMediaByTitle(title: string, platformId: number): Observable<any> {
+    // Désinfection du champ de recherche
+    const sanitizedSearchText = title.replace(/[^a-zA-Z0-9 ]/g, '');
     return this.http.post(
       `http://localhost:8080/api/media/search/${platformId}`,
       {
-        title,
+        sanitizedSearchText,
       }
     );
   }

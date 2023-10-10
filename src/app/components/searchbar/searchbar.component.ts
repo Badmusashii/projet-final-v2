@@ -12,6 +12,9 @@ export class SearchbarComponent {
   @Output() search = new EventEmitter<string>();
 
   onKeyup() {
-    this.search.emit(this.searchText);
+    // Constante pour la desinfection du champs
+    // Eviter < > & pour proteger un peu des attaques XSS
+    const sanitizedInput = this.searchText.replace(/[^a-zA-Z0-9 ]/g, '');
+    this.search.emit(sanitizedInput);
   }
 }

@@ -39,10 +39,12 @@ export class PlatformdetailComponent implements OnInit {
     media.isHovered = value;
   }
   onSearch(searchText: string) {
+    // Désinfection du champ de recherche
+    const sanitizedSearchText = searchText.replace(/[^a-zA-Z0-9 ]/g, '');
     const platformId = this.platform.id;
-    console.log(searchText);
+    console.log(sanitizedSearchText);
     this.mediaService
-      .searchMediaByTitle(searchText, platformId)
+      .searchMediaByTitle(sanitizedSearchText, platformId)
       .subscribe((data) => {
         if (
           Array.isArray(data) &&

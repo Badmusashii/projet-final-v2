@@ -33,10 +33,14 @@ export class AuthService {
     password: string
   ): Observable<{ accessToken: string }> {
     return this.http
-      .post<{ accessToken: string }>(`${this.apiUrl}/auth/login`, {
-        username,
-        password,
-      })
+      .post<{ accessToken: string }>(
+        `${this.apiUrl}/auth/login`,
+        {
+          username,
+          password,
+        },
+        { withCredentials: true }
+      )
       .pipe(
         tap((response) => {
           this.setAccessToken(response.accessToken);
@@ -47,7 +51,11 @@ export class AuthService {
   // Appelle cette méthode pour rafraîchir le token
   refreshToken(): Observable<{ accessToken: string }> {
     return this.http
-      .post<{ accessToken: string }>(`${this.apiUrl}/auth/refresh`, {})
+      .post<{ accessToken: string }>(
+        `${this.apiUrl}/auth/refresh`,
+        {},
+        { withCredentials: true }
+      )
       .pipe(
         tap((response) => {
           this.setAccessToken(response.accessToken);

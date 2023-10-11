@@ -25,7 +25,7 @@ export class MediaService {
     //   mediaData,
     // };
 
-    this.http.post(apiUrl, mediaData).subscribe({
+    this.http.post(apiUrl, mediaData, { withCredentials: true }).subscribe({
       next: (response: any) => {
         // Gérez la réponse du serveur ici
         console.log('Média ajouté:', response);
@@ -43,14 +43,16 @@ export class MediaService {
       `http://localhost:8080/api/media/search/${platformId}`,
       {
         sanitizedSearchText,
-      }
+      },
+      { withCredentials: true }
     );
   }
   getAllMediaByPlatformAndUser(
     platformId: number
   ): Observable<MediaWithPlatform[]> {
     return this.http.get<MediaWithPlatform[]>(
-      `http://localhost:8080/api/media/all/${platformId}`
+      `http://localhost:8080/api/media/all/${platformId}`,
+      { withCredentials: true }
     );
   }
 }

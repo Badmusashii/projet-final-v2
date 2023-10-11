@@ -29,9 +29,13 @@ export class ToggleService {
       'les toggles envoyé depuis le front => ' + JSON.stringify(platformStates)
     );
     return this.http
-      .post('http://localhost:8080/api/platforms/assignUserToPlatform', {
-        platformStates,
-      })
+      .post(
+        'http://localhost:8080/api/platforms/assignUserToPlatform',
+        {
+          platformStates,
+        },
+        { withCredentials: true }
+      )
       .pipe(
         catchError((error) => {
           // Gère les erreurs ici
@@ -43,7 +47,8 @@ export class ToggleService {
   fetchInitialToggles() {
     return this.http
       .get<{ [id: number]: boolean }>(
-        `http://localhost:8080/api/platforms/toggle`
+        `http://localhost:8080/api/platforms/toggle`,
+        { withCredentials: true }
       )
       .pipe(
         catchError((error) => {
@@ -56,7 +61,8 @@ export class ToggleService {
   fetchAndSetTogglesForUser() {
     this.http
       .get<{ [id: number]: boolean }>(
-        `http://localhost:8080/api/platforms/toggle`
+        `http://localhost:8080/api/platforms/toggle`,
+        { withCredentials: true }
       )
       .subscribe(
         (data) => {

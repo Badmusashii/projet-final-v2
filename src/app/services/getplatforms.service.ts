@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class GetplatformsService {
-  private apiUrl = 'http://localhost:8080/api/platforms';
+  private apiUrl = 'https://localhost:8080/api/platforms';
   constructor(private http: HttpClient) {}
   getPlatforms(): Observable<any> {
     return this.http.get<any>(this.apiUrl, { withCredentials: true });

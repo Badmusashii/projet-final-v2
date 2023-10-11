@@ -30,7 +30,7 @@ export class ToggleService {
     );
     return this.http
       .post(
-        'http://localhost:8080/api/platforms/assignUserToPlatform',
+        'https://localhost:8080/api/platforms/assignUserToPlatform',
         {
           platformStates,
         },
@@ -47,7 +47,7 @@ export class ToggleService {
   fetchInitialToggles() {
     return this.http
       .get<{ [id: number]: boolean }>(
-        `http://localhost:8080/api/platforms/toggle`,
+        `https://localhost:8080/api/platforms/toggle`,
         { withCredentials: true }
       )
       .pipe(
@@ -61,7 +61,7 @@ export class ToggleService {
   fetchAndSetTogglesForUser() {
     this.http
       .get<{ [id: number]: boolean }>(
-        `http://localhost:8080/api/platforms/toggle`,
+        `https://localhost:8080/api/platforms/toggle`,
         { withCredentials: true }
       )
       .subscribe(

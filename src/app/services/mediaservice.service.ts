@@ -10,7 +10,7 @@ export class MediaService {
   constructor(private http: HttpClient) {}
   addMediaToUserAndPlatform(platformId: number, mediaData: any): void {
     console.log("envoyé de l'input" + JSON.stringify(mediaData));
-    const apiUrl = `http://localhost:8080/api/platforms/${platformId}/medias`; // Remplacer par l'URL de votre API
+    const apiUrl = `https://localhost:8080/api/platforms/${platformId}/medias`; // Remplacer par l'URL de votre API
     // const token = localStorage.getItem('token');
     console.log(mediaData, "l'input envoyé");
 
@@ -40,7 +40,7 @@ export class MediaService {
     // Désinfection du champ de recherche
     const sanitizedSearchText = title.replace(/[^a-zA-Z0-9 ]/g, '');
     return this.http.post(
-      `http://localhost:8080/api/media/search/${platformId}`,
+      `https://localhost:8080/api/media/search/${platformId}`,
       {
         sanitizedSearchText,
       },
@@ -51,7 +51,7 @@ export class MediaService {
     platformId: number
   ): Observable<MediaWithPlatform[]> {
     return this.http.get<MediaWithPlatform[]>(
-      `http://localhost:8080/api/media/all/${platformId}`,
+      `https://localhost:8080/api/media/all/${platformId}`,
       { withCredentials: true }
     );
   }

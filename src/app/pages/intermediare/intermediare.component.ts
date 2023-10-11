@@ -17,7 +17,7 @@ export class IntermediareComponent implements OnInit {
   verifyAndDecodeToken(token: string) {
     // Envoyez le token au serveur pour vérification et décodage
     this.http
-      .post('http://localhost:8080/api/auth/register', { token: token })
+      .post('https://localhost:8080/api/auth/register', { token: token })
       .subscribe(
         (res) => {
           console.log('Données utilisateur:', res);

@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const loginData = this.loginForm.value;
       this.http
-        .post('http://localhost:8080/api/auth/login', loginData, {
+        .post('https://localhost:8080/api/auth/login', loginData, {
           withCredentials: true,
         })
         .subscribe({

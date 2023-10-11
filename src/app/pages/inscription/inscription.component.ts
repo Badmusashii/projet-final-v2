@@ -104,7 +104,7 @@ export class InscriptionComponent implements OnInit {
       const user = this.inscriptionForm.value;
       this.http
         .post<{ token: string }>(
-          'http://localhost:8080/api/auth/confirmation',
+          'https://localhost:8080/api/auth/confirmation',
           user
         )
         .subscribe(
@@ -117,7 +117,7 @@ export class InscriptionComponent implements OnInit {
             let templateParam = {
               to_name: user.surname,
               to_email: user.email,
-              URL: `http://localhost:4200/intermediaire?token=${this.uniqueToken}`,
+              URL: `https://localhost:4200/intermediaire?token=${this.uniqueToken}`,
             };
             emailjs
               .send(

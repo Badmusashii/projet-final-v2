@@ -1,7 +1,7 @@
 <h1 *ngIf="platform">La collection {{ platform.name }}</h1>
 <div class="search-container">
   <app-searchbar (search)="onSearch($event)"></app-searchbar>
-  <app-putmediabar></app-putmediabar>
+  <app-putmediabar (mediaAdded)="handleMediaAdded($event)"></app-putmediabar>
 </div>
 <!-- <ul>
   <li *ngFor="let media of mediaList">

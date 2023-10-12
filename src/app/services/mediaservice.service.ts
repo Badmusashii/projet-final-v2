@@ -39,10 +39,14 @@ export class MediaService {
   searchMediaByTitle(title: string, platformId: number): Observable<any> {
     // Désinfection du champ de recherche
     const sanitizedSearchText = title.replace(/[^a-zA-Z0-9 ]/g, '');
+    console.log(
+      'input desinfecté dans le service front ' + sanitizedSearchText
+    );
+    console.log(platformId);
     return this.http.post(
       `https://localhost:8080/api/media/search/${platformId}`,
       {
-        sanitizedSearchText,
+        title: sanitizedSearchText,
       },
       { withCredentials: true }
     );
@@ -52,6 +56,12 @@ export class MediaService {
   ): Observable<MediaWithPlatform[]> {
     return this.http.get<MediaWithPlatform[]>(
       `https://localhost:8080/api/media/all/${platformId}`,
+      { withCredentials: true }
+    );
+  }
+  removeMediaRelation(mediaId: number): Observable<any> {
+    return this.http.delete(
+      `https://localhost:8080/api/media/deleteTitle/${mediaId}`,
       { withCredentials: true }
     );
   }

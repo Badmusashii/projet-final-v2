@@ -45,10 +45,16 @@ button {
   width: 8rem;
 }
 
-button:hover,
-button:focus {
+#supprimer:hover,
+#supprimer:focus {
   /* box-shadow: 0px 0px 5px 3px #b5236d; */
   background-color: #b5236d;
+  transition: 0.5s ease-out;
+}
+#modifier:hover,
+#modifier:focus {
+  /* box-shadow: 0px 0px 5px 3px #b5236d; */
+  background-color: #49c7d8;
   transition: 0.5s ease-out;
 }
 
@@ -63,10 +69,14 @@ button:focus {
 
 .title-container.hovered .title,
 .title-container:focus-within .title {
-  border-bottom: 2px solid #b5236d;
-  text-shadow: 0px 0px 50px #b5236d;
+  border-bottom: 2px solid;
+  text-shadow: 0px 0px 50px;
 }
-
+/* #modifier:hover + .title-container .title,
+#modifier:focus + .title-container .title {
+  border-bottom: 2px solid #49c7d8;
+  text-shadow: 0px 0px 50px #49c7d8;
+} */
 .title {
   transition: border-bottom 0.2s ease, text-shadow 0.5s ease;
 }

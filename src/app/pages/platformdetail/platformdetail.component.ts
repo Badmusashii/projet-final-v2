@@ -53,9 +53,18 @@ export class PlatformdetailComponent implements OnInit {
       });
   }
 
-  toggleHover(media: { isHovered: boolean }, value: boolean) {
+  // toggleHover(media: { isHovered: boolean }, value: boolean) {
+  //   media.isHovered = value;
+  // }
+  toggleHover(
+    media: { isHovered: boolean; hoverColor?: string },
+    value: boolean,
+    color: string
+  ) {
     media.isHovered = value;
+    media.hoverColor = color;
   }
+
   onSearch(searchText: string) {
     if (!searchText) {
       console.warn('Le texte de recherche est vide ou non défini.');
@@ -87,16 +96,13 @@ export class PlatformdetailComponent implements OnInit {
       setTimeout(() => {
         this.loadMediaList(this.platform.id);
         const titleUppercase = event.title.toUpperCase();
-        this.toast.success(
-          `Ajout de ${titleUppercase}`,
-          'Votre titre est bien ajouté !',
-          {
-            progressBar: true, // montre une barre de progression
-            timeOut: 5000, // défini la durée d'affichage à 5 secondes
-            extendedTimeOut: 1000,
-            closeButton: true, // ajoute un bouton de fermeture
-          }
-        );
+        this.toast.success(`Ajout de ${titleUppercase}`, `en cours`, {
+          progressBar: true, // montre une barre de progression
+          timeOut: 4000, // défini la durée d'affichage à 5 secondes
+          extendedTimeOut: 1000,
+          closeButton: true, // ajoute un bouton de fermeture
+          toastClass: 'my-toast-class',
+        });
         // this.toast.show('', '', {
         //   toastComponent: ToastCustomComponent,
         //   progressBar: true,

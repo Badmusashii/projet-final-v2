@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
 import { Token } from '@angular/compiler';
 // import * as bcrypt from 'bcryptjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-inscription',
@@ -20,7 +21,11 @@ export class InscriptionComponent implements OnInit {
   inscriptionForm!: FormGroup;
   uniqueToken!: string;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+    private toastr: ToastrService
+  ) {
     this.inscriptionForm = formBuilder.group(
       {
         username: ['', [Validators.required, Validators.maxLength(100)]],
@@ -49,12 +54,46 @@ export class InscriptionComponent implements OnInit {
     }
   }
 
+  // passwordMismatch(): boolean {
+  //   return (
+  //     this.inscriptionForm.controls['confirmPassword'].errors?.['mismatch'] &&
+  //     (this.inscriptionForm.controls['confirmPassword'].dirty ||
+  //       this.inscriptionForm.controls['confirmPassword'].touched)
+  //   );
+  // }
+  checkPasswordMatch(): void {
+    const password = this.inscriptionForm.get('password')?.value;
+    console.log('dans c=hekc => ' + password);
+    const confirmPassword = this.inscriptionForm.get('confirmPassword')?.value;
+
+    if (password && confirmPassword && password !== confirmPassword) {
+      this.toastr.warning(
+        'Les mots de passe ne correspondent pas',
+        'Attention!',
+        {
+          progressBar: true,
+          timeOut: 3000,
+          tapToDismiss: true,
+          progressAnimation: 'increasing',
+        }
+      );
+    }
+  }
+
   passwordMismatch(): boolean {
-    return (
+    if (
       this.inscriptionForm.controls['confirmPassword'].errors?.['mismatch'] &&
       (this.inscriptionForm.controls['confirmPassword'].dirty ||
         this.inscriptionForm.controls['confirmPassword'].touched)
-    );
+    ) {
+      // Affichez le toast d'avertissement ici
+      // this.toastr.warning(
+      //   'Les mots de passe ne correspondent pas',
+      //   'Attention!'
+      // );
+      return true;
+    }
+    return false;
   }
 
   // async onSubmit(): Promise<void> {

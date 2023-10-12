@@ -14,19 +14,23 @@
     <li *ngFor="let media of mediaList">
       <div class="title-container" [ngClass]="{ hovered: media.isHovered }">
         <div>
-          <p class="title">{{ media.title }}</p>
+          <p class="title" [style.border-bottom-color]="media.hoverColor">
+            {{ media.title }}
+          </p>
         </div>
-        <div class="button-container">
+        <div>
           <button
-            (mouseover)="toggleHover(media, true)"
-            (mouseout)="toggleHover(media, false)"
+            id="modifier"
+            (mouseover)="toggleHover(media, true, '#49c7d8')"
+            (mouseout)="toggleHover(media, false, '')"
             (click)="modifier(media.id)"
           >
             Modifier
           </button>
           <button
-            (mouseover)="toggleHover(media, true)"
-            (mouseout)="toggleHover(media, false)"
+            id="supprimer"
+            (mouseover)="toggleHover(media, true, '#b5236d')"
+            (mouseout)="toggleHover(media, false, '')"
             (click)="supprimer(media.id)"
           >
             Supprimer

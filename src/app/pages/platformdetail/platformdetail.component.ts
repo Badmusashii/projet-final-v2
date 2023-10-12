@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { GetplatformsService } from 'src/app/services/getplatforms.service';
 import { MediaService } from 'src/app/services/mediaservice.service';
+import { ToastCustomComponent } from 'src/app/components/toast-custom/toast-custom.component';
 
 @Component({
   selector: 'app-platformdetail',
@@ -17,7 +19,8 @@ export class PlatformdetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private platformService: GetplatformsService,
-    private mediaService: MediaService
+    private mediaService: MediaService,
+    private toast: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -78,11 +81,27 @@ export class PlatformdetailComponent implements OnInit {
       });
   }
 
-  handleMediaAdded(event: string) {
-    if (event === 'ok') {
+  handleMediaAdded(event: { status: string; title: string }) {
+    if (event.status === 'ok') {
       console.log('ok recu coté parent');
       setTimeout(() => {
         this.loadMediaList(this.platform.id);
+        const titleUppercase = event.title.toUpperCase();
+        this.toast.success(
+          `Ajout de ${titleUppercase}`,
+          'Votre titre est bien ajouté !',
+          {
+            progressBar: true, // montre une barre de progression
+            timeOut: 5000, // défini la durée d'affichage à 5 secondes
+            extendedTimeOut: 1000,
+            closeButton: true, // ajoute un bouton de fermeture
+          }
+        );
+        // this.toast.show('', '', {
+        //   toastComponent: ToastCustomComponent,
+        //   progressBar: true,
+        //   onActivateTick: true,
+        // });
       }, 1000);
     }
   }

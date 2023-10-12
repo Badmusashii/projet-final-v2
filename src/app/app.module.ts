@@ -20,6 +20,9 @@ import { PutmediabarComponent } from './components/putmediabar/putmediabar.compo
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { IntermediareComponent } from './pages/intermediare/intermediare.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastCustomComponent } from './components/toast-custom/toast-custom.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,7 @@ import { IntermediareComponent } from './pages/intermediare/intermediare.compone
     InscriptionComponent,
     PutmediabarComponent,
     IntermediareComponent,
+    ToastCustomComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,7 +48,10 @@ import { IntermediareComponent } from './pages/intermediare/intermediare.compone
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule,
   ],
+
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -52,6 +59,7 @@ import { IntermediareComponent } from './pages/intermediare/intermediare.compone
       multi: true,
     },
   ],
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}

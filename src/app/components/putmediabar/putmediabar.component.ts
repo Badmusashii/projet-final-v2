@@ -17,7 +17,7 @@ export class PutmediabarComponent {
   searchText: string = '';
 
   @Output() search = new EventEmitter<string>();
-  @Output() mediaAdded = new EventEmitter<string>();
+  @Output() mediaAdded = new EventEmitter<{ status: string; title: string }>();
 
   onKeyup() {
     this.search.emit(this.searchText);
@@ -26,6 +26,6 @@ export class PutmediabarComponent {
     this.mediaservice.addMediaToUserAndPlatform(this.platformId, {
       title: this.searchText,
     });
-    this.mediaAdded.emit('ok');
+    this.mediaAdded.emit({ status: 'ok', title: this.searchText });
   }
 }

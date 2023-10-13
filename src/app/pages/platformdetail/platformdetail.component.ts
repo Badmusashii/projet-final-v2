@@ -15,6 +15,9 @@ export class PlatformdetailComponent implements OnInit {
   mediaTitle: string = '';
   mediaList: any[] = [];
   isHovered = false;
+  showAsCard: boolean = false;
+  responseData!: any;
+  cardData: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -76,17 +79,39 @@ export class PlatformdetailComponent implements OnInit {
     console.log('inpur desinfecté ' + sanitizedSearchText);
     this.mediaService
       .searchMediaByTitle(sanitizedSearchText, platformId)
-      .subscribe((data) => {
-        if (
-          Array.isArray(data) &&
-          data.length > 0 &&
-          data[0].hasOwnProperty('yearofrelease')
-        ) {
-          this.mediaList = data;
-        } else {
+      .subscribe((response) => {
+        if (response.source === 'local') {
+          this.mediaList = response.data;
+          this.showAsCard = false;
+        } else if (response.source === 'giantbomb') {
           this.mediaList = [];
+          this.showAsCard = true;
+          this.responseData = response.data;
+          console.log('ma data cree ' + JSON.stringify(this.responseData));
+          const nintendoSwitchGames = this.responseData.results.filter(
+            (game: { platforms: { name: string }[] }) =>
+              game.platforms.some(
+                (platform: { name: string }) =>
+                  platform.name === 'Nintendo Switch'
+              )
+          );
+          console.log('nin game ' + nintendoSwitchGames);
+          this.cardData = nintendoSwitchGames.map(
+            (game: {
+              name: any;
+              original_release_date: any;
+              image: { medium_url: any };
+              deck: any;
+            }) => ({
+              title: game.name,
+              releaseDate: game.original_release_date,
+              imageUrl: game.image.medium_url,
+              description: game.deck,
+            })
+          );
+        } else if (response.source === 'tmdb') {
         }
-        console.log(data);
+        console.log('la data des cartes ' + this.cardData);
       });
   }
 

@@ -9,7 +9,7 @@
     Utilise les propriétés de l'objet 'media' comme tu le souhaites
   </li>
 </ul> -->
-<div class="list-container">
+<div *ngIf="!showAsCard; else cardTemplate" class="list-container">
   <ul>
     <li *ngFor="let media of mediaList">
       <div class="title-container" [ngClass]="{ hovered: media.isHovered }">
@@ -40,6 +40,17 @@
     </li>
   </ul>
 </div>
+
+<ng-template #cardTemplate>
+  <p>bonjour</p>
+  <div *ngFor="let card of cardData" class="card-container">
+    <p>bonjour la carte</p>
+    <img [src]="card.imageUrl" alt="{{ card.title }}" />
+    <h2>{{ card.title }}</h2>
+    <p>{{ card.description }}</p>
+    <p>Date de sortie : {{ card.releaseDate }}</p>
+  </div>
+</ng-template>
 
 <!-- <div>
   <p>Ajouter un jeu</p>

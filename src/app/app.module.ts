@@ -23,6 +23,7 @@ import { IntermediareComponent } from './pages/intermediare/intermediare.compone
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastCustomComponent } from './components/toast-custom/toast-custom.component';
+import { CardinfoComponent } from './components/cardinfo/cardinfo.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { ToastCustomComponent } from './components/toast-custom/toast-custom.com
     PutmediabarComponent,
     IntermediareComponent,
     ToastCustomComponent,
+    CardinfoComponent,
   ],
   imports: [
     BrowserModule,

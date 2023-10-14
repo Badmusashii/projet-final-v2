@@ -83,8 +83,8 @@ export class PlatformdetailComponent implements OnInit {
         if (response.source === 'local') {
           this.mediaList = response.data;
           this.showAsCard = false;
-        } else if (response.source === 'giantbomb') {
           this.mediaList = [];
+        } else if (response.source === 'giantbomb') {
           this.showAsCard = true;
           this.responseData = response.data;
           console.log('ma data cree ' + JSON.stringify(this.responseData));
@@ -353,7 +353,22 @@ export class PlatformdetailComponent implements OnInit {
             );
             this.cardData = this.transformGamesToCardData(filteredGames);
           }
-        } else if (response.source === 'tmdb') {
+        } else if (response.source === 'tmbd') {
+          // this.mediaList = [];
+          this.showAsCard = true;
+          this.responseData = response.data;
+          const filteredMovies = this.responseData.data.results.map(
+            (movie: any) => ({
+              title: movie.original_title,
+              release_date: movie.release_date,
+              genres: movie.genre_ids, // Vous pourriez faire une transformation supplémentaire pour convertir les IDs de genres en noms de genres si vous avez cette information
+              overview: movie.overview,
+              vote_average: movie.vote_average,
+              poster_path: movie.poster_path,
+            })
+          );
+
+          this.cardData = this.transformGamesToCardData(filteredMovies);
         }
         console.log('la data des cartes ' + this.cardData);
       });
@@ -386,12 +401,14 @@ export class PlatformdetailComponent implements OnInit {
       (game: {
         name: any;
         original_release_date: any;
-        image: { medium_url: any };
+        // image: { medium_url: any };
+        image: { original_url: any };
         deck: any;
       }) => ({
         title: game.name,
         releaseDate: game.original_release_date,
-        imageUrl: game.image.medium_url,
+        // imageUrl: game.image.medium_url,
+        imageUrl: game.image.original_url,
         description: game.deck,
       })
     );

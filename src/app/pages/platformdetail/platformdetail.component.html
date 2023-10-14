@@ -41,14 +41,14 @@
   </ul>
 </div>
 
-<ng-template #cardTemplate>
-  <p>bonjour</p>
-  <div *ngFor="let card of cardData" class="card-container">
-    <p>bonjour la carte</p>
-    <img [src]="card.imageUrl" alt="{{ card.title }}" />
-    <h2>{{ card.title }}</h2>
-    <p>{{ card.description }}</p>
-    <p>Date de sortie : {{ card.releaseDate }}</p>
+<ng-template #cardTemplate class="all-card-container">
+  <div class="all-card-container">
+    <div *ngFor="let card of cardData" class="card-container">
+      <h2>{{ card.title }}</h2>
+      <img [src]="card.imageUrl" alt="{{ card.title }}" />
+      <!-- <p>{{ card.description }}</p> -->
+      <!-- <p>Date de sortie : {{ card.releaseDate }}</p> -->
+    </div>
   </div>
 </ng-template>
 

@@ -80,3 +80,42 @@ button {
 .title {
   transition: border-bottom 0.2s ease, text-shadow 0.5s ease;
 }
+
+.all-card-container {
+  /* border: 1px solid greenyellow; */
+  width: 90%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap; /* Permet aux éléments de passer à la ligne suivante */
+  justify-content: space-around; /* Espacement horizontal entre les cartes */
+  align-items: center; /* Alignement vertical */
+}
+.card-container {
+  width: 17rem;
+  height: auto;
+  /* height: 25rem; */
+  /* border: 1px solid red; */
+  text-align: center; /* Pour centrer le titre et le texte */
+  border: 3px solid #184cc1; /* Ajout d'une bordure de 3px et couleur #184cc1 */
+  border-radius: 8px; /* Bords légèrement arrondis */
+  box-shadow: 0 4px 8px rgba(73, 199, 216, 0.2); /* Ajout d'une ombre légère */
+  margin-bottom: 0.5rem;
+}
+
+.card-container img {
+  width: 100%;
+  object-fit: contain;
+  margin: auto;
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: cover;
+  margin: 0 0.7rem 0 0.7rem;
+  cursor: pointer;
+}
+
+.card-container h2 {
+  margin: 0.5rem 0;
+  font-family: "CIND";
+  color: #49c7d8;
+  font-size: 0.9rem;
+}

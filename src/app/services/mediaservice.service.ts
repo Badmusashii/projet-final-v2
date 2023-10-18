@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MediaWithPlatform } from '../components/models/myApiResponse';
+import { MovieDetails } from '../components/models/movie-detail';
 
 @Injectable({
   providedIn: 'root',
@@ -63,6 +64,24 @@ export class MediaService {
     return this.http.delete(
       `https://localhost:8080/api/media/deleteTitle/${mediaId}`,
       { withCredentials: true }
+    );
+  }
+  getGameInfoByGuid(guid: any): Observable<any> {
+    return this.http.get(`https://localhost:8080/api/media/game-info/${guid}`, {
+      withCredentials: true,
+    });
+  }
+  getAdditionalImages(guid: any): Observable<any> {
+    return this.http.get(
+      `https://localhost:8080/api/media/game-images/${guid}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+  getMovieDetails(id: number): Observable<MovieDetails> {
+    return this.http.get<MovieDetails>(
+      `https://localhost:8080/api/media/movie-videos/${id}`
     );
   }
 }

@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { GetplatformsService } from 'src/app/services/getplatforms.service';
 import { MediaService } from 'src/app/services/mediaservice.service';
 import { ToastCustomComponent } from 'src/app/components/toast-custom/toast-custom.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-platformdetail',
@@ -12,6 +13,7 @@ import { ToastCustomComponent } from 'src/app/components/toast-custom/toast-cust
 })
 export class PlatformdetailComponent implements OnInit {
   platform: any;
+  platformId!: number;
   mediaTitle: string = '';
   mediaList: any[] = [];
   isHovered = false;
@@ -23,11 +25,13 @@ export class PlatformdetailComponent implements OnInit {
     private route: ActivatedRoute,
     private platformService: GetplatformsService,
     private mediaService: MediaService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.platformId = Number(this.route.snapshot.paramMap.get('id'));
     // this.platform = this.platformService.getPlatform(id);
     if (id !== null) {
       this.platformService.getPlatform(Number(id)).subscribe((platform) => {
@@ -357,20 +361,23 @@ export class PlatformdetailComponent implements OnInit {
           // this.mediaList = [];
           this.showAsCard = true;
           this.responseData = response.data;
-          const filteredMovies = this.responseData.data.results.map(
-            (movie: any) => ({
-              title: movie.original_title,
-              release_date: movie.release_date,
-              genres: movie.genre_ids, // Vous pourriez faire une transformation supplémentaire pour convertir les IDs de genres en noms de genres si vous avez cette information
-              overview: movie.overview,
-              vote_average: movie.vote_average,
-              poster_path: movie.poster_path,
-            })
+          console.log(this.responseData);
+          // Trie les films par date de sortie, du plus récent au plus ancien
+          this.responseData.results.sort(
+            (
+              a: { release_date: string | number | Date },
+              b: { release_date: string | number | Date }
+            ) => {
+              const dateA = new Date(a.release_date);
+              const dateB = new Date(b.release_date);
+              return dateB.getTime() - dateA.getTime();
+            }
           );
-
-          this.cardData = this.transformGamesToCardData(filteredMovies);
+          this.cardData = this.transformMoviesToCardData(
+            this.responseData.results
+          );
         }
-        console.log('la data des cartes ' + this.cardData);
+        console.log('la data des cartes ' + JSON.stringify(this.cardData));
       });
   }
 
@@ -404,14 +411,55 @@ export class PlatformdetailComponent implements OnInit {
         // image: { medium_url: any };
         image: { original_url: any };
         deck: any;
+        guid: any;
       }) => ({
         title: game.name,
         releaseDate: game.original_release_date,
         // imageUrl: game.image.medium_url,
         imageUrl: game.image.original_url,
         description: game.deck,
+        guid: game.guid,
       })
     );
+  }
+
+  // transformMoviesToCardData(movies: any[]): any[] {
+  //   return movies.map(
+  //     (movie: {
+  //       title: string;
+  //       release_date: string;
+  //       poster_path: string;
+  //       overview: string;
+  //       id: number;
+  //     }) => ({
+  //       title: movie.title,
+  //       releaseDate: movie.release_date,
+  //       imageUrl: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+  //       description: movie.overview,
+  //       id: movie.id,
+  //     })
+  //   );
+  // }
+  transformMoviesToCardData(movies: any[]): any[] {
+    return movies
+      .filter(
+        (movie: { poster_path: string | null }) => movie.poster_path !== null
+      )
+      .map(
+        (movie: {
+          title: string;
+          release_date: string;
+          poster_path: string;
+          overview: string;
+          id: number;
+        }) => ({
+          title: movie.title,
+          releaseDate: movie.release_date,
+          imageUrl: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+          description: movie.overview,
+          guid: movie.id,
+        })
+      );
   }
 
   onAddMedia() {
@@ -445,5 +493,16 @@ export class PlatformdetailComponent implements OnInit {
       this.loadMediaList(this.platform.id);
       // Mettre à jour la liste des médias ou tout autre traitement nécessaire.
     });
+  }
+  showGuid(guid: string) {
+    if (
+      this.platformId !== 1 &&
+      this.platformId !== 2 &&
+      this.platformId !== 3
+    ) {
+      this.router.navigate(['/gameInfo'], { queryParams: { guid: guid } });
+    } else {
+      this.router.navigate(['/movieInfo', guid]);
+    }
   }
 }

@@ -6,6 +6,8 @@ import { PlatformdetailComponent } from './pages/platformdetail/platformdetail.c
 import { LoginComponent } from './pages/login/login.component';
 import { InscriptionComponent } from './pages/inscription/inscription.component';
 import { IntermediareComponent } from './pages/intermediare/intermediare.component';
+import { GameInfoComponent } from './pages/game-info/game-info.component';
+import { MovieInfoComponent } from './pages/movie-info/movie-info.component';
 
 const routes: Routes = [
   { path: 'settings', component: SettingsComponent },
@@ -14,6 +16,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'inscription', component: InscriptionComponent },
   { path: 'intermediaire', component: IntermediareComponent },
+  { path: 'gameInfo', component: GameInfoComponent },
+  { path: 'movieInfo/:id', component: MovieInfoComponent },
 ];
 
 @NgModule({

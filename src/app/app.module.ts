@@ -24,6 +24,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastCustomComponent } from './components/toast-custom/toast-custom.component';
 import { CardinfoComponent } from './components/cardinfo/cardinfo.component';
+import { GameInfoComponent } from './pages/game-info/game-info.component';
+import { MovieInfoComponent } from './pages/movie-info/movie-info.component';
+import { AfficheComponent } from './components/affiche/affiche.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +46,9 @@ import { CardinfoComponent } from './components/cardinfo/cardinfo.component';
     IntermediareComponent,
     ToastCustomComponent,
     CardinfoComponent,
+    GameInfoComponent,
+    MovieInfoComponent,
+    AfficheComponent,
   ],
   imports: [
     BrowserModule,

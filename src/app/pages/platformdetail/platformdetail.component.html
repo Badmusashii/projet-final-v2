@@ -48,6 +48,10 @@
       <img [src]="card.imageUrl" alt="{{ card.title }}" />
       <!-- <p>{{ card.description }}</p> -->
       <!-- <p>Date de sortie : {{ card.releaseDate }}</p> -->
+      <div class="button">
+        <button (click)="showGuid(card.guid)">+ d'infos</button>
+        <button>Ajouter</button>
+      </div>
     </div>
   </div>
 </ng-template>

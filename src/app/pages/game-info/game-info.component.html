@@ -1,0 +1,53 @@
+<div *ngIf="isLoading">
+  <p>Chargement en cours...</p>
+</div>
+<div *ngIf="!isLoading && gameDetails">
+  <h1>{{ gameDetails.name }}</h1>
+  <div class="container">
+    <div class="left-side">
+      <img [src]="gameDetails.image.medium_url" alt="{{ gameDetails.name }}" />
+    </div>
+    <div class="right-side">
+      <div class="additional-images">
+        <img *ngFor="let img of additionalImages" [src]="img.url" />
+      </div>
+    </div>
+  </div>
+
+  <div class="info-section">
+    <h2>Description</h2>
+    <p [innerHTML]="getSafeHtml(gameDetails.description)"></p>
+
+    <h2>Informations supplémentaires</h2>
+    <ul>
+      <li>
+        <strong>Date de sortie originale :</strong>
+        {{ gameDetails.original_release_date }}
+      </li>
+      <li>
+        <strong>Nombre d'avis utilisateurs :</strong>
+        {{ gameDetails.number_of_user_reviews }}
+      </li>
+      <li><strong>Alias :</strong> {{ gameDetails.aliases }}</li>
+    </ul>
+
+    <h2>Images associées</h2>
+    <ul>
+      <li *ngFor="let tag of gameDetails.image_tags">
+        <a [href]="tag.api_detail_url">{{ tag.name }} ({{ tag.total }})</a>
+      </li>
+    </ul>
+
+    <h2>Images supplémentaires</h2>
+    <div class="additional-images">
+      <img *ngFor="let img of additionalImages" [src]="img.url" />
+    </div>
+
+    <h2>Vidéos associées</h2>
+    <ul>
+      <li *ngFor="let video of gameDetails.videos">
+        <a [href]="video.site_detail_url">{{ video.name }}</a>
+      </li>
+    </ul>
+  </div>
+</div>

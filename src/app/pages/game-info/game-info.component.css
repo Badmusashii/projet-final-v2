@@ -1,0 +1,42 @@
+* {
+  font-family: "CIND";
+  color: #49c7d8;
+}
+h1 {
+  text-align: center;
+  font-family: "CIND";
+  color: #49c7d8;
+  margin-top: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+.container {
+  display: flex;
+  align-items: center;
+  /* height: 20rem; */
+}
+
+.left-side {
+  flex: 1;
+  max-width: 50%;
+  display: flex; /* Utilisation de flexbox */
+  justify-content: center; /* Centrer horizontalement */
+}
+.left-side img {
+  max-width: 80%;
+  height: auto;
+}
+.right-side {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 0 20px;
+}
+
+.additional-images img {
+  width: calc(50% - 10px);
+  margin: 5px;
+  object-fit: cover;
+  width: 280px;
+  height: 140px;
+}

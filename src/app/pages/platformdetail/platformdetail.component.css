@@ -95,11 +95,24 @@ button {
   height: auto;
   /* height: 25rem; */
   /* border: 1px solid red; */
-  text-align: center; /* Pour centrer le titre et le texte */
-  border: 3px solid #184cc1; /* Ajout d'une bordure de 3px et couleur #184cc1 */
-  border-radius: 8px; /* Bords légèrement arrondis */
-  box-shadow: 0 4px 8px rgba(73, 199, 216, 0.2); /* Ajout d'une ombre légère */
+  text-align: center;
+  border: 3px solid #184cc1;
+  background-color: #49c7d8;
+  /* background-color: white; */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(73, 199, 216, 0.2);
   margin-bottom: 0.5rem;
+  transition: transform 1s ease-out, background-color 0.5s ease,
+    border 0.5s ease;
+  transform-style: preserve-3d;
+}
+.card-container:hover {
+  background-color: #cc35c0;
+  border: 3px solid #b5236d;
+
+  transform: perspective(600px) rotateY(-10deg);
+  transition: transform 0.2s ease-in, background-color 0.5s ease,
+    border 0.5s ease;
 }
 
 .card-container img {
@@ -111,11 +124,40 @@ button {
   object-fit: cover;
   margin: 0 0.7rem 0 0.7rem;
   cursor: pointer;
+  /* border: 1px solid yellow; */
 }
 
 .card-container h2 {
   margin: 0.5rem 0;
   font-family: "CIND";
-  color: #49c7d8;
+  color: #04043c;
   font-size: 0.9rem;
+}
+
+.button {
+  display: flex;
+  justify-content: space-around;
+  margin: 0.2rem 0 0.4rem 0;
+}
+@media screen and (max-width: 600px) {
+  .list-container ul {
+    width: 80%;
+  }
+  .list-container ul {
+    width: 80%;
+  }
+  .title-container {
+    border: 1px solid red;
+    width: 90%;
+  }
+  button {
+    width: 5rem;
+    font-size: 0.6rem;
+    margin-bottom: 0.3rem;
+  }
+}
+@media screen and (max-width: 490px) {
+  input {
+    width: 50px;
+  }
 }

@@ -19,3 +19,51 @@
 img {
   height: 3rem;
 }
+#param {
+  margin-right: 0.5rem;
+}
+#menu {
+  margin-left: 0.5rem;
+}
+@media only screen and (max-width: 650px) {
+  #logo {
+    height: 2.5rem;
+    margin-top: 0.2rem;
+  }
+  #param {
+    height: 2.5rem;
+    margin-top: 0.2rem;
+  }
+  #menu {
+    height: 2.5rem;
+    margin-top: 0.2rem;
+  }
+}
+@media only screen and (max-width: 500px) {
+  #logo {
+    height: 2rem;
+    margin-top: 0.5rem;
+  }
+  #param {
+    height: 2rem;
+    margin-top: 0.5rem;
+  }
+  #menu {
+    height: 2rem;
+    margin-top: 0.5rem;
+  }
+}
+@media only screen and (max-width: 400px) {
+  #logo {
+    height: 1.5rem;
+    margin-top: 0.7rem;
+  }
+  #param {
+    height: 1.8rem;
+    margin-top: 0.7rem;
+  }
+  #menu {
+    height: 1.8rem;
+    margin-top: 0.7rem;
+  }
+}

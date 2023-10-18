@@ -1,0 +1,70 @@
+<div *ngIf="isLoading">
+  <p>Chargement en cours...</p>
+</div>
+
+<div *ngIf="!isLoading && movieDetails">
+  <h1>{{ replaceSpecialChars(movieDetails.title) }}</h1>
+  <h2 *ngIf="movieDetails.tagline !== ''">
+    {{ replaceSpecialChars(movieDetails.tagline) }}
+  </h2>
+
+  <div class="container">
+    <div class="left-side">
+      <!-- <img
+        [src]="'https://image.tmdb.org/t/p/w500/' + movieDetails.poster_path"
+        alt="{{ movieDetails.title }}"
+      /> -->
+      <app-affiche
+        [posterPath]="movieDetails.poster_path"
+        [movieTitle]="movieDetails.title"
+        [movieNote]="movieDetails.vote_average"
+      ></app-affiche>
+    </div>
+
+    <div class="right-side">
+      <!-- <h2>Videos associees</h2> -->
+      <div class="additional-images">
+        <!-- <iframe
+          *ngFor="let video of movieVideos"
+          [srcdoc]="someHtmlContent"
+          allowfullscreen
+          loading="lazy"
+        >
+        </iframe> -->
+        <div
+          class="movie-container"
+          *ngFor="let safeContent of safeHtmlContents"
+        >
+          <div [innerHTML]="safeContent"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-section">
+    <h2>Description</h2>
+    <p>{{ replaceSpecialChars(movieDetails.overview) }}</p>
+
+    <h2>Informations supplementaires</h2>
+    <ul>
+      <li>
+        <strong>Date de sortie :</strong>
+        {{ movieDetails.release_date }}
+      </li>
+      <!-- <li>
+        <strong>Note moyenne :</strong>
+        {{ movieDetails.vote_average }}
+      </li> -->
+      <li>
+        <strong>Genres :</strong>
+        <!-- <span *ngFor="let genre of movieDetails.genres">{{ genre.name }}</span> -->
+        <ng-container
+          *ngFor="let genre of movieDetails.genres; let last = last"
+        >
+          {{ replaceSpecialChars(genre.name)
+          }}<ng-container *ngIf="!last">, </ng-container>
+        </ng-container>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,3 +1,8 @@
 input {
   text-align: center;
 }
+@media screen and (max-width: 490px) {
+  input {
+    width: 10rem;
+  }
+}

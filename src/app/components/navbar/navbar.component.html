@@ -1,13 +1,13 @@
 <nav role="navigation" (click)="onClick($event)">
   <div class="navbar">
     <a [routerLink]="['/login']" title="Aller à la page de connexion">
-      <img src="/assets/icon/menu.png" alt="Menu"
+      <img id="menu" src="/assets/icon/menu.png" alt="Menu"
     /></a>
     <a [routerLink]="['/cardselect']"
-      ><img src="/assets/icon/logo.png" alt=""
+      ><img id="logo" src="/assets/icon/logo.png" alt=""
     /></a>
     <a [routerLink]="['/settings']" title="Acceder aux parametres"
-      ><img src="/assets/icon/roue-dentee.png" alt="Parametres"
+      ><img id="param" src="/assets/icon/roue-dentee.png" alt="Parametres"
     /></a>
   </div>
 </nav>

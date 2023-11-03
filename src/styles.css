@@ -1,13 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
-@import "node_modules/ngx-toastr/toastr.css";
+/* @import "node_modules/ngx-toastr/toastr.css"; */
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-body {
+
+body.default-body.unauthenticated {
+  background-color: #808080;
+  transition: background-color 2.5s;
+}
+
+body.default-body.authenticated {
   background-color: #04043c;
+  transition: background-color 2.5s;
 }
 
 body input::placeholder {

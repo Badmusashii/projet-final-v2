@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToggleService } from 'src/app/services/toggleservice.service';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private http: HttpClient,
-    private toggleService: ToggleService
+    private toggleService: ToggleService,
+    private authService: AuthServiceService
   ) {}
 
   ngOnInit(): void {
@@ -24,6 +26,21 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
+    this.authService.isAuthenticated.subscribe(
+      (isAuthenticated) => {
+        if (isAuthenticated) {
+          // Si l'utilisateur est déjà authentifié, rediriger vers la page d'accueil ou une autre page
+          this.router.navigate(['/cardselect']);
+        }
+      },
+      (error) => {
+        console.error(
+          "Erreur lors de la vérification de l'authentification",
+          error
+        );
+        this.router.navigate(['/login']);
+      }
+    );
   }
   onSubmit(): void {
     if (this.loginForm.valid) {
@@ -35,6 +52,7 @@ export class LoginComponent implements OnInit {
         .subscribe({
           next: (res: any) => {
             localStorage.setItem('token', res.accessToken);
+            this.authService.updateAuthenticationStatus(true);
             this.toggleService.fetchAndSetTogglesForUser();
             this.router.navigate(['/settings']);
             console.log('Réponse du serveur:', res);
@@ -42,6 +60,7 @@ export class LoginComponent implements OnInit {
           error: (err) => {
             console.log('Erreur lors du login : ', err);
             console.log("Détails de l'erreur:", JSON.stringify(err, null, 2));
+            this.authService.updateAuthenticationStatus(false);
           },
         });
     }

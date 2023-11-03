@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ToggleService } from 'src/app/services/toggleservice.service';
 import { AnimationSyncService } from 'src/app/services/anim-syncro.service';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,10 +12,13 @@ import { AnimationSyncService } from 'src/app/services/anim-syncro.service';
 export class NavbarComponent implements OnInit, OnDestroy {
   toggles: { [key: number]: boolean } = {};
   private togglesSubscription: Subscription | undefined;
+  isAuthenticated: boolean = false;
+  private authSubscription: Subscription | undefined;
 
   constructor(
     private toggleService: ToggleService,
-    private animSyncro: AnimationSyncService
+    private animSyncro: AnimationSyncService,
+    private authService: AuthServiceService
   ) {}
 
   ngOnInit(): void {
@@ -25,6 +29,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.togglesSubscription = this.toggleService.toggles$.subscribe(
       (toggles) => {
         this.toggles = toggles;
+      }
+    );
+    this.authSubscription = this.authService.isAuthenticated.subscribe(
+      (authStatus) => {
+        this.isAuthenticated = authStatus;
       }
     );
     this.toggleService.fetchAndSetTogglesForUser();

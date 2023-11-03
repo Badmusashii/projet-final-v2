@@ -4,15 +4,32 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
+  HttpClient,
 } from '@angular/common/http';
-import { Observable, catchError, switchMap, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  switchMap,
+  throwError,
+} from 'rxjs';
 import { AuthService } from './user-service.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthInterceptorService implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  // BehavoirSubject qui gerera l'etat de connection de mon User
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  public isAuthenticated = this.isAuthenticatedSubject.asObservable();
+  // ------------------------------------------------------------------
+
+  constructor(private authService: AuthService, private http: HttpClient) {}
+
+  checkAuthentication(): Observable<any> {
+    return this.http.get('https://localhost:8080/api/user/validate');
+  }
+
   // intercept(
   //   req: HttpRequest<any>,
   //   next: HttpHandler

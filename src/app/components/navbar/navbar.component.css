@@ -19,6 +19,23 @@
 img {
   height: 3rem;
 }
+
+.navbar.disconnected {
+  background-color: #ffffff; /* Gris ou la couleur désirée pour l'état déconnecté */
+  animation: none; /* Aucune animation */
+}
+
+/* Styles pour l'état connecté */
+.navbar.connected {
+  background-color: #04043c; /* Votre couleur originale */
+  animation: breathe 5s infinite; /* L'animation existante */
+}
+
+/* Transition pour l'effet 's'allume' */
+.navbar {
+  transition: background-color 2.5s ease; /* Assurez-vous que l'animation est douce */
+}
+
 #param {
   margin-right: 0.5rem;
 }

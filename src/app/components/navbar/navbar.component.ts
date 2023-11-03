@@ -27,6 +27,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.toggles = toggles;
       }
     );
+    this.toggleService.fetchAndSetTogglesForUser();
   }
 
   ngOnDestroy(): void {

@@ -27,6 +27,7 @@ import { CardinfoComponent } from './components/cardinfo/cardinfo.component';
 import { GameInfoComponent } from './pages/game-info/game-info.component';
 import { MovieInfoComponent } from './pages/movie-info/movie-info.component';
 import { AfficheComponent } from './components/affiche/affiche.component';
+import { NotfoundComponent } from './pages/notfound/notfound.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { AfficheComponent } from './components/affiche/affiche.component';
     GameInfoComponent,
     MovieInfoComponent,
     AfficheComponent,
+    NotfoundComponent,
   ],
   imports: [
     BrowserModule,

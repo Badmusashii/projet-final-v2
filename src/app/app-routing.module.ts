@@ -8,8 +8,10 @@ import { InscriptionComponent } from './pages/inscription/inscription.component'
 import { IntermediareComponent } from './pages/intermediare/intermediare.component';
 import { GameInfoComponent } from './pages/game-info/game-info.component';
 import { MovieInfoComponent } from './pages/movie-info/movie-info.component';
+import { NotfoundComponent } from './pages/notfound/notfound.component';
 
 const routes: Routes = [
+  { path: '', component: CardselectComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'cardselect', component: CardselectComponent },
   { path: 'platform/:id', component: PlatformdetailComponent },
@@ -18,6 +20,7 @@ const routes: Routes = [
   { path: 'intermediaire', component: IntermediareComponent },
   { path: 'gameInfo', component: GameInfoComponent },
   { path: 'movieInfo/:id', component: MovieInfoComponent },
+  { path: '**', component: NotfoundComponent },
 ];
 
 @NgModule({

@@ -80,7 +80,7 @@ export class PlatformdetailComponent implements OnInit {
     // Désinfection du champ de recherche
     const sanitizedSearchText = searchText.replace(/[^a-zA-Z0-9 ]/g, '');
     const platformId = this.platform.id;
-    console.log('inpur desinfecté ' + sanitizedSearchText);
+    console.log('input desinfecté ' + sanitizedSearchText);
     this.mediaService
       .searchMediaByTitle(sanitizedSearchText, platformId)
       .subscribe((response) => {

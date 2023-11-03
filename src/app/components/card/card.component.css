@@ -9,8 +9,12 @@
   justify-content: center;
   margin: 1rem 0;
   cursor: pointer;
+  transition: border 0.3s ease;
 }
 .card img {
   width: 8rem;
   height: 8rem;
+}
+.card:hover {
+  border: 5px solid #b5236d;
 }

@@ -14,7 +14,9 @@
   height: 3rem;
   background-color: #04043c;
   /* box-shadow: 0px 0px 10px 1px rgba(73, 199, 216, 0.5); */
-  animation: breathe 5s infinite;
+  /* animation: breathe 5s infinite; */
+  animation: none;
+  transition: background-color 2.5s ease;
 }
 img {
   height: 3rem;
@@ -28,7 +30,7 @@ img {
 /* Styles pour l'état connecté */
 .navbar.connected {
   background-color: #04043c; /* Votre couleur originale */
-  animation: breathe 5s infinite; /* L'animation existante */
+  animation: breathe 5s infinite 3.7s; /* L'animation existante */
 }
 
 /* Transition pour l'effet 's'allume' */
@@ -36,6 +38,33 @@ img {
   transition: background-color 2.5s ease; /* Assurez-vous que l'animation est douce */
 }
 
+img#menu.disconnected {
+  transform: translateX(-70px); /* Déplacer l'icône hors de l'écran */
+}
+img#param.disconnected {
+  transform: translateX(70px); /* Déplacer l'icône hors de l'écran */
+}
+img#logo.disconnected {
+  transform: translateY(-150px); /* Remettre l'icône à sa position originale */
+}
+img#menu.connected {
+  transform: translateX(0); /* Remettre l'icône à sa position originale */
+}
+
+img#param.connected {
+  transform: translateX(0); /* Remettre l'icône à sa position originale */
+}
+img#logo.connected {
+  transform: translateX(0); /* Remettre l'icône à sa position originale */
+}
+img#menu,
+img#param {
+  /* Transition avec un délai de 0s par défaut */
+  transition: transform 2.7s ease 0s;
+}
+img#logo {
+  transition: transform 3s ease 0s;
+}
 #param {
   margin-right: 0.5rem;
 }

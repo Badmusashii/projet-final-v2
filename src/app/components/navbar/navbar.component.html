@@ -4,13 +4,34 @@
     class="navbar"
   >
     <a [routerLink]="['/login']" title="Aller à la page de connexion">
-      <img id="menu" src="/assets/icon/menu.png" alt="Menu"
+      <img
+        id="menu"
+        [ngClass]="{
+          disconnected: !isAuthenticated,
+          connected: isAuthenticated
+        }"
+        src="/assets/icon/menu.png"
+        alt="Menu"
     /></a>
     <a [routerLink]="['/cardselect']"
-      ><img id="logo" src="/assets/icon/logo.png" alt=""
+      ><img
+        id="logo"
+        [ngClass]="{
+          disconnected: !isAuthenticated,
+          connected: isAuthenticated
+        }"
+        src="/assets/icon/logo.png"
+        alt=""
     /></a>
     <a [routerLink]="['/settings']" title="Acceder aux parametres"
-      ><img id="param" src="/assets/icon/roue-dentee.png" alt="Parametres"
+      ><img
+        id="param"
+        [ngClass]="{
+          disconnected: !isAuthenticated,
+          connected: isAuthenticated
+        }"
+        src="/assets/icon/roue-dentee.png"
+        alt="Parametres"
     /></a>
   </div>
 </nav>

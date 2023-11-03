@@ -28,6 +28,12 @@ import { GameInfoComponent } from './pages/game-info/game-info.component';
 import { MovieInfoComponent } from './pages/movie-info/movie-info.component';
 import { AfficheComponent } from './components/affiche/affiche.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
+import { APP_INITIALIZER } from '@angular/core';
+import { AuthServiceService } from './services/auth-service.service';
+
+function initAuth(authService: AuthServiceService) {
+  return () => authService.checkInitialAuthentication();
+}
 
 @NgModule({
   declarations: [
@@ -66,6 +72,13 @@ import { NotfoundComponent } from './pages/notfound/notfound.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
+      multi: true,
+    },
+    AuthServiceService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initAuth,
+      deps: [AuthServiceService],
       multi: true,
     },
   ],

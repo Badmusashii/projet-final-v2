@@ -6,9 +6,9 @@
   padding: 0;
   box-sizing: border-box;
 }
-/* body {
+body {
   background-color: #04043c;
-} */
+}
 body.default-body.unauthenticated {
   background-color: #808080;
   transition: background-color 2.5s;

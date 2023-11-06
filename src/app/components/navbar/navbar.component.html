@@ -23,6 +23,9 @@
         src="/assets/icon/logo.png"
         alt=""
     /></a>
+    <p *ngIf="!isAuthenticated" class="login-message">
+      Veuillez vous connecter
+    </p>
     <a [routerLink]="['/settings']" title="Acceder aux parametres"
       ><img
         id="param"

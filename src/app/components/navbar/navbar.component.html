@@ -1,18 +1,43 @@
 <nav role="navigation" (click)="onClick($event)">
+  <div class="side-menu" [ngClass]="{ show: showSideMenu }">
+    <div class="side-menu-container">
+      <p>Voir mes platforms</p>
+      <p>Ajouter ou supprimer des platforms</p>
+      <p>On fait quoi aujourd'hui ?</p>
+      <p>Deconnexion</p>
+    </div>
+  </div>
   <div
     [ngClass]="{ connected: isAuthenticated, disconnected: !isAuthenticated }"
     class="navbar"
   >
-    <a [routerLink]="['/login']" title="Aller à la page de connexion">
+    <!-- <a [routerLink]="['/login']" title="Aller à la page de connexion"> -->
+    <div class="icon-container menu">
       <img
-        id="menu"
+        class="icon default-icon"
         [ngClass]="{
           disconnected: !isAuthenticated,
-          connected: isAuthenticated
+          connected: isAuthenticated,
+          'icon-rotate': true,
+          active: showSideMenu
         }"
         src="/assets/icon/menu.png"
         alt="Menu"
-    /></a>
+      />
+      <img
+        class="icon hover-icon"
+        [ngClass]="{
+          disconnected: !isAuthenticated,
+          connected: isAuthenticated,
+          'icon-rotate': true,
+          active: showSideMenu
+        }"
+        class="hover-image"
+        src="/assets/icon/menu-pink.png"
+        alt="Paramètres"
+      />
+    </div>
+    <!-- </a> -->
     <a [routerLink]="['/cardselect']"
       ><img
         id="logo"
@@ -26,15 +51,27 @@
     <p *ngIf="!isAuthenticated" class="login-message">
       Veuillez vous connecter
     </p>
-    <a [routerLink]="['/settings']" title="Acceder aux parametres"
-      ><img
-        id="param"
-        [ngClass]="{
-          disconnected: !isAuthenticated,
-          connected: isAuthenticated
-        }"
-        src="/assets/icon/roue-dentee.png"
-        alt="Parametres"
-    /></a>
+    <a [routerLink]="['/settings']" title="Acceder aux parametres">
+      <div class="icon-container settings">
+        <img
+          class="icon default-icon"
+          [ngClass]="{
+            disconnected: !isAuthenticated,
+            connected: isAuthenticated
+          }"
+          src="/assets/icon/roue-dentee.png"
+          alt="Parametres"
+        />
+        <img
+          class="icon hover-icon"
+          [ngClass]="{
+            disconnected: !isAuthenticated,
+            connected: isAuthenticated
+          }"
+          class="hover-image"
+          src="/assets/icon/roue-dentee-pink.png"
+          alt="Paramètres"
+        /></div
+    ></a>
   </div>
 </nav>

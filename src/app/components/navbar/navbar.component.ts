@@ -10,6 +10,7 @@ import { AuthServiceService } from 'src/app/services/auth-service.service';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+  showSideMenu = false;
   toggles: { [key: number]: boolean } = {};
   private togglesSubscription: Subscription | undefined;
   isAuthenticated: boolean = false;
@@ -48,6 +49,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   onClick(event: Event) {
     console.log(this.toggles);
+    this.toggleSideMenu();
   }
   syncNavbar() {
     // Ici, ajoutez le code qui doit être exécuté pour synchroniser la navbar.
@@ -58,6 +60,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     } else {
       navbar.classList.add('breathe');
     }
+  }
+  toggleSideMenu() {
+    this.showSideMenu = !this.showSideMenu;
   }
   // ngOnDestroy(): void {}
 }

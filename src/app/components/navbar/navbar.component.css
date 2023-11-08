@@ -18,10 +18,86 @@
   animation: none;
   transition: background-color 2.5s ease;
 }
+.side-menu {
+  position: fixed;
+  left: -100%; /* Position de départ hors de l'écran */
+  top: 0;
+  width: 250px; /* Largeur du menu latéral */
+  height: 100%;
+  background-color: #333; /* Couleur de fond du menu */
+  overflow-x: hidden; /* Cache le débordement horizontal */
+  transition: left 0.5s ease-in-out; /* Transition pour l'effet coulissant */
+  /* Ajoutez d'autres styles selon vos besoins */
+}
+.side-menu.show {
+  left: 0; /* Fait apparaître le menu */
+}
+.icon-rotate {
+  transition: transform 0.5s ease-in-out; /* Transition pour l'effet de rotation */
+  z-index: 5;
+}
+
+.icon-rotate.active {
+  transform: rotate(180deg); /* Rotation de 180 degrés */
+  z-index: 5;
+}
 img {
   height: 3rem;
 }
+.icon-container {
+  position: relative;
+  height: 3rem;
+  width: 3rem;
+  z-index: 5;
+}
+.icon-container .icon {
+  z-index: 5;
+  position: absolute;
+  top: 0;
+  left: 0;
 
+  height: 100%;
+  width: 100%;
+}
+.icon-container .default-icon {
+  opacity: 1; /* Assurez-vous que l'image est visible par défaut */
+  transition: opacity 0.5s ease; /* Transition pour l'effet de fondu */
+  z-index: 5;
+}
+.icon-container .hover-icon {
+  z-index: 5;
+  opacity: 0;
+  position: absolute; /* Position absolue pour superposer sur l'image par défaut */
+  top: 0;
+  left: 0;
+  transition: opacity 0.5s ease; /* Transition pour l'effet de fondu */
+}
+.icon-container:hover .default-icon {
+  z-index: 5;
+  opacity: 0;
+}
+/* Affiche l'image de survol lors du survol */
+.icon-container:hover .hover-icon {
+  z-index: 5;
+  opacity: 1;
+}
+.side-menu-container {
+  margin-top: 5rem;
+  display: flex;
+  font-family: "CIND" !important;
+  flex-direction: column;
+  align-items: center;
+}
+.side-menu-container p {
+  margin: 1rem 0;
+  cursor: pointer;
+  color: #49c7d8;
+  transition: 0.5s ease-in-out;
+  text-align: center;
+}
+.side-menu-container p:hover {
+  color: #cc35c0;
+}
 .navbar.disconnected {
   background-color: #ffffff; /* Gris ou la couleur désirée pour l'état déconnecté */
   animation: none; /* Aucune animation */

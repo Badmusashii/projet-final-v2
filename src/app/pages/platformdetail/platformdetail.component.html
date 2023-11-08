@@ -1,4 +1,27 @@
-<h1 *ngIf="platform">La collection {{ platform.name }}</h1>
+<!-- <h1 *ngIf="platform">La collection {{ platform.name }}</h1> -->
+<div class="title-container">
+  <div class="image-container">
+    <img
+      src="/assets/icon/back.png"
+      alt="Retour"
+      class="back-icon"
+      (click)="goBack()"
+    /><img
+      id=""
+      back-pink
+      src="/assets/icon/back-pink.png"
+      alt="Retour Hover"
+      class="back-icon hover"
+      (click)="goBack(); closeToast()"
+    />
+  </div>
+  <h1
+    [class.title-not-found]="h1Title === 'Introuvable dans cette collection'"
+    *ngIf="platform"
+  >
+    {{ h1Title }}
+  </h1>
+</div>
 <div class="search-container">
   <app-searchbar (search)="onSearch($event)"></app-searchbar>
   <app-putmediabar (mediaAdded)="handleMediaAdded($event)"></app-putmediabar>
@@ -12,7 +35,10 @@
 <div *ngIf="!showAsCard; else cardTemplate" class="list-container">
   <ul>
     <li *ngFor="let media of mediaList">
-      <div class="title-container" [ngClass]="{ hovered: media.isHovered }">
+      <div
+        class="title-list-container"
+        [ngClass]="{ hovered: media.isHovered }"
+      >
         <div>
           <p class="title" [style.border-bottom-color]="media.hoverColor">
             {{ media.title }}
@@ -23,7 +49,7 @@
             id="modifier"
             (mouseover)="toggleHover(media, true, '#49c7d8')"
             (mouseout)="toggleHover(media, false, '')"
-            (click)="modifier(media.id)"
+            (click)="modifier(media.id); closeToast()"
           >
             Modifier
           </button>
@@ -31,7 +57,7 @@
             id="supprimer"
             (mouseover)="toggleHover(media, true, '#b5236d')"
             (mouseout)="toggleHover(media, false, '')"
-            (click)="supprimer(media.id)"
+            (click)="supprimer(media.id); closeToast()"
           >
             Supprimer
           </button>
@@ -45,12 +71,18 @@
   <div class="all-card-container">
     <div *ngFor="let card of cardData" class="card-container">
       <h2>{{ card.title }}</h2>
-      <img [src]="card.imageUrl" alt="{{ card.title }}" />
+      <img
+        [src]="card.imageUrl"
+        alt="{{ card.title }}"
+        (click)="showGuid(card.guid); closeToast()"
+      />
       <!-- <p>{{ card.description }}</p> -->
       <!-- <p>Date de sortie : {{ card.releaseDate }}</p> -->
       <div class="button">
-        <button (click)="showGuid(card.guid)">+ d'infos</button>
-        <button>Ajouter</button>
+        <button (click)="showGuid(card.guid); closeToast()">+ d'infos</button>
+        <button (click)="pushMedia(card, platformId); closeToast()">
+          Ajouter
+        </button>
       </div>
     </div>
   </div>

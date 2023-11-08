@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService, ActiveToast } from 'ngx-toastr';
 import { GetplatformsService } from 'src/app/services/getplatforms.service';
 import { MediaService } from 'src/app/services/mediaservice.service';
 import { ToastCustomComponent } from 'src/app/components/toast-custom/toast-custom.component';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-platformdetail',
@@ -12,6 +15,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./platformdetail.component.css'],
 })
 export class PlatformdetailComponent implements OnInit {
+  h1Title: string = '';
   platform: any;
   platformId!: number;
   mediaTitle: string = '';
@@ -20,13 +24,18 @@ export class PlatformdetailComponent implements OnInit {
   showAsCard: boolean = false;
   responseData!: any;
   cardData: any[] = [];
+  private searchTerms = new Subject<string>();
+  currentToast: ActiveToast<any> | null = null;
+  toastId!: number;
+  wichApi: string = 'local';
 
   constructor(
     private route: ActivatedRoute,
     private platformService: GetplatformsService,
     private mediaService: MediaService,
     private toast: ToastrService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -36,7 +45,27 @@ export class PlatformdetailComponent implements OnInit {
     if (id !== null) {
       this.platformService.getPlatform(Number(id)).subscribe((platform) => {
         this.platform = platform;
+        // console.log(this.platform);
+        this.h1Title = `La collection ${
+          this.platform ? this.platform.name : ''
+        }`;
       });
+    }
+    if (this.wichApi === 'local') {
+      this.searchTerms
+        .pipe(
+          // Attends un peu avant d'émettre une nouvelle valeur
+          debounceTime(300),
+
+          // Pour chaque terme de recherche, effectue une recherche
+          switchMap((term: string) =>
+            this.mediaService.searchMediaByTitle(term, this.platform.id)
+          )
+        )
+        .subscribe((response) => {
+          // Traite la réponse ici
+          this.handleSearchResponse(response);
+        });
     }
 
     // this.mediaService
@@ -71,315 +100,634 @@ export class PlatformdetailComponent implements OnInit {
     media.isHovered = value;
     media.hoverColor = color;
   }
-
-  onSearch(searchText: string) {
-    if (!searchText) {
-      console.warn('Le texte de recherche est vide ou non défini.');
-      return;
-    }
-    // Désinfection du champ de recherche
-    const sanitizedSearchText = searchText.replace(/[^a-zA-Z0-9 ]/g, '');
-    const platformId = this.platform.id;
-    console.log('input desinfecté ' + sanitizedSearchText);
-    this.mediaService
-      .searchMediaByTitle(sanitizedSearchText, platformId)
-      .subscribe((response) => {
-        if (response.source === 'local') {
-          this.mediaList = response.data;
-          this.showAsCard = false;
-          this.mediaList = [];
-        } else if (response.source === 'giantbomb') {
-          this.showAsCard = true;
-          this.responseData = response.data;
-          console.log('ma data cree ' + JSON.stringify(this.responseData));
-          if (platformId === 17) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'Nintendo Switch'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 4) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'PlayStation'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 5) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'PlayStation 2'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 6) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'PlayStation 3'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 7) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'PlayStation 4'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 8) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'PlayStation 5'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 9) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'PlayStation Portable'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 10) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'PlayStation Vita'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 11) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'Nintendo Entertainment System'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 12) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'Super Nintendo Entertainment System'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 13) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'Nintendo 64'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 14) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'GameCube'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 15) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Wii'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 16) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Wii U'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 18) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Game Boy'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 19) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'Game Boy Advance'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 20) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'Nintendo DS'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 21) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'Nintendo 3DS'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 22) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Xbox'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 23) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Xbox 360'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 24) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Xbox One'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 25) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'Xbox Series X|S'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 26) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) =>
-                    platform.name === 'Sega Master System'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 27) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Genesis'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 28) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Sega CD'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 29) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Sega 32X'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 30) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Saturn'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 31) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Dreamcast'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 32) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Game Gear'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 33) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Atari Lynx'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          } else if (platformId === 34) {
-            const filteredGames = this.responseData.results.filter(
-              (game: { platforms: { name: string }[] }) =>
-                game.platforms?.some(
-                  (platform: { name: string }) => platform.name === 'Jaguar'
-                )
-            );
-            this.cardData = this.transformGamesToCardData(filteredGames);
-          }
-        } else if (response.source === 'tmbd') {
-          // this.mediaList = [];
-          this.showAsCard = true;
-          this.responseData = response.data;
-          console.log(this.responseData);
-          // Trie les films par date de sortie, du plus récent au plus ancien
-          this.responseData.results.sort(
-            (
-              a: { release_date: string | number | Date },
-              b: { release_date: string | number | Date }
-            ) => {
-              const dateA = new Date(a.release_date);
-              const dateB = new Date(b.release_date);
-              return dateB.getTime() - dateA.getTime();
-            }
-          );
-          this.cardData = this.transformMoviesToCardData(
-            this.responseData.results
-          );
-        }
-        console.log('la data des cartes ' + JSON.stringify(this.cardData));
-      });
+  onSearch(term: string): void {
+    this.searchTerms.next(term);
   }
+  private handleSearchResponse(response: any): void {
+    if (response.source === 'local') {
+      // this.mediaList = response.data;
+      this.showAsCard = false;
+    } else if (response.source === 'giantbomb') {
+      this.wichApi = 'giantbomb';
+      this.h1Title = `Introuvable dans cette collection`;
+      if (!this.currentToast) {
+        this.currentToast = this.toast.info(
+          `Choisissez un titre à ajouter à la collection ${this.platform.name}`,
+          'Information',
+          {
+            closeButton: true, // Permet d'afficher un bouton pour fermer le toast
+            timeOut: 0, // Désactive le délai avant la fermeture automatique
+            extendedTimeOut: 0, // Désactive le délai supplémentaire après le survol
+            tapToDismiss: false, // Désactive la fermeture du toast au clic sur celui-ci
+          }
+        );
+      }
+
+      this.showAsCard = true;
+      this.responseData = response.data;
+      console.log('ma data cree ' + JSON.stringify(this.responseData));
+      if (this.platformId === 17) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) =>
+                platform.name === 'Nintendo Switch'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 4) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'PlayStation'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 5) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'PlayStation 2'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 6) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'PlayStation 3'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 7) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'PlayStation 4'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 8) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'PlayStation 5'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 9) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) =>
+                platform.name === 'PlayStation Portable'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 10) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) =>
+                platform.name === 'PlayStation Vita'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 11) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) =>
+                platform.name === 'Nintendo Entertainment System'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 12) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) =>
+                platform.name === 'Super Nintendo Entertainment System'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 13) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Nintendo 64'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 14) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'GameCube'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 15) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Wii'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 16) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Wii U'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 18) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Game Boy'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 19) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) =>
+                platform.name === 'Game Boy Advance'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 20) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Nintendo DS'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 21) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Nintendo 3DS'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 22) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Xbox'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 23) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Xbox 360'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 24) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Xbox One'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 25) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) =>
+                platform.name === 'Xbox Series X|S'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 26) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) =>
+                platform.name === 'Sega Master System'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 27) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Genesis'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 28) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Sega CD'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 29) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Sega 32X'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 30) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Saturn'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 31) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Dreamcast'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 32) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Game Gear'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 33) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Atari Lynx'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      } else if (this.platformId === 34) {
+        const filteredGames = this.responseData.results.filter(
+          (game: { platforms: { name: string }[] }) =>
+            game.platforms?.some(
+              (platform: { name: string }) => platform.name === 'Jaguar'
+            )
+        );
+        this.cardData = this.transformGamesToCardData(filteredGames);
+      }
+    } else if (response.source === 'tmbd') {
+      this.wichApi = 'tmdb';
+      this.h1Title = `Introuvable dans cette collection`;
+      if (!this.currentToast) {
+        this.currentToast = this.toast.info(
+          `Choisissez un titre à ajouter à la collection ${this.platform.name}`,
+          'Information',
+          {
+            closeButton: false, // Permet d'afficher un bouton pour fermer le toast
+            timeOut: 0, // Désactive le délai avant la fermeture automatique
+            extendedTimeOut: 0, // Désactive le délai supplémentaire après le survol
+            tapToDismiss: true, // Désactive la fermeture du toast au clic sur celui-ci
+          }
+        );
+      }
+      this.toastId = this.currentToast.toastId;
+      console.log("l'id du toast est ", this.toastId);
+      // this.mediaList = [];
+      this.showAsCard = true;
+      this.responseData = response.data;
+      console.log(this.responseData);
+      // Trie les films par date de sortie, du plus récent au plus ancien
+      this.responseData.results.sort(
+        (
+          a: { release_date: string | number | Date },
+          b: { release_date: string | number | Date }
+        ) => {
+          const dateA = new Date(a.release_date);
+          const dateB = new Date(b.release_date);
+          return dateB.getTime() - dateA.getTime();
+        }
+      );
+      this.cardData = this.transformMoviesToCardData(this.responseData.results);
+    }
+  }
+
+  // onSearch(searchText: string) {
+  //   if (!searchText) {
+  //     console.warn('Le texte de recherche est vide ou non défini.');
+  //     return;
+  //   }
+  //   this.searchTerms.next(searchText);
+  //   // Désinfection du champ de recherche
+  //   const sanitizedSearchText = searchText.replace(/[^a-zA-Z0-9 ]/g, '');
+  //   const platformId = this.platform.id;
+  //   console.log('input desinfecté ' + sanitizedSearchText);
+  //   this.mediaService
+  //     .searchMediaByTitle(sanitizedSearchText, platformId)
+  //     .subscribe((response) => {
+  //       if (response.source === 'local') {
+  //         this.mediaList = response.data;
+  //         this.showAsCard = false;
+  //         this.mediaList = [];
+  //       } else if (response.source === 'giantbomb') {
+  //         this.showAsCard = true;
+  //         this.responseData = response.data;
+  //         console.log('ma data cree ' + JSON.stringify(this.responseData));
+  //         if (platformId === 17) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'Nintendo Switch'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 4) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'PlayStation'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 5) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'PlayStation 2'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 6) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'PlayStation 3'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 7) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'PlayStation 4'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 8) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'PlayStation 5'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 9) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'PlayStation Portable'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 10) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'PlayStation Vita'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 11) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'Nintendo Entertainment System'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 12) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'Super Nintendo Entertainment System'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 13) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'Nintendo 64'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 14) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'GameCube'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 15) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Wii'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 16) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Wii U'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 18) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Game Boy'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 19) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'Game Boy Advance'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 20) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'Nintendo DS'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 21) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'Nintendo 3DS'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 22) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Xbox'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 23) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Xbox 360'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 24) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Xbox One'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 25) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'Xbox Series X|S'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 26) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) =>
+  //                   platform.name === 'Sega Master System'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 27) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Genesis'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 28) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Sega CD'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 29) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Sega 32X'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 30) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Saturn'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 31) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Dreamcast'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 32) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Game Gear'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 33) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Atari Lynx'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         } else if (platformId === 34) {
+  //           const filteredGames = this.responseData.results.filter(
+  //             (game: { platforms: { name: string }[] }) =>
+  //               game.platforms?.some(
+  //                 (platform: { name: string }) => platform.name === 'Jaguar'
+  //               )
+  //           );
+  //           this.cardData = this.transformGamesToCardData(filteredGames);
+  //         }
+  //       } else if (response.source === 'tmbd') {
+  //         // this.mediaList = [];
+  //         this.showAsCard = true;
+  //         this.responseData = response.data;
+  //         console.log(this.responseData);
+  //         // Trie les films par date de sortie, du plus récent au plus ancien
+  //         this.responseData.results.sort(
+  //           (
+  //             a: { release_date: string | number | Date },
+  //             b: { release_date: string | number | Date }
+  //           ) => {
+  //             const dateA = new Date(a.release_date);
+  //             const dateB = new Date(b.release_date);
+  //             return dateB.getTime() - dateA.getTime();
+  //           }
+  //         );
+  //         this.cardData = this.transformMoviesToCardData(
+  //           this.responseData.results
+  //         );
+  //       }
+  //       console.log('la data des cartes ' + JSON.stringify(this.cardData));
+  //     });
+  // }
 
   handleMediaAdded(event: { status: string; title: string }) {
     if (event.status === 'ok') {
@@ -487,9 +835,18 @@ export class PlatformdetailComponent implements OnInit {
   supprimer(mediaId: string) {
     this.mediaService.removeMediaRelation(+mediaId).subscribe((response) => {
       console.log(response),
-        (err: any) => {
-          console.log(err);
-        };
+        this.toast.success('Media supprime avec succes.', 'Succes', {
+          progressBar: true,
+          timeOut: 3000,
+          toastClass: 'my-toast-class',
+        });
+      (err: any) => {
+        console.log(err);
+        this.toast.error('Erreur lors de la suppression du média.', 'Erreur', {
+          progressBar: true,
+          timeOut: 3000,
+        });
+      };
       this.loadMediaList(this.platform.id);
       // Mettre à jour la liste des médias ou tout autre traitement nécessaire.
     });
@@ -503,6 +860,82 @@ export class PlatformdetailComponent implements OnInit {
       this.router.navigate(['/gameInfo'], { queryParams: { guid: guid } });
     } else {
       this.router.navigate(['/movieInfo', guid]);
+    }
+  }
+  // pushMedia(cardData: any, platformId: number) {
+  //   this.mediaService.searchMediaByTitle(cardData.title, platformId).subscribe({
+  //   next: (response) => {
+  //     if (response.source === 'local') {
+  //       // Le titre est déjà dans la base de données
+  //       this.toast.info(`Le média "${cardData.title}" a déjà été ajouté.`, 'Information', {
+  //         progressBar: true,
+  //         timeOut: 3000,
+  //       });
+  //     } else {
+  //   let requestBody;
+  //   // console.log(cardData);
+
+  //   const year = cardData.releaseDate.split('-')[0];
+  //   console.log(typeof +year);
+  //   requestBody = {
+  //     title: cardData.title,
+  //     yearofrelease: +year,
+  //     idapi: cardData.guid,
+  //   };
+  //   this.mediaService.addMediaToUserAndPlatform(platformId, requestBody);
+
+  //   // console.log(requestBody);
+  // }
+  //   });}
+  pushMedia(cardData: any, platformId: number) {
+    this.mediaService.searchMediaByTitle(cardData.title, platformId).subscribe({
+      next: (response) => {
+        if (response.source === 'local') {
+          // Le titre est déjà dans la base de données
+          this.toast.info(
+            `Le média "${cardData.title}" est deja dans ta collection`,
+            'Information',
+            {
+              progressBar: true,
+              timeOut: 3000,
+              toastClass: 'my-toast-class',
+            }
+          );
+        } else {
+          // Si le titre n'est pas trouvé dans la base de données, procéder à l'ajout
+          let requestBody;
+          const year = cardData.releaseDate.split('-')[0];
+          const title = this.replaceSpecialChars(cardData.title.toLowerCase());
+          requestBody = {
+            title: title,
+            yearofrelease: +year,
+            idapi: cardData.guid,
+          };
+          this.mediaService.addMediaToUserAndPlatform(platformId, requestBody);
+        }
+      },
+      error: (err) => {
+        console.error('Erreur lors de la recherche du média:', err);
+        // Gérer les erreurs de recherche ici
+      },
+    });
+  }
+  goBack(): void {
+    this.location.back();
+  }
+  replaceSpecialChars(str: string): string {
+    return str
+      .replace(/é|è|ê|ë/g, 'e')
+      .replace(/à|â|ä/g, 'a')
+      .replace(/ç/g, 'c')
+      .replace(/ô|ö/g, 'o')
+      .replace(/î|ï/g, 'i')
+      .replace(/û|ü/g, 'u');
+  }
+  closeToast() {
+    if (this.currentToast) {
+      console.log(this.currentToast);
+      this.toast.clear(this.currentToast.toastId);
     }
   }
 }

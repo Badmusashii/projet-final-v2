@@ -3,7 +3,28 @@
 </div>
 
 <div *ngIf="!isLoading && movieDetails">
-  <h1>{{ replaceSpecialChars(movieDetails.title) }}</h1>
+  <!-- <h1>{{ replaceSpecialChars(movieDetails.title) }}</h1> -->
+  <div class="title-container">
+    <div class="image-container">
+      <img
+        id="back"
+        src="/assets/icon/back.png"
+        alt="Retour"
+        class="back-icon"
+      />
+      <img
+        id=""
+        back-pink
+        src="/assets/icon/back-pink.png"
+        alt="Retour Hover"
+        class="back-icon hover"
+        (click)="goBack()"
+      />
+    </div>
+
+    <h1>{{ replaceSpecialChars(movieDetails.title) }}</h1>
+  </div>
+
   <h2 *ngIf="movieDetails.tagline !== ''">
     {{ replaceSpecialChars(movieDetails.tagline) }}
   </h2>
@@ -40,7 +61,9 @@
       </div>
     </div>
   </div>
-
+  <div class="buttonpush">
+    <button>On l'ajoute a la collection</button>
+  </div>
   <div class="info-section">
     <h2>Description</h2>
     <p>{{ replaceSpecialChars(movieDetails.overview) }}</p>
@@ -49,7 +72,7 @@
     <ul>
       <li>
         <strong>Date de sortie :</strong>
-        {{ movieDetails.release_date }}
+        {{ movieDetails.release_date | date : "dd MMMM yyyy" }}
       </li>
       <!-- <li>
         <strong>Note moyenne :</strong>

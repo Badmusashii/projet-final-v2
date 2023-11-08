@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MediaWithPlatform } from '../components/models/myApiResponse';
 import { MovieDetails } from '../components/models/movie-detail';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MediaService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toast: ToastrService) {}
   addMediaToUserAndPlatform(platformId: number, mediaData: any): void {
     console.log("envoyé de l'input" + JSON.stringify(mediaData));
     const apiUrl = `https://localhost:8080/api/platforms/${platformId}/medias`; // Remplacer par l'URL de votre API
@@ -30,10 +31,21 @@ export class MediaService {
       next: (response: any) => {
         // Gérez la réponse du serveur ici
         console.log('Média ajouté:', response);
+        this.toast.success(
+          `Le média "${mediaData.title}" a été ajouté avec succès!`,
+          'Succès',
+          {
+            progressBar: true,
+            timeOut: 3000,
+            tapToDismiss: true,
+            progressAnimation: 'increasing',
+          }
+        );
       },
       error: (err) => {
         // Gérez les erreurs ici
         console.error("Erreur lors de l'ajout du média:", err);
+        this.toast.error('Erreur lors de l’ajout du média.');
       },
     });
   }

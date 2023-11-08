@@ -4,10 +4,48 @@ p {
 h1 {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
+  /* margin-left: 10rem; */
   color: #49c7d8;
   text-align: center;
   font-family: "CIND";
   font-size: 2rem;
+  /* text-align: center; */
+  /* padding-left: 25rem; */
+  /* width: 100%; */
+}
+.title-not-found {
+  color: #b5236d;
+}
+
+.title-container {
+  /* border: 1px solid red; */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.image-container {
+  position: absolute;
+  height: 2.8rem;
+  width: auto;
+  left: -0.1rem;
+  cursor: pointer;
+}
+
+.back-icon {
+  position: absolute;
+  left: 0.6rem;
+  height: 2.8rem;
+  width: auto;
+  transition: opacity 0.5s ease;
+}
+.back-icon.hover {
+  opacity: 0;
+}
+
+.image-container:hover .back-icon.hover {
+  opacity: 1;
 }
 .search-container {
   display: flex;
@@ -23,7 +61,7 @@ h1 {
   list-style: none;
   margin-bottom: 0.5rem;
 }
-.title-container {
+.title-list-container {
   display: flex;
   list-style: none;
   font-family: "CIND";
@@ -43,6 +81,7 @@ h1 {
 }
 button {
   width: 8rem;
+  cursor: pointer;
 }
 
 #supprimer:hover,

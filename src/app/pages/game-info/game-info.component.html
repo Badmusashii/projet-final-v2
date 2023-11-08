@@ -1,8 +1,32 @@
-<div *ngIf="isLoading">
-  <p>Chargement en cours...</p>
+<div *ngIf="isLoading" class="isLoading">
+  <p>
+    Chargement en cours<span class="dot dot1">.</span
+    ><span class="dot dot2">.</span><span class="dot dot3">.</span>
+  </p>
+  <div class="loader"></div>
 </div>
 <div *ngIf="!isLoading && gameDetails">
-  <h1>{{ gameDetails.name }}</h1>
+  <!-- <h1>{{ gameDetails.name }}</h1> -->
+  <div class="title-container">
+    <div class="image-container">
+      <img
+        id="back"
+        src="/assets/icon/back.png"
+        alt="Retour"
+        class="back-icon"
+      />
+      <img
+        id=""
+        back-pink
+        src="/assets/icon/back-pink.png"
+        alt="Retour Hover"
+        class="back-icon hover"
+        (click)="goBack()"
+      />
+    </div>
+
+    <h1>{{ gameDetails.name }}</h1>
+  </div>
   <div class="container">
     <div class="left-side">
       <img [src]="gameDetails.image.medium_url" alt="{{ gameDetails.name }}" />
@@ -13,7 +37,9 @@
       </div>
     </div>
   </div>
-
+  <div class="buttonpush">
+    <button>On l'ajoute a la collection</button>
+  </div>
   <div class="info-section">
     <h2>Description</h2>
     <p [innerHTML]="getSafeHtml(gameDetails.description)"></p>

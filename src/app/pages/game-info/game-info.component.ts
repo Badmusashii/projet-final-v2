@@ -4,6 +4,7 @@ import { MediaService } from 'src/app/services/mediaservice.service';
 import { GameInfo } from 'src/app/components/models/game-info';
 import { gameInfoApiResponse } from 'src/app/components/models/game-info-api-response';
 import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-game-info',
@@ -18,7 +19,8 @@ export class GameInfoComponent implements OnInit {
   constructor(
     private mediaService: MediaService,
     private activatedRoute: ActivatedRoute,
-    private sanitazer: DomSanitizer
+    private sanitazer: DomSanitizer,
+    private location: Location
   ) {}
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
@@ -62,5 +64,8 @@ export class GameInfoComponent implements OnInit {
   }
   getSafeHtml(html: string): SafeHtml {
     return this.sanitazer.bypassSecurityTrustHtml(html);
+  }
+  goBack(): void {
+    this.location.back();
   }
 }

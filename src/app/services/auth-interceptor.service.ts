@@ -19,16 +19,7 @@ import { AuthService } from './user-service.service';
   providedIn: 'root',
 })
 export class AuthInterceptorService implements HttpInterceptor {
-  // BehavoirSubject qui gerera l'etat de connection de mon User
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  public isAuthenticated = this.isAuthenticatedSubject.asObservable();
-  // ------------------------------------------------------------------
-
-  constructor(private authService: AuthService, private http: HttpClient) {}
-
-  checkAuthentication(): Observable<any> {
-    return this.http.get('https://localhost:8080/api/user/validate');
-  }
+  constructor(private authService: AuthService) {}
 
   // intercept(
   //   req: HttpRequest<any>,
@@ -80,6 +71,7 @@ export class AuthInterceptorService implements HttpInterceptor {
     }
     return request;
   }
+
   private handle401Error(
     request: HttpRequest<any>,
     next: HttpHandler

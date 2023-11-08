@@ -8,6 +8,8 @@ import {
 } from '@angular/platform-browser';
 import { AnimationSyncService } from 'src/app/services/anim-syncro.service';
 import { HostListener } from '@angular/core';
+import { Location } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-movie-info',
@@ -28,7 +30,9 @@ export class MovieInfoComponent implements OnInit {
     private route: ActivatedRoute,
     private mediaService: MediaService,
     private sanitizer: DomSanitizer,
-    private animSyncro: AnimationSyncService
+    private animSyncro: AnimationSyncService,
+    private location: Location,
+    private toast: ToastrService
   ) {
     // this.someHtmlContent =
     //   this.sanitizer.bypassSecurityTrustHtml(`<p>Loading...</p>`);
@@ -167,5 +171,41 @@ export class MovieInfoComponent implements OnInit {
       .replace(/ô|ö/g, 'o')
       .replace(/î|ï/g, 'i')
       .replace(/û|ü/g, 'u');
+  }
+  goBack(): void {
+    this.location.back();
+  }
+  pushMedia(cardData: any, platformId: number) {
+    this.mediaService.searchMediaByTitle(cardData.title, platformId).subscribe({
+      next: (response) => {
+        if (response.source === 'local') {
+          // Le titre est déjà dans la base de données
+          this.toast.info(
+            `Le média "${cardData.title}" est deja dans ta collection`,
+            'Information',
+            {
+              progressBar: true,
+              timeOut: 3000,
+              toastClass: 'my-toast-class',
+            }
+          );
+        } else {
+          // Si le titre n'est pas trouvé dans la base de données, procéder à l'ajout
+          let requestBody;
+          const year = cardData.releaseDate.split('-')[0];
+          const title = this.replaceSpecialChars(cardData.title.toLowerCase());
+          requestBody = {
+            title: title,
+            yearofrelease: +year,
+            idapi: cardData.guid,
+          };
+          this.mediaService.addMediaToUserAndPlatform(platformId, requestBody);
+        }
+      },
+      error: (err) => {
+        console.error('Erreur lors de la recherche du média:', err);
+        // Gérer les erreurs de recherche ici
+      },
+    });
   }
 }

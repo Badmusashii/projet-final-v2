@@ -30,6 +30,11 @@ import { AfficheComponent } from './components/affiche/affiche.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
 import { APP_INITIALIZER } from '@angular/core';
 import { AuthServiceService } from './services/auth-service.service';
+import { LOCALE_ID } from '@angular/core';
+import localeFr from '@angular/common/locales/fr';
+
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeFr);
 
 function initAuth(authService: AuthServiceService) {
   return () => authService.checkInitialAuthentication();
@@ -81,6 +86,7 @@ function initAuth(authService: AuthServiceService) {
       deps: [AuthServiceService],
       multi: true,
     },
+    [{ provide: LOCALE_ID, useValue: 'fr-FR' }],
   ],
 
   bootstrap: [AppComponent],

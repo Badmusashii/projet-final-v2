@@ -96,4 +96,12 @@ export class MediaService {
       `https://localhost:8080/api/media/movie-videos/${id}`
     );
   }
+  getRandomTitle(type: string): Observable<any> {
+    const body = { type: type }; // Crée un objet avec la propriété 'type'
+    return this.http.post<any>(
+      'https://localhost:8080/api/media/random',
+      body,
+      { withCredentials: true }
+    );
+  }
 }

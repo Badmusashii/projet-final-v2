@@ -32,8 +32,11 @@ import { APP_INITIALIZER } from '@angular/core';
 import { AuthServiceService } from './services/auth-service.service';
 import { LOCALE_ID } from '@angular/core';
 import localeFr from '@angular/common/locales/fr';
+import { CookieService } from 'ngx-cookie-service/lib/cookie.service';
 
 import { registerLocaleData } from '@angular/common';
+import { WhatComponent } from './pages/what/what.component';
+import { AccountupdateComponent } from './pages/accountupdate/accountupdate.component';
 registerLocaleData(localeFr);
 
 function initAuth(authService: AuthServiceService) {
@@ -62,6 +65,8 @@ function initAuth(authService: AuthServiceService) {
     MovieInfoComponent,
     AfficheComponent,
     NotfoundComponent,
+    WhatComponent,
+    AccountupdateComponent,
   ],
   imports: [
     BrowserModule,

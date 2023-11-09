@@ -10,7 +10,8 @@ body {
   background-color: #04043c;
 }
 body.default-body.unauthenticated {
-  background-color: #808080;
+  /* background-color: #808080; */
+  background-color: #04043c;
   transition: background-color 2.5s;
 }
 

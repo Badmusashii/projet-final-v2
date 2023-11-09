@@ -13,11 +13,11 @@ import { Token } from '@angular/compiler';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-inscription',
-  templateUrl: './inscription.component.html',
-  styleUrls: ['./inscription.component.css'],
+  selector: 'app-accountupdate',
+  templateUrl: './accountupdate.component.html',
+  styleUrls: ['./accountupdate.component.css'],
 })
-export class InscriptionComponent implements OnInit {
+export class AccountupdateComponent implements OnInit {
   inscriptionForm!: FormGroup;
   uniqueToken!: string;
 
@@ -35,8 +35,9 @@ export class InscriptionComponent implements OnInit {
           '',
           [Validators.required, Validators.email, Validators.maxLength(255)],
         ],
-        password: ['', [Validators.required, Validators.maxLength(255)]],
-        confirmPassword: ['', [Validators.required]],
+        newPassword: ['', [Validators.required, Validators.maxLength(255)]],
+        oldPassword: ['', [Validators.required, Validators.maxLength(255)]],
+        confirmNewPassword: ['', [Validators.required]],
       },
       { validators: this.passwordMatchValidator }
     );
@@ -141,11 +142,6 @@ export class InscriptionComponent implements OnInit {
   async onSubmit(): Promise<void> {
     if (this.inscriptionForm.valid) {
       const user = this.inscriptionForm.value;
-      user.username = user.username.toLowerCase();
-      user.name = user.name.toLowerCase();
-      user.surname = user.surname.toLowerCase();
-      user.email = user.email.toLowerCase();
-
       this.http
         .post<{ token: string }>(
           'https://localhost:8080/api/auth/confirmation',
@@ -178,29 +174,9 @@ export class InscriptionComponent implements OnInit {
                   console.log(error.text);
                 }
               );
-            this.toastr.success(
-              'Un email de confirmation vous a été envoyé. Veuillez vérifier votre boîte de réception.',
-              'Inscription réussie!',
-              {
-                timeOut: 15000,
-                closeButton: true,
-                progressBar: true,
-                tapToDismiss: false, // Empêche la fermeture du toast en cliquant dessus
-              }
-            );
           },
           (err) => {
             console.log("Erreur lors de l'ajout de l'utilisateur");
-            this.toastr.error(
-              "Une erreur s'est produite lors de votre inscription. Veuillez réessayer.",
-              "Erreur d'inscription",
-              {
-                timeOut: 5000, // 5 secondes
-                closeButton: true,
-                progressBar: true,
-                tapToDismiss: true,
-              }
-            );
           }
         );
     }

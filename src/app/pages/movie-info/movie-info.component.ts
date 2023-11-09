@@ -118,16 +118,6 @@ export class MovieInfoComponent implements OnInit {
     const windowWidth = window.innerWidth;
     let iframeWidth: number, iframeHeight: number;
 
-    // if (windowWidth < 350) {
-    //   iframeWidth = 300;
-    //   iframeHeight = 200;
-    // } else if (windowWidth < 450) {
-    //   iframeWidth = 20;
-    //   iframeHeight = 250;
-    // } else {
-    //   iframeWidth = 500;
-    //   iframeHeight = 300;
-    // }
     if (windowWidth >= 1100) {
       iframeWidth = 500;
       iframeHeight = 300;

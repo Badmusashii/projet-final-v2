@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { ToggleService } from 'src/app/services/toggleservice.service';
 import { AnimationSyncService } from 'src/app/services/anim-syncro.service';
 import { AuthServiceService } from 'src/app/services/auth-service.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-navbar',
@@ -19,7 +20,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   constructor(
     private toggleService: ToggleService,
     private animSyncro: AnimationSyncService,
-    private authService: AuthServiceService
+    private authService: AuthServiceService,
+    private cookieService: CookieService
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +65,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
   toggleSideMenu() {
     this.showSideMenu = !this.showSideMenu;
+  }
+  deconnexion() {
+    console.log('log logf log');
+    this.authService.logout().subscribe(() => {
+      // Actions après la déconnexion, par exemple rediriger vers la page de connexion
+    });
+    localStorage.removeItem('token'); // Supprime le token du localStorage
+    this.cookieService.delete('refreshToken', '/'); // Supprime le refreshToken des cookies
+
+    // Rediriger l'utilisateur vers la page de connexion ou effectuer d'autres actions nécessaires après la déconnexion
   }
   // ngOnDestroy(): void {}
 }

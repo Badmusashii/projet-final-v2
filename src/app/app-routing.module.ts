@@ -9,6 +9,8 @@ import { IntermediareComponent } from './pages/intermediare/intermediare.compone
 import { GameInfoComponent } from './pages/game-info/game-info.component';
 import { MovieInfoComponent } from './pages/movie-info/movie-info.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
+import { AccountupdateComponent } from './pages/accountupdate/accountupdate.component';
+import { WhatComponent } from './pages/what/what.component';
 
 const routes: Routes = [
   { path: '', component: CardselectComponent },
@@ -16,6 +18,8 @@ const routes: Routes = [
   { path: 'cardselect', component: CardselectComponent },
   { path: 'platform/:id', component: PlatformdetailComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'update', component: AccountupdateComponent },
+  { path: 'what', component: WhatComponent },
   { path: 'inscription', component: InscriptionComponent },
   { path: 'intermediaire', component: IntermediareComponent },
   { path: 'gameInfo', component: GameInfoComponent },

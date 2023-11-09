@@ -1,0 +1,14 @@
+<h1>On fait quoi aujourd'hui ?</h1>
+<div class="container">
+  <div class="movie" (click)="getRandomMedia('film')">
+    <p>un film</p>
+    <img class="default-icon" src="/assets/icon/movie.png" alt="" />
+    <img class="hover-icon" src="/assets/icon/movie-pink.png" alt="" />
+  </div>
+  <div class="jeu" (click)="getRandomMedia('jeux')">
+    <p>un jeu</p>
+    <img class="default-icon" src="/assets/icon/manette.png" alt="" />
+    <img class="hover-icon" src="/assets/icon/manette-pink.png" alt="" />
+  </div>
+</div>
+<span>{{ randomMediaTitle }}</span>

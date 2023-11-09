@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     if (this.loginForm.valid) {
       const loginData = this.loginForm.value;
+      loginData.username = loginData.username.toLowerCase();
       this.http
         .post('https://localhost:8080/api/auth/login', loginData, {
           withCredentials: true,
@@ -54,7 +55,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('token', res.accessToken);
             this.authService.updateAuthenticationStatus(true);
             this.toggleService.fetchAndSetTogglesForUser();
-            this.router.navigate(['/settings']);
+            this.router.navigate(['/cardselect']);
             console.log('Réponse du serveur:', res);
           },
           error: (err) => {

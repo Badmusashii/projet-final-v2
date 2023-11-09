@@ -1,0 +1,63 @@
+* {
+  font-family: "CIND" !important;
+  color: #49c7d8;
+}
+h1 {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 1rem;
+  /* border: 2px solid red; */
+}
+.movie,
+.jeu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.movie p,
+.jeu p {
+  margin-bottom: 1rem;
+}
+.movie img,
+.jeu img {
+  cursor: pointer;
+}
+.movie,
+.jeu {
+  position: relative;
+  cursor: pointer;
+}
+
+.movie img,
+.jeu img {
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  width: 100%;
+  transition: opacity 0.5s ease;
+}
+
+.movie .default-icon,
+.jeu .default-icon {
+  opacity: 1;
+}
+
+.movie .hover-icon,
+.jeu .hover-icon {
+  opacity: 0;
+}
+
+.movie:hover .default-icon,
+.jeu:hover .default-icon {
+  opacity: 0;
+}
+
+.movie:hover .hover-icon,
+.jeu:hover .hover-icon {
+  opacity: 1;
+}

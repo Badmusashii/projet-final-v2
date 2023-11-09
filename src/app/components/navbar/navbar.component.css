@@ -17,6 +17,7 @@
   /* animation: breathe 5s infinite; */
   animation: none;
   transition: background-color 2.5s ease;
+  /* position: fixed; */
 }
 .side-menu {
   position: fixed;
@@ -27,8 +28,10 @@
   background-color: #333; /* Couleur de fond du menu */
   overflow-x: hidden; /* Cache le débordement horizontal */
   transition: left 0.5s ease-in-out; /* Transition pour l'effet coulissant */
+  z-index: 1;
   /* Ajoutez d'autres styles selon vos besoins */
 }
+
 .side-menu.show {
   left: 0; /* Fait apparaître le menu */
 }
@@ -41,8 +44,23 @@
   transform: rotate(180deg); /* Rotation de 180 degrés */
   z-index: 5;
 }
+.hidden {
+  opacity: 0;
+}
+#menuIcon {
+  z-index: 0;
+}
 img {
   height: 3rem;
+  z-index: 2;
+}
+.hover-effect {
+  opacity: 0; /* Comme dans l'état de survol */
+}
+
+/* Affiche l'image de survol lorsque le menu est ouvert */
+.show-hover {
+  opacity: 1;
 }
 .icon-container {
   position: relative;
@@ -60,7 +78,7 @@ img {
   width: 100%;
 }
 .icon-container .default-icon {
-  opacity: 1; /* Assurez-vous que l'image est visible par défaut */
+  opacity: 1;
   transition: opacity 0.5s ease; /* Transition pour l'effet de fondu */
   z-index: 5;
 }
@@ -81,6 +99,7 @@ img {
   z-index: 5;
   opacity: 1;
 }
+
 .side-menu-container {
   margin-top: 5rem;
   display: flex;
@@ -90,6 +109,7 @@ img {
 }
 .side-menu-container p {
   margin: 1rem 0;
+  opacity: 0;
   cursor: pointer;
   color: #49c7d8;
   transition: 0.5s ease-in-out;
@@ -97,6 +117,54 @@ img {
 }
 .side-menu-container p:hover {
   color: #cc35c0;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToLeft {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+.side-menu.show .side-menu-container p {
+  animation: slideInFromLeft 0.5s ease-out forwards;
+}
+
+/* Ajoutez des délais différents pour chaque élément <p> */
+.side-menu.show .side-menu-container p:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.side-menu.show .side-menu-container p:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.side-menu.show .side-menu-container p:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.side-menu.show .side-menu-container p:nth-child(4) {
+  animation-delay: 0.8s;
+}
+.side-menu.show .side-menu-container p:nth-child(5) {
+  animation-delay: 1s;
+}
+
+/* Effet de sortie */
+.side-menu:not(.show) .side-menu-container p {
+  animation: slideOutToLeft 0.5s ease-out forwards;
 }
 .navbar.disconnected {
   background-color: #ffffff; /* Gris ou la couleur désirée pour l'état déconnecté */

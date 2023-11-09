@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +13,11 @@ export class AuthServiceService {
   authStatusChanged = new EventEmitter<boolean>();
   // public isAuthenticated = this.isAuthenticatedSubject.asObservable();
   // ------------------------------------------------------------------
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private cookieService: CookieService,
+    private route: Router
+  ) {
     // this.checkInitialAuthentication().then(() => {
     //   console.log('l/etat dautentification à été verifie');
     // });
@@ -81,9 +87,14 @@ export class AuthServiceService {
     this.isAuthenticatedSubject.next(isAuthenticated);
     this.authStatusChanged.emit(isAuthenticated);
   }
-  logout(): void {
-    localStorage.removeItem('token');
-    this.isAuthenticatedSubject.next(false);
-    this.authStatusChanged.emit(false);
+  logout(): Observable<any> {
+    return this.http.post('https://localhost:8080/api/auth/logout', {}).pipe(
+      tap(() => {
+        localStorage.removeItem('token');
+        this.isAuthenticatedSubject.next(false);
+        this.authStatusChanged.emit(false);
+        this.route.navigate(['/login']);
+      })
+    );
   }
 }

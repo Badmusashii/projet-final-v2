@@ -85,7 +85,14 @@ export class PlatformdetailComponent implements OnInit {
       .subscribe((mediaWithPlatforms) => {
         console.log('Données reçues:', mediaWithPlatforms);
 
-        this.mediaList = mediaWithPlatforms;
+        // this.mediaList = mediaWithPlatforms;
+        this.mediaList = mediaWithPlatforms.sort((a, b) => {
+          // Assurez-vous que les titres existent pour éviter les erreurs
+          if (a.title && b.title) {
+            return a.title.localeCompare(b.title);
+          }
+          return 0;
+        });
       });
   }
 
@@ -102,10 +109,12 @@ export class PlatformdetailComponent implements OnInit {
   }
   onSearch(term: string): void {
     this.searchTerms.next(term);
+    this.sortMediaList();
   }
   private handleSearchResponse(response: any): void {
     if (response.source === 'local') {
-      // this.mediaList = response.data;
+      this.mediaList = response.data;
+      this.sortMediaList();
       this.showAsCard = false;
     } else if (response.source === 'giantbomb') {
       this.wichApi = 'giantbomb';
@@ -937,5 +946,13 @@ export class PlatformdetailComponent implements OnInit {
       console.log(this.currentToast);
       this.toast.clear(this.currentToast.toastId);
     }
+  }
+  sortMediaList(): void {
+    this.mediaList = this.mediaList.sort((a, b) => {
+      if (a.title && b.title) {
+        return a.title.localeCompare(b.title);
+      }
+      return 0;
+    });
   }
 }

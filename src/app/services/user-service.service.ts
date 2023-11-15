@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { UserDg } from '../components/models/user-dg';
 
 @Injectable({
   providedIn: 'root',
@@ -61,5 +62,13 @@ export class AuthService {
           this.setAccessToken(response.accessToken);
         })
       );
+  }
+  getOne(): Observable<UserDg> {
+    return this.http.get<UserDg>(`${this.apiUrl}/userdg/user/find`);
+  }
+  updateProfile(updateDto: { [key: string]: any }): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/auth/update`, updateDto, {
+      withCredentials: true,
+    });
   }
 }

@@ -178,6 +178,12 @@ button {
   justify-content: space-around;
   margin: 0.2rem 0 0.4rem 0;
 }
+.floating-image {
+  position: fixed;
+  width: 170px;
+  pointer-events: none;
+  z-index: 1000;
+}
 @media screen and (max-width: 600px) {
   .list-container ul {
     width: 80%;

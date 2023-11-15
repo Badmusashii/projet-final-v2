@@ -1,5 +1,9 @@
-<div *ngIf="isLoading">
-  <p>Chargement en cours...</p>
+<div *ngIf="isLoading" class="isLoading">
+  <p>
+    Chargement en cours<span class="dot dot1">.</span
+    ><span class="dot dot2">.</span><span class="dot dot3">.</span>
+  </p>
+  <div class="loader"></div>
 </div>
 
 <div *ngIf="!isLoading && movieDetails">

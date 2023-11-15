@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  HostListener,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService, ActiveToast } from 'ngx-toastr';
 import { GetplatformsService } from 'src/app/services/getplatforms.service';
@@ -15,6 +21,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./platformdetail.component.css'],
 })
 export class PlatformdetailComponent implements OnInit {
+  @ViewChild('floatingImage') floatingImage: ElementRef | undefined;
   h1Title: string = '';
   platform: any;
   platformId!: number;
@@ -28,6 +35,7 @@ export class PlatformdetailComponent implements OnInit {
   currentToast: ActiveToast<any> | null = null;
   toastId!: number;
   wichApi: string = 'local';
+  posterUrl: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -74,6 +82,16 @@ export class PlatformdetailComponent implements OnInit {
     //     this.mediaList = mediaWithPlatforms;
     //   });
     this.loadMediaList(id);
+  }
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(e: MouseEvent) {
+    if (this.floatingImage && this.floatingImage.nativeElement) {
+      const image = this.floatingImage.nativeElement as HTMLElement;
+      const imageHeight = image.offsetHeight;
+      image.style.left = e.pageX + 'px';
+      image.style.top = e.pageY - imageHeight + 'px';
+    }
+    console.log(this.posterUrl);
   }
 
   loadMediaList(id: number): void {
@@ -954,5 +972,29 @@ export class PlatformdetailComponent implements OnInit {
       }
       return 0;
     });
+  }
+  // async showPoster(idApi: string) {
+  //   try {
+  //     const posterData = await this.mediaService
+  //       .getMoviePoster(idApi)
+  //       .toPromise();
+  //     this.posterUrl = posterData.poster_path;
+  //     console.log(this.posterUrl);
+  //   } catch (error) {
+  //     console.error('Erreur lors de la récupération du poster', error);
+  //   }
+  // }
+  async showPoster(idApi: string) {
+    this.mediaService.getMoviePoster(idApi).subscribe(
+      (posterPath) => {
+        this.posterUrl = posterPath;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération du poster', error);
+      }
+    );
+  }
+  hidePoster() {
+    this.posterUrl = null;
   }
 }

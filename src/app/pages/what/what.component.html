@@ -11,4 +11,7 @@
     <img class="hover-icon" src="/assets/icon/manette-pink.png" alt="" />
   </div>
 </div>
-<span>{{ randomMediaTitle }}</span>
+<div class="random-media-display">
+  <span class="media-title">{{ randomMediaTitle }}</span>
+  <img class="media-poster" [src]="randomMediaPoster" alt="Affiche du média" />
+</div>

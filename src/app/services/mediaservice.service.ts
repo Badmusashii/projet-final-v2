@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { MediaWithPlatform } from '../components/models/myApiResponse';
 import { MovieDetails } from '../components/models/movie-detail';
 import { ToastrService } from 'ngx-toastr';
@@ -103,5 +103,10 @@ export class MediaService {
       body,
       { withCredentials: true }
     );
+  }
+  getMoviePoster(idApi: string): Observable<any> {
+    return this.http
+      .get<any>(`https://localhost:8080/api/media/movie-poster/${idApi}`)
+      .pipe(map((res) => `https://image.tmdb.org/t/p/w500${res.posterPath}`));
   }
 }

@@ -15,6 +15,7 @@
         <p (click)="deconnexion()">Deconnexion</p></ng-container
       >
       <ng-template #notAuthenticatedLinks>
+        <p [routerLink]="['/acceuil']">Acceuil</p>
         <p [routerLink]="['/inscription']">S'inscrire</p>
         <p [routerLink]="['/login']">Connexion</p>
       </ng-template>

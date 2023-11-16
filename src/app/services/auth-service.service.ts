@@ -93,7 +93,7 @@ export class AuthServiceService {
         localStorage.removeItem('token');
         this.isAuthenticatedSubject.next(false);
         this.authStatusChanged.emit(false);
-        this.route.navigate(['/login']);
+        this.route.navigate(['/acceuil']);
       })
     );
   }

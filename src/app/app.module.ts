@@ -37,6 +37,7 @@ import { CookieService } from 'ngx-cookie-service/lib/cookie.service';
 import { registerLocaleData } from '@angular/common';
 import { WhatComponent } from './pages/what/what.component';
 import { AccountupdateComponent } from './pages/accountupdate/accountupdate.component';
+import { LandingpageComponent } from './pages/landingpage/landingpage.component';
 registerLocaleData(localeFr);
 
 function initAuth(authService: AuthServiceService) {
@@ -67,6 +68,7 @@ function initAuth(authService: AuthServiceService) {
     NotfoundComponent,
     WhatComponent,
     AccountupdateComponent,
+    LandingpageComponent,
   ],
   imports: [
     BrowserModule,

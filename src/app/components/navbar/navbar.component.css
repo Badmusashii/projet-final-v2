@@ -17,6 +17,10 @@
   /* animation: breathe 5s infinite; */
   animation: none;
   transition: background-color 2.5s ease;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 10000;
   /* position: fixed; */
 }
 .side-menu {

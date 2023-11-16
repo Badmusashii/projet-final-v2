@@ -11,10 +11,12 @@ import { MovieInfoComponent } from './pages/movie-info/movie-info.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
 import { AccountupdateComponent } from './pages/accountupdate/accountupdate.component';
 import { WhatComponent } from './pages/what/what.component';
+import { LandingpageComponent } from './pages/landingpage/landingpage.component';
 
 const routes: Routes = [
-  { path: '', component: CardselectComponent },
+  { path: '', component: LandingpageComponent },
   { path: 'settings', component: SettingsComponent },
+  { path: 'acceuil', component: LandingpageComponent },
   { path: 'cardselect', component: CardselectComponent },
   { path: 'platform/:id', component: PlatformdetailComponent },
   { path: 'login', component: LoginComponent },

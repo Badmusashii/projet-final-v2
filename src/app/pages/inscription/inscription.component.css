@@ -2,11 +2,27 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 8rem;
+  /* margin-top: 8rem; */
   font-family: "CIND";
   font-size: 1rem;
-}
 
+  background-image: url("../../../assets/img/landingpage.png");
+  /* background-color: red; */
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 90vh;
+  width: 100%;
+  display: flex;
+  padding-top: 3rem;
+}
+.form {
+  margin-top: 5rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 2rem;
+  border-radius: 0.5rem;
+}
 .form-group {
   /* border: 2px solid red; */
   display: flex;

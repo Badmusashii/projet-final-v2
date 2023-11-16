@@ -9,10 +9,12 @@ import { MediaService } from 'src/app/services/mediaservice.service';
 export class WhatComponent {
   randomMediaTitle: string = '';
   randomMediaPoster: string = '';
+  random: boolean = false;
 
   constructor(private mediaService: MediaService) {}
 
   getRandomMedia(type: string): void {
+    this.random = true;
     this.mediaService.getRandomTitle(type).subscribe({
       next: (media) => {
         console.log(media);

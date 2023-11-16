@@ -6,6 +6,9 @@ h1 {
   text-align: center;
   margin-top: 0.5rem;
 }
+.big-container {
+  margin-top: 4rem;
+}
 .container {
   display: flex;
   flex-direction: row;
@@ -60,4 +63,14 @@ h1 {
 .movie:hover .hover-icon,
 .jeu:hover .hover-icon {
   opacity: 1;
+}
+.random-media-display {
+  margin-top: 4.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.random-media-display img {
+  width: 200px;
+  height: auto;
 }

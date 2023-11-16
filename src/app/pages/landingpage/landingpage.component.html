@@ -1,33 +1,57 @@
 <div class="landing-page-container">
   <div class="first-container">
-    <h1>Bienvenue sur data geek</h1>
+    <h1 [style.opacity]="h1Opacity">Bienvenue sur data geek</h1>
     <div class="second-container">
-      <div class="first-p">
+      <div
+        class="first-p"
+        [style.opacity]="firstPOpacity"
+        [style.transform]="firstPTransform"
+      >
         <p>
           Votre espace dedie aux cultures cine et gaming. Gerez votre
           collection, suivez les nouveautes et accedez a votre univers geek, ou
           que vous soyez.
         </p>
       </div>
-      <div class="second-p">
+      <div
+        class="second-p"
+        [style.opacity]="secondPOpacity"
+        [style.transform]="secondPTransform"
+      >
         <p>
           Decouvrez, organisez et plongez dans vos mondes preferes, tout en un
           clic.
         </p>
       </div>
     </div>
+    <div class="button-container">
+      <button [routerLink]="['/inscription']">S'inscrire</button>
+      <button [routerLink]="['/login']">Se connecter</button>
+    </div>
   </div>
 </div>
 <div class="icon-container">
-  <div class="biblio">
+  <div
+    class="biblio"
+    [style.opacity]="biblioOpacity"
+    [style.transform]="biblioTransform"
+  >
     <img src="../../../assets/icon/icon_biblio.png" alt="" />
     <p>Gerez et organisez votre collection de jeux en toute simplicite</p>
   </div>
-  <div class="biblio">
+  <div
+    class="info"
+    [style.opacity]="infoOpacity"
+    [style.transform]="infoTransform"
+  >
     <img src="../../../assets/icon/icon_info.png" alt="" />
     <p>Accedez a des infos detaillees sur vos futur jeux et films</p>
   </div>
-  <div class="biblio">
+  <div
+    class="cloud"
+    [style.opacity]="cloudOpacity"
+    [style.transform]="cloudTransform"
+  >
     <img src="../../../assets/icon/icon_cloud.png" alt="" />
     <p>Emportez votre collection partout, sur tous vos appareils</p>
   </div>

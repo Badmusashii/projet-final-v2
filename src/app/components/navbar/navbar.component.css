@@ -174,7 +174,7 @@ img {
   animation: slideOutToLeft 0.5s ease-out forwards;
 }
 .navbar.disconnected {
-  background-color: #ffffff; /* Gris ou la couleur désirée pour l'état déconnecté */
+  background-color: #00000b;
   animation: none; /* Aucune animation */
 }
 

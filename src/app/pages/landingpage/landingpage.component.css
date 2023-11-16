@@ -1,3 +1,7 @@
+* {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
 .landing-page-container {
   background-image: url("../../../assets/img/landingpage.png");
   /* background-color: red; */
@@ -65,10 +69,53 @@ h1 {
   flex-direction: column;
   align-items: center;
 }
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cloud {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .biblio p {
   margin-top: 1rem;
   width: 70%;
   font-family: "CIND" !important;
   color: #49c7d8;
   text-align: center;
+}
+.info p {
+  margin-top: 1rem;
+  width: 70%;
+  font-family: "CIND" !important;
+  color: #49c7d8;
+  text-align: center;
+}
+.cloud p {
+  margin-top: 1rem;
+  width: 70%;
+  font-family: "CIND" !important;
+  color: #49c7d8;
+  text-align: center;
+}
+.button-container {
+  margin-top: 3rem;
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  justify-content: space-around;
+}
+.button-container button {
+  height: 2rem;
+  padding: 0.4rem;
+  border-radius: 0.2rem;
+  background-color: #49c7d8;
+  box-shadow: -6px 4px 8px 1px #49c7d8;
+  transition: background-color 0.6s, box-shadow 0.6s;
+}
+.button-container button:hover {
+  background-color: #cc35c0;
+  box-shadow: 6px 4px 8px 1px #cc35c0;
 }

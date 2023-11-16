@@ -36,6 +36,9 @@ export class PlatformdetailComponent implements OnInit {
   toastId!: number;
   wichApi: string = 'local';
   posterUrl: string | null = null;
+  lastX = 0;
+  lastY = 0;
+  lastTime = Date.now();
 
   constructor(
     private route: ActivatedRoute,
@@ -84,12 +87,72 @@ export class PlatformdetailComponent implements OnInit {
     this.loadMediaList(id);
   }
   @HostListener('document:mousemove', ['$event'])
+  // onMouseMove(e: MouseEvent) {
+  //   console.log(e.clientY);
+  //   if (this.floatingImage && this.floatingImage.nativeElement) {
+  //     const image = this.floatingImage.nativeElement as HTMLElement;
+  //     const imageHeight = image.offsetHeight;
+  //     const scrollTop =
+  //       window.scrollY ||
+  //       document.documentElement.scrollTop ||
+  //       document.body.scrollTop ||
+  //       0;
+
+  //     let topPosition;
+
+  //     // Si le curseur est dans le haut de l'écran, positionnez l'image différemment
+  //     if (e.clientY < window.innerHeight / 2) {
+  //       topPosition = e.clientY; // Positionnez l'image en dessous du curseur
+  //       if (scrollTop > 100) {
+  //         // Vous pouvez ajuster ce nombre en fonction de vos besoins
+  //         topPosition += scrollTop;
+  //       }
+  //     } else {
+  //       topPosition = e.pageY - imageHeight; // Positionnez l'image au-dessus du curseur
+  //     }
+
+  //     image.style.left = e.pageX + 'px';
+  //     image.style.top = topPosition - scrollTop + 'px';
+  //   }
+  //   console.log(this.posterUrl);
+  // }
   onMouseMove(e: MouseEvent) {
+    const currentTime = Date.now();
+    const timeDiff = currentTime - this.lastTime;
+    const xDiff = e.clientX - this.lastX;
+    const yDiff = e.clientY - this.lastY;
+
+    const distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+    let speed = timeDiff > 0 ? distance / timeDiff : 0;
+
+    console.log('speed => ', speed);
+    if (speed > 0.2) {
+      this.posterUrl = null;
+    }
     if (this.floatingImage && this.floatingImage.nativeElement) {
       const image = this.floatingImage.nativeElement as HTMLElement;
       const imageHeight = image.offsetHeight;
+      const scrollTop =
+        window.scrollY ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0;
+
+      let topPosition;
+
+      // Si le curseur est dans le haut de l'écran, positionnez l'image différemment
+      if (e.clientY < window.innerHeight / 2) {
+        topPosition = e.clientY; // Positionnez l'image en dessous du curseur
+        if (scrollTop > 100) {
+          // Vous pouvez ajuster ce nombre en fonction de vos besoins
+          topPosition += scrollTop;
+        }
+      } else {
+        topPosition = e.pageY - imageHeight; // Positionnez l'image au-dessus du curseur
+      }
+
       image.style.left = e.pageX + 'px';
-      image.style.top = e.pageY - imageHeight + 'px';
+      image.style.top = topPosition - scrollTop + 'px';
     }
     console.log(this.posterUrl);
   }

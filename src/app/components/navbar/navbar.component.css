@@ -31,6 +31,9 @@
   z-index: 1;
   /* Ajoutez d'autres styles selon vos besoins */
 }
+.side-menu p {
+  z-index: 0;
+}
 
 .side-menu.show {
   left: 0; /* Fait apparaître le menu */

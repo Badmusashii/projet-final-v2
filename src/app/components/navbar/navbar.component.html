@@ -1,8 +1,10 @@
 <nav role="navigation">
   <div
+    #sideMenu
     (click)="onClick($event)"
     class="side-menu"
     [ngClass]="{ show: showSideMenu }"
+    (mouseout)="closeSideMenu($event)"
   >
     <div class="side-menu-container" (click)="onClick($event)">
       <ng-container *ngIf="isAuthenticated; else notAuthenticatedLinks">

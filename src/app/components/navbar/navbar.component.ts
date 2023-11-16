@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ToggleService } from 'src/app/services/toggleservice.service';
 import { AnimationSyncService } from 'src/app/services/anim-syncro.service';
@@ -16,6 +22,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private togglesSubscription: Subscription | undefined;
   isAuthenticated: boolean = false;
   private authSubscription: Subscription | undefined;
+  @ViewChild('sideMenu') sideMenu: ElementRef | undefined;
 
   constructor(
     private toggleService: ToggleService,
@@ -75,6 +82,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.cookieService.delete('refreshToken', '/'); // Supprime le refreshToken des cookies
 
     // Rediriger l'utilisateur vers la page de connexion ou effectuer d'autres actions nécessaires après la déconnexion
+  }
+  closeSideMenu(event: MouseEvent) {
+    if (this.sideMenu && this.sideMenu.nativeElement) {
+      if (!this.sideMenu.nativeElement.contains(event.relatedTarget)) {
+        this.showSideMenu = false;
+      }
+    }
   }
   // ngOnDestroy(): void {}
 }

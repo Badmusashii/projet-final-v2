@@ -104,9 +104,15 @@ export class MediaService {
       { withCredentials: true }
     );
   }
-  getMoviePoster(idApi: string): Observable<any> {
-    return this.http
-      .get<any>(`https://localhost:8080/api/media/movie-poster/${idApi}`)
-      .pipe(map((res) => `https://image.tmdb.org/t/p/w500${res.posterPath}`));
+  getMoviePoster(idApi: string, platformId: number): Observable<any> {
+    if (platformId <= 3) {
+      return this.http
+        .get<any>(`https://localhost:8080/api/media/movie-poster/${idApi}`)
+        .pipe(map((res) => `https://image.tmdb.org/t/p/w500${res.posterPath}`));
+    } else {
+      return this.http
+        .get<any>(`https://localhost:8080/api/media/game-poster/${idApi}`)
+        .pipe(map((res) => res.posterPath));
+    }
   }
 }

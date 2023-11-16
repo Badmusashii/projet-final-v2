@@ -985,7 +985,7 @@ export class PlatformdetailComponent implements OnInit {
   //   }
   // }
   async showPoster(idApi: string) {
-    this.mediaService.getMoviePoster(idApi).subscribe(
+    this.mediaService.getMoviePoster(idApi, this.platformId).subscribe(
       (posterPath) => {
         this.posterUrl = posterPath;
       },

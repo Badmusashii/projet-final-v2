@@ -12,12 +12,25 @@
       <img class="hover-icon" src="/assets/icon/manette-pink.png" alt="" />
     </div>
   </div>
-  <div class="random-media-display" *ngIf="random">
-    <span class="media-title">{{ randomMediaTitle }}</span>
-    <img
-      class="media-poster"
-      [src]="randomMediaPoster"
-      alt="Affiche du média"
-    />
+  <div class="random-container">
+    <div
+      class="random-media-display"
+      *ngIf="random"
+      @mediaAnimation
+      (@mediaAnimation.done)="mediaAnimDone($event)"
+    >
+      <span
+        class="media-title"
+        [ngClass]="{ 'title-animated': titleAnimationDone }"
+        >{{ randomMediaTitle }}</span
+      >
+      <img
+        class="media-poster"
+        [src]="randomMediaPoster"
+        alt="Affiche du média"
+        [ngClass]="{ 'poster-animated': posterAnimationDone }"
+        (click)="moreInfo()"
+      />
+    </div>
   </div>
 </div>

@@ -39,6 +39,7 @@ export class PlatformdetailComponent implements OnInit {
   lastX = 0;
   lastY = 0;
   lastTime = Date.now();
+  showButton = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -85,6 +86,11 @@ export class PlatformdetailComponent implements OnInit {
     //     this.mediaList = mediaWithPlatforms;
     //   });
     this.loadMediaList(id);
+    this.route.queryParams.subscribe((params) => {
+      if (params['nobutton']) {
+        this.showButton = false; // Ne pas afficher le bouton si 'nobutton' est vrai
+      }
+    });
   }
   @HostListener('document:mousemove', ['$event'])
   // onMouseMove(e: MouseEvent) {
@@ -1059,5 +1065,13 @@ export class PlatformdetailComponent implements OnInit {
   }
   hidePoster() {
     this.posterUrl = null;
+  }
+  redirectTo(id: string) {
+    console.log(id);
+    if (id.includes('-')) {
+      this.router.navigateByUrl(`/gameInfo?guid=${id}&nobutton=true`);
+    } else {
+      this.router.navigateByUrl(`/movieInfo/${id}?nobutton=true`);
+    }
   }
 }

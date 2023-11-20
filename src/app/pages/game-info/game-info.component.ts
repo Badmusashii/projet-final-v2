@@ -15,6 +15,7 @@ export class GameInfoComponent implements OnInit {
   gameDetails!: GameInfo;
   isLoading: boolean = true;
   additionalImages: any[] = [];
+  showButton = true;
 
   constructor(
     private mediaService: MediaService,
@@ -27,6 +28,11 @@ export class GameInfoComponent implements OnInit {
       const guid = params['guid'];
       if (guid) {
         this.GameDetails(guid);
+      }
+    });
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params['nobutton']) {
+        this.showButton = false;
       }
     });
   }

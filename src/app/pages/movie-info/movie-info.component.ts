@@ -25,6 +25,7 @@ export class MovieInfoComponent implements OnInit {
   areVideosLoaded: boolean = false;
   // someHtmlContent: SafeHtml;
   safeHtmlContents: SafeHtml[] = [];
+  showButton = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -107,6 +108,11 @@ export class MovieInfoComponent implements OnInit {
         }
       );
     }
+    this.route.queryParams.subscribe((params) => {
+      if (params['nobutton']) {
+        this.showButton = false;
+      }
+    });
   }
 
   @HostListener('window:resize', ['$event'])

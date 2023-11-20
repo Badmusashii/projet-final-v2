@@ -45,7 +45,11 @@
             (mouseout)="hidePoster()"
             [ngClass]="{ hovered: media.isHovered }"
           >
-            <p class="title" [style.border-bottom-color]="media.hoverColor">
+            <p
+              class="title"
+              [style.border-bottom-color]="media.hoverColor"
+              (click)="redirectTo(media.idapi)"
+            >
               {{ media.title }}
             </p>
           </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-intermediare',
@@ -9,7 +10,11 @@ import { HttpClient } from '@angular/common/http';
 })
 export class IntermediareComponent implements OnInit {
   token: string | null = null;
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.token = this.route.snapshot.queryParamMap.get('token');
@@ -32,6 +37,7 @@ export class IntermediareComponent implements OnInit {
     console.log('click');
     if (this.token) {
       this.verifyAndDecodeToken(this.token);
+      this.router.navigate(['/settings']);
     }
   }
 }

@@ -86,11 +86,7 @@ export class PlatformdetailComponent implements OnInit {
     //     this.mediaList = mediaWithPlatforms;
     //   });
     this.loadMediaList(id);
-    this.route.queryParams.subscribe((params) => {
-      if (params['nobutton']) {
-        this.showButton = false; // Ne pas afficher le bouton si 'nobutton' est vrai
-      }
-    });
+    
   }
   @HostListener('document:mousemove', ['$event'])
   // onMouseMove(e: MouseEvent) {

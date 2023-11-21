@@ -84,9 +84,7 @@ export class AuthInterceptorService implements HttpInterceptor {
     return this.authService.refreshToken().pipe(
       switchMap((response: { accessToken: string }) => {
         // Stocker le nouveau token et réessayer la requête
-        // this.authService.setAccessToken(response.accessToken);
-        // const clonedReq = this.addToken(request);
-        // return next.handle(clonedReq);
+
         if (response && response.accessToken) {
           this.authService.setAccessToken(response.accessToken);
           const clonedReq = this.addToken(request);

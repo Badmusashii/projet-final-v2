@@ -80,7 +80,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.authService.logout().subscribe(() => {
       // Actions après la déconnexion, par exemple rediriger vers la page de connexion
       this.showSideMenu = false; // Cacher le menu latéral
-      this.router.navigate(['/acceuil']); // Rediriger vers la page d'accueil
+      this.router.navigate(['']); // Rediriger vers la page d'accueil
     });
 
     // Rediriger l'utilisateur vers la page de connexion ou effectuer d'autres actions nécessaires après la déconnexion

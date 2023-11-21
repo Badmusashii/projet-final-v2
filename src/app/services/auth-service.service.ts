@@ -103,15 +103,20 @@ export class AuthServiceService {
     this.authStatusChanged.emit(isAuthenticated);
   }
   logout(): Observable<any> {
-    return this.http.post('https://localhost:8080/api/auth/logout', {}).pipe(
-      tap(() => {
-        // localStorage.removeItem('token');
-        this.setAccessToken(null); // Efface l'access token du BehaviorSubject
+    return this.http
+      .post(
+        'https://localhost:8080/api/auth/logout',
+        {},
+        { withCredentials: true }
+      )
+      .pipe(
+        tap(() => {
+          this.setAccessToken(null); // Efface l'access token du BehaviorSubject
 
-        this.isAuthenticatedSubject.next(false);
-        this.authStatusChanged.emit(false);
-        this.route.navigate(['/acceuil']);
-      })
-    );
+          this.isAuthenticatedSubject.next(false);
+          this.authStatusChanged.emit(false);
+          this.route.navigate(['/acceuil']);
+        })
+      );
   }
 }

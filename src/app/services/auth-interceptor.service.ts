@@ -14,12 +14,16 @@ import {
   throwError,
 } from 'rxjs';
 import { AuthService } from './user-service.service';
+import { AuthServiceService } from './auth-service.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthInterceptorService implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private authServiceService: AuthServiceService
+  ) {}
 
   // intercept(
   //   req: HttpRequest<any>,
@@ -62,6 +66,7 @@ export class AuthInterceptorService implements HttpInterceptor {
 
   private addToken(request: HttpRequest<any>): HttpRequest<any> {
     const accessToken = this.authService.getAccessToken();
+    // console.log('coté interceptor ', accessToken);
     if (accessToken) {
       return request.clone({
         setHeaders: {
@@ -79,9 +84,27 @@ export class AuthInterceptorService implements HttpInterceptor {
     return this.authService.refreshToken().pipe(
       switchMap((response: { accessToken: string }) => {
         // Stocker le nouveau token et réessayer la requête
-        this.authService.setAccessToken(response.accessToken);
-        const clonedReq = this.addToken(request);
-        return next.handle(clonedReq);
+        // this.authService.setAccessToken(response.accessToken);
+        // const clonedReq = this.addToken(request);
+        // return next.handle(clonedReq);
+        if (response && response.accessToken) {
+          this.authService.setAccessToken(response.accessToken);
+          const clonedReq = this.addToken(request);
+          this.authServiceService.isAuthenticatedSubject.next(true);
+          return next.handle(clonedReq);
+        } else {
+          // Gérer l'échec du rafraîchissement du token ici
+          this.authServiceService.logout(); // Déconnecter l'utilisateur
+          return throwError(
+            () => new Error('Échec du rafraîchissement du token')
+          );
+        }
+      }),
+      catchError((error) => {
+        // Gérer les erreurs de rafraîchissement ici
+        this.authServiceService.logout(); // Déconnecter l'utilisateur
+        this.authServiceService.isAuthenticatedSubject.next(false);
+        return throwError(() => error);
       })
     );
   }

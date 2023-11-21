@@ -9,7 +9,8 @@ import { Router } from '@angular/router';
 })
 export class AuthServiceService {
   // BehavoirSubject qui gerera l'etat de connection de mon User
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  public isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  private accessToken: string | null = null;
   authStatusChanged = new EventEmitter<boolean>();
   // public isAuthenticated = this.isAuthenticatedSubject.asObservable();
   // ------------------------------------------------------------------
@@ -29,26 +30,41 @@ export class AuthServiceService {
     return this.checkInitialAuthentication();
   }
 
-  // public checkInitialAuthentication() {
-  //   const token = localStorage.getItem('token');
-  //   if (token) {
-  //     this.validateToken(token).subscribe(
-  //       (isValid) => {
-  //         this.isAuthenticatedSubject.next(isValid);
-  //         this.authStatusChanged.emit(isValid);
-  //       },
-  //       (error) => {
-  //         this.isAuthenticatedSubject.next(false);
-  //         this.authStatusChanged.emit(false);
-  //       }
-  //     );
-  //   } else {
-  //     this.isAuthenticatedSubject.next(false);
-  //   }
+  setAccessToken(token: string | null): void {
+    this.accessToken = token;
+  }
+
+  getAccessToken(): string | null {
+    return this.accessToken;
+  }
+
+  // checkInitialAuthentication(): Promise<void> {
+  //   return new Promise((resolve) => {
+  //     const token = localStorage.getItem('token');
+  //     console.log(`Token au démarrage: ${token}`);
+  //     if (token) {
+  //       this.validateToken(token).subscribe(
+  //         (isValid) => {
+  //           console.log(`Résultat de la validation du token: ${isValid}`);
+  //           this.isAuthenticatedSubject.next(isValid);
+  //           resolve();
+  //         },
+  //         (error) => {
+  //           console.log(`Erreur lors de la validation du token:${error}`);
+
+  //           this.isAuthenticatedSubject.next(false);
+  //           resolve();
+  //         }
+  //       );
+  //     } else {
+  //       this.isAuthenticatedSubject.next(false);
+  //       resolve();
+  //     }
+  //   });
   // }
   checkInitialAuthentication(): Promise<void> {
     return new Promise((resolve) => {
-      const token = localStorage.getItem('token');
+      const token = this.getAccessToken();
       console.log(`Token au démarrage: ${token}`);
       if (token) {
         this.validateToken(token).subscribe(
@@ -58,8 +74,7 @@ export class AuthServiceService {
             resolve();
           },
           (error) => {
-            console.log(`Erreur lors de la validation du token:${error}`);
-
+            console.log(`Erreur lors de la validation du token: ${error}`);
             this.isAuthenticatedSubject.next(false);
             resolve();
           }
@@ -90,7 +105,9 @@ export class AuthServiceService {
   logout(): Observable<any> {
     return this.http.post('https://localhost:8080/api/auth/logout', {}).pipe(
       tap(() => {
-        localStorage.removeItem('token');
+        // localStorage.removeItem('token');
+        this.setAccessToken(null); // Efface l'access token du BehaviorSubject
+
         this.isAuthenticatedSubject.next(false);
         this.authStatusChanged.emit(false);
         this.route.navigate(['/acceuil']);

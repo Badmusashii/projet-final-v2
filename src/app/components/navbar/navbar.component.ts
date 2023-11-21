@@ -10,6 +10,7 @@ import { ToggleService } from 'src/app/services/toggleservice.service';
 import { AnimationSyncService } from 'src/app/services/anim-syncro.service';
 import { AuthServiceService } from 'src/app/services/auth-service.service';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -28,7 +29,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private toggleService: ToggleService,
     private animSyncro: AnimationSyncService,
     private authService: AuthServiceService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -77,9 +79,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     console.log('log logf log');
     this.authService.logout().subscribe(() => {
       // Actions après la déconnexion, par exemple rediriger vers la page de connexion
+      this.showSideMenu = false; // Cacher le menu latéral
+      this.router.navigate(['/acceuil']); // Rediriger vers la page d'accueil
     });
-    localStorage.removeItem('token'); // Supprime le token du localStorage
-    this.cookieService.delete('refreshToken', '/'); // Supprime le refreshToken des cookies
 
     // Rediriger l'utilisateur vers la page de connexion ou effectuer d'autres actions nécessaires après la déconnexion
   }

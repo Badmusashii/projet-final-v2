@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
         })
         .subscribe({
           next: (res: any) => {
-            localStorage.setItem('token', res.accessToken);
+            // localStorage.setItem('token', res.accessToken);
             this.authService.updateAuthenticationStatus(true);
             this.toggleService.fetchAndSetTogglesForUser();
             this.router.navigate(['/cardselect']);

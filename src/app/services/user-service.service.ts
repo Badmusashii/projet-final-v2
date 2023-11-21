@@ -14,10 +14,7 @@ export class AuthService {
   >(null);
 
   constructor(private http: HttpClient) {
-    const savedToken = localStorage.getItem('token');
-    if (savedToken) {
-      this._accessToken.next(savedToken);
-    }
+    // const savedToken = localStorage.getItem('token');
   }
 
   getAccessToken(): string | null {
@@ -25,7 +22,7 @@ export class AuthService {
   }
 
   setAccessToken(token: string): void {
-    localStorage.setItem('token', token);
+    // localStorage.setItem('token', token);
     this._accessToken.next(token);
   }
 

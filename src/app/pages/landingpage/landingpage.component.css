@@ -119,3 +119,82 @@ h1 {
   background-color: #cc35c0;
   box-shadow: 6px 4px 8px 1px #cc35c0;
 }
+@media screen and (max-width: 992px) {
+  .first-p,
+  .second-p {
+    height: 150px;
+    text-align: center;
+    align-items: center;
+  }
+}
+@media screen and (max-width: 695px) {
+  .biblio img,
+  .info img,
+  .cloud img {
+    width: 5rem;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 674px) {
+  .first-p,
+  .second-p {
+    height: 190px;
+  }
+}
+@media screen and (max-width: 591px) {
+  .first-p,
+  .second-p {
+    height: 230px;
+  }
+  .first-p,
+  .second-p p {
+    font-size: 0.7rem;
+  }
+  h1 {
+    font-size: 1.6rem;
+  }
+}
+
+@media screen and (max-width: 525px) {
+  .biblio p,
+  .cloud p,
+  .info p {
+    font-size: 0.8rem;
+  }
+}
+@media screen and (max-width: 484px) {
+  h1 {
+    font-size: 1.2rem;
+  }
+}
+@media screen and (max-width: 414px) {
+  .biblio p,
+  .cloud p,
+  .info p {
+    font-size: 0.6rem;
+  }
+}
+@media screen and (max-width: 380px) {
+  h1 {
+    font-size: 1rem;
+  }
+}
+@media screen and (max-width: 340px) {
+  .first-p,
+  .second-p p {
+    font-size: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 321px) {
+  h1 {
+    font-size: 0.7rem;
+  }
+  .biblio img,
+  .info img,
+  .cloud img {
+    width: 4rem;
+    height: auto;
+  }
+}

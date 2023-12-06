@@ -86,7 +86,6 @@ export class PlatformdetailComponent implements OnInit {
     //     this.mediaList = mediaWithPlatforms;
     //   });
     this.loadMediaList(id);
-    
   }
   @HostListener('document:mousemove', ['$event'])
   // onMouseMove(e: MouseEvent) {
@@ -127,7 +126,7 @@ export class PlatformdetailComponent implements OnInit {
     const distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
     let speed = timeDiff > 0 ? distance / timeDiff : 0;
 
-    console.log('speed => ', speed);
+    // console.log('speed => ', speed);
     if (speed > 0.2) {
       this.posterUrl = null;
     }
@@ -949,9 +948,13 @@ export class PlatformdetailComponent implements OnInit {
       this.platformId !== 2 &&
       this.platformId !== 3
     ) {
-      this.router.navigate(['/gameInfo'], { queryParams: { guid: guid } });
+      this.router.navigate(['/gameInfo'], {
+        queryParams: { guid: guid, platformId: this.platformId },
+      });
     } else {
-      this.router.navigate(['/movieInfo', guid]);
+      this.router.navigate(['/movieInfo', guid], {
+        queryParams: { platformId: this.platformId },
+      });
     }
   }
   // pushMedia(cardData: any, platformId: number) {

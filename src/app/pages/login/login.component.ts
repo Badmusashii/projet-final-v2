@@ -52,16 +52,15 @@ export class LoginComponent implements OnInit {
         })
         .subscribe({
           next: (res: any) => {
-            // localStorage.setItem('token', res.accessToken);
-            this.authService.updateAuthenticationStatus(true);
+            this.authService.updateAuthenticationStatus(true, res.accessToken);
             this.toggleService.fetchAndSetTogglesForUser();
             this.router.navigate(['/cardselect']);
-            console.log('Réponse du serveur:', res);
+            console.log('Réponse du serveur:', res.accessToken);
           },
           error: (err) => {
             console.log('Erreur lors du login : ', err);
             console.log("Détails de l'erreur:", JSON.stringify(err, null, 2));
-            this.authService.updateAuthenticationStatus(false);
+            this.authService.updateAuthenticationStatus(false, null);
           },
         });
     }

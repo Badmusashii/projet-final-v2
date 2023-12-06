@@ -5,6 +5,7 @@ import { GameInfo } from 'src/app/components/models/game-info';
 import { gameInfoApiResponse } from 'src/app/components/models/game-info-api-response';
 import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
 import { Location } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-game-info',
@@ -16,18 +17,24 @@ export class GameInfoComponent implements OnInit {
   isLoading: boolean = true;
   additionalImages: any[] = [];
   showButton = true;
+  Invisible: boolean = false;
+  platformId!: number;
+  guid!: string;
 
   constructor(
     private mediaService: MediaService,
     private activatedRoute: ActivatedRoute,
     private sanitazer: DomSanitizer,
-    private location: Location
+    private location: Location,
+    private toast: ToastrService
   ) {}
   ngOnInit(): void {
+    this.platformId = +this.activatedRoute.snapshot.queryParams['platformId'];
+    console.log(this.platformId);
     this.activatedRoute.queryParams.subscribe((params) => {
-      const guid = params['guid'];
-      if (guid) {
-        this.GameDetails(guid);
+      this.guid = params['guid'];
+      if (this.guid) {
+        this.GameDetails(this.guid);
       }
     });
     this.activatedRoute.queryParams.subscribe((params) => {
@@ -73,5 +80,60 @@ export class GameInfoComponent implements OnInit {
   }
   goBack(): void {
     this.location.back();
+  }
+  pushMedia(gameDetails: any, platformId: number) {
+    console.log(gameDetails);
+    console.log(gameDetails.name);
+    console.log(gameDetails.original_release_date);
+    this.mediaService
+      .searchMediaByTitle(gameDetails.name, platformId)
+      .subscribe({
+        next: (response) => {
+          if (response.source === 'local') {
+            // Le titre est déjà dans la base de données
+            this.toast.info(
+              `Le média "${gameDetails.name}" est deja dans ta collection`,
+              'Information',
+              {
+                progressBar: true,
+                timeOut: 3000,
+                toastClass: 'my-toast-class',
+              }
+            );
+          } else {
+            // Si le titre n'est pas trouvé dans la base de données, procéder à l'ajout
+            let requestBody;
+            const year = gameDetails.original_release_date.split('-')[0];
+            const title = this.replaceSpecialChars(
+              gameDetails.name.toLowerCase()
+            );
+            console.log(this.guid);
+            requestBody = {
+              title: title,
+              yearofrelease: +year,
+              idapi: this.guid,
+            };
+
+            this.mediaService.addMediaToUserAndPlatform(
+              +platformId,
+              requestBody
+            );
+            this.Invisible = true;
+          }
+        },
+        error: (err) => {
+          console.error('Erreur lors de la recherche du média:', err);
+          // Gérer les erreurs de recherche ici
+        },
+      });
+  }
+  replaceSpecialChars(str: string): string {
+    return str
+      .replace(/é|è|ê|ë/g, 'e')
+      .replace(/à|â|ä/g, 'a')
+      .replace(/ç/g, 'c')
+      .replace(/ô|ö/g, 'o')
+      .replace(/î|ï/g, 'i')
+      .replace(/û|ü/g, 'u');
   }
 }

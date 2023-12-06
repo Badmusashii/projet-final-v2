@@ -3,6 +3,9 @@
   color: #49c7d8;
   /* overflow-x: hidden; */
 }
+.big-container {
+  margin-top: 3rem;
+}
 .isLoading {
   display: flex;
   justify-content: space-around;

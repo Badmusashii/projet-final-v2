@@ -11,6 +11,7 @@ import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
 import { Token } from '@angular/compiler';
 // import * as bcrypt from 'bcryptjs';
 import { ToastrService } from 'ngx-toastr';
+import { MyLowerCasePipe } from 'src/app/my-lower-case.pipe';
 
 @Component({
   selector: 'app-inscription',
@@ -24,7 +25,8 @@ export class InscriptionComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private myLowerCase: MyLowerCasePipe
   ) {
     this.inscriptionForm = formBuilder.group(
       {
@@ -143,7 +145,7 @@ export class InscriptionComponent implements OnInit {
       const user = this.inscriptionForm.value;
       user.username = user.username.toLowerCase();
       user.name = user.name.toLowerCase();
-      user.surname = user.surname.toLowerCase();
+      user.surname = user.surname.MyLowerCasePipe();
       user.email = user.email.toLowerCase();
 
       this.http

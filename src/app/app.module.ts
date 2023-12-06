@@ -38,6 +38,8 @@ import { registerLocaleData } from '@angular/common';
 import { WhatComponent } from './pages/what/what.component';
 import { AccountupdateComponent } from './pages/accountupdate/accountupdate.component';
 import { LandingpageComponent } from './pages/landingpage/landingpage.component';
+import { LowerCasePipe } from '@angular/common';
+import { MyLowerCasePipe } from './my-lower-case.pipe';
 registerLocaleData(localeFr);
 
 function initAuth(authService: AuthServiceService) {
@@ -69,6 +71,7 @@ function initAuth(authService: AuthServiceService) {
     WhatComponent,
     AccountupdateComponent,
     LandingpageComponent,
+    MyLowerCasePipe,
   ],
   imports: [
     BrowserModule,
@@ -76,7 +79,7 @@ function initAuth(authService: AuthServiceService) {
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({ preventDuplicates: true }),
     BrowserAnimationsModule,
   ],
 

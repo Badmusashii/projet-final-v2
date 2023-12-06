@@ -26,6 +26,8 @@ export class MovieInfoComponent implements OnInit {
   // someHtmlContent: SafeHtml;
   safeHtmlContents: SafeHtml[] = [];
   showButton = true;
+  platformId!: number;
+  Invisible: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -86,6 +88,9 @@ export class MovieInfoComponent implements OnInit {
   //   }
   // }
   ngOnInit(): void {
+    // this.platformId = this.route.snapshot.params['platformId'];
+    this.platformId = +this.route.snapshot.queryParams['platformId'];
+    console.log(this.platformId);
     const guid = this.route.snapshot.params['id'];
     if (guid !== null) {
       this.movieId = +guid;
@@ -171,37 +176,47 @@ export class MovieInfoComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
-  pushMedia(cardData: any, platformId: number) {
-    this.mediaService.searchMediaByTitle(cardData.title, platformId).subscribe({
-      next: (response) => {
-        if (response.source === 'local') {
-          // Le titre est déjà dans la base de données
-          this.toast.info(
-            `Le média "${cardData.title}" est deja dans ta collection`,
-            'Information',
-            {
-              progressBar: true,
-              timeOut: 3000,
-              toastClass: 'my-toast-class',
-            }
-          );
-        } else {
-          // Si le titre n'est pas trouvé dans la base de données, procéder à l'ajout
-          let requestBody;
-          const year = cardData.releaseDate.split('-')[0];
-          const title = this.replaceSpecialChars(cardData.title.toLowerCase());
-          requestBody = {
-            title: title,
-            yearofrelease: +year,
-            idapi: cardData.guid,
-          };
-          this.mediaService.addMediaToUserAndPlatform(platformId, requestBody);
-        }
-      },
-      error: (err) => {
-        console.error('Erreur lors de la recherche du média:', err);
-        // Gérer les erreurs de recherche ici
-      },
-    });
+  pushMedia(movieDetails: any, platformId: number) {
+    console.log(movieDetails);
+    this.mediaService
+      .searchMediaByTitle(movieDetails.title, platformId)
+      .subscribe({
+        next: (response) => {
+          if (response.source === 'local') {
+            // Le titre est déjà dans la base de données
+            this.toast.info(
+              `Le média "${movieDetails.title}" est deja dans ta collection`,
+              'Information',
+              {
+                progressBar: true,
+                timeOut: 3000,
+                toastClass: 'my-toast-class',
+              }
+            );
+          } else {
+            // Si le titre n'est pas trouvé dans la base de données, procéder à l'ajout
+            let requestBody;
+            const year = movieDetails.release_date.split('-')[0];
+            const title = this.replaceSpecialChars(
+              movieDetails.title.toLowerCase()
+            );
+            requestBody = {
+              title: title,
+              yearofrelease: +year,
+              idapi: +movieDetails.id,
+            };
+
+            this.mediaService.addMediaToUserAndPlatform(
+              +platformId,
+              requestBody
+            );
+            this.Invisible = true;
+          }
+        },
+        error: (err) => {
+          console.error('Erreur lors de la recherche du média:', err);
+          // Gérer les erreurs de recherche ici
+        },
+      });
   }
 }

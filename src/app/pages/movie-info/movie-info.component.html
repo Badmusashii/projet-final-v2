@@ -66,7 +66,9 @@
     </div>
   </div>
   <div class="buttonpush" *ngIf="showButton">
-    <button>On l'ajoute a la collection</button>
+    <button *ngIf="!Invisible" (click)="pushMedia(movieDetails, platformId)">
+      On l'ajoute a la collection
+    </button>
   </div>
   <div class="info-section">
     <h2>Description</h2>

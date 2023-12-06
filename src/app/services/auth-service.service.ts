@@ -97,10 +97,16 @@ export class AuthServiceService {
   }
 
   // Méthode pour mettre à jour l'état d'authentification
-  updateAuthenticationStatus(isAuthenticated: boolean): void {
+  updateAuthenticationStatus(
+    isAuthenticated: boolean,
+    token: string | null
+  ): void {
     console.log(`Mise à jour de l'état d'authentification: ${isAuthenticated}`);
     this.isAuthenticatedSubject.next(isAuthenticated);
     this.authStatusChanged.emit(isAuthenticated);
+    this.accessToken = token;
+    this.setAccessToken(this.accessToken);
+    console.log('ce que je veut', this.getAccessToken());
   }
   logout(): Observable<any> {
     return this.http

@@ -45,3 +45,106 @@ button:hover {
   background-color: #cc35c0;
   box-shadow: 6px 4px 8px 1px #cc35c0;
 }
+.formulaire-captcha {
+  display: flex;
+  flex-direction: column;
+}
+.formulaire-captcha input {
+  background-color: #49c7d8;
+  height: 2rem;
+  border-radius: 1rem;
+  transition: 1s ease-in-out;
+}
+.formulaire-captcha input:hover {
+  background-color: #cc35c0;
+}
+
+.container.cyberpunk-theme {
+  color: #0f0;
+  background-color: #000;
+  font-family: "Courier New", monospace;
+}
+
+.cyber-text {
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
+}
+
+.glitch {
+  /* color: #0f0; */
+  position: relative;
+  font-size: 2rem;
+  color: #0f0; /* Vert lumineux */
+  text-shadow: 0 0 10px #0f0, 0 0 20px #0f0; /* Ombre vert lumineux */
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.glitch::before {
+  content: attr(data-text);
+  position: absolute;
+  left: -2px;
+  /* text-shadow: 2px 0 #f00; */
+  text-shadow: 2px 0 #f00, -2px 0 #00f; /* Rouge et bleu pour l'effet glitch */
+
+  animation: glitch 1.5s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 2px;
+  /* text-shadow: -2px 0 #00f; */
+  text-shadow: 2px 0 #f00, -2px 0 #00f; /* Rouge et bleu pour l'effet glitch */
+
+  animation: glitch 2s infinite linear alternate-reverse;
+}
+/* @keyframes glitch {
+  0% {
+    clip-path: inset(100%);
+  }
+  2% {
+    clip-path: inset(0 100% 0 0);
+  }
+  4% {
+    clip-path: inset(0 0 0 100%);
+  }
+  6% {
+    clip-path: inset(0 100% 0 0);
+  }
+  8% {
+    clip-path: inset(0 0 0 100%);
+  }
+  10% {
+    clip-path: inset(100%);
+  }
+  100% {
+    clip-path: inset(100%);
+  }
+}
+@keyframes simpleTest {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+} */
+@keyframes glitch {
+  0%,
+  100% {
+    clip-path: inset(0% 100% 0% 0%);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    clip-path: inset(0% 15% 0% 0%);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    clip-path: inset(0% 85% 0% 0%);
+  }
+}

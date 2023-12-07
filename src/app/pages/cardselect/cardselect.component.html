@@ -1,4 +1,4 @@
-<div class="cardselected-container">
+<div class="cardselected-container" *ngIf="platforms.length !== 0">
   <div class="card-container">
     <ng-container *ngFor="let platform of platforms">
       <app-card *ngIf="toggles[platform.id]" [platform]="platform">
@@ -6,4 +6,11 @@
       </app-card>
     </ng-container>
   </div>
+</div>
+
+<div
+  *ngIf="isDataLoaded && isObjectEmpty(toggles)"
+  class="no-platforms-message"
+>
+  <p [routerLink]="['/settings']">Cliquez ici pour ajouter des plateforms</p>
 </div>

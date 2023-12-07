@@ -1,4 +1,49 @@
-<div class="container">
+<!-- <div class="container">
   <p>Il vous reste un click !</p>
   <button (click)="onClick()">Valider votre inscrition</button>
+  <form action="?" method="POST">
+    <div
+      class="g-recaptcha"
+      data-sitekey="6LcmSSkpAAAAAIgmsie8qj4p83y9y_2cf1QNkZpR"
+    ></div>
+    <br />
+    <input type="submit" value="Valider le Captcha" />
+  </form>
+</div> -->
+<!-- <div class="container">
+  <p>Il vous reste un click !</p>
+  
+  <form (ngSubmit)="onSubmit()" method="POST" class="formulaire-captcha">
+    <div
+      class="g-recaptcha"
+      id="element-id"
+      data-sitekey="6LcmSSkpAAAAAIgmsie8qj4p83y9y_2cf1QNkZpR"
+    ></div>
+    <br />
+    <input
+      type="submit"
+      value="Valider votre inscription"
+      *ngIf="captchaResolved"
+    />
+  </form>
+</div> -->
+<div class="container cyberpunk-theme">
+  <p class="cyber-text">
+    <span class="glitch" data-text="HACKER DETECTÉ!">HACKER DETECTÉ!</span>
+    <br />
+    Un dernier clic pour prouver que vous etes bien un humain...
+  </p>
+  <form (ngSubmit)="onSubmit()" method="POST">
+    <div
+      class="g-recaptcha"
+      id="element-id"
+      data-sitekey="6LcmSSkpAAAAAIgmsie8qj4p83y9y_2cf1QNkZpR"
+    ></div>
+    <br />
+    <input
+      type="submit"
+      value="Désactiver le Protocole Anti-Bot 🤖"
+      *ngIf="captchaResolved"
+    />
+  </form>
 </div>

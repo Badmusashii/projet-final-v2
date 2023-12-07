@@ -1,17 +1,19 @@
-<ul>
-  <li *ngFor="let platform of platforms">
-    <!-- {{ platform.name }} -->
-    <div class="platforms">
-      <div class="card">
-        <img
-          [src]="'/assets/platforms-icon/' + platform.name + '.png'"
-          alt=""
-        />
+<div class="ul">
+  <ul>
+    <li *ngFor="let platform of platforms">
+      <!-- {{ platform.name }} -->
+      <div class="platforms">
+        <div class="card">
+          <img
+            [src]="'/assets/platforms-icon/' + platform.name + '.png'"
+            alt=""
+          />
+        </div>
+        <app-toggle-button
+          [on]="toggles[platform.id]"
+          (toggle)="handleToggle(platform.id)"
+        ></app-toggle-button>
       </div>
-      <app-toggle-button
-        [on]="toggles[platform.id]"
-        (toggle)="handleToggle(platform.id)"
-      ></app-toggle-button>
-    </div>
-  </li>
-</ul>
+    </li>
+  </ul>
+</div>

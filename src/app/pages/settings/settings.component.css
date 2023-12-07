@@ -1,3 +1,6 @@
+.ul {
+  margin-top: 5rem;
+}
 .platforms {
   display: flex;
   height: 6rem;

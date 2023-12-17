@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-intermediare',
@@ -45,7 +46,7 @@ export class IntermediareComponent implements OnInit {
     // Envoyez le token au serveur pour vérification et décodage
     this.http
       .post(
-        'https://localhost:8080/api/auth/register',
+        `${environment.api}/api/auth/register`,
         {
           token,
           recaptchaResponse,

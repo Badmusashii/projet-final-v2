@@ -11,6 +11,7 @@ import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
 import { Token } from '@angular/compiler';
 // import * as bcrypt from 'bcryptjs';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-inscription',
@@ -148,7 +149,7 @@ export class InscriptionComponent implements OnInit {
 
       this.http
         .post<{ token: string }>(
-          'https://localhost:8080/api/auth/confirmation',
+          `${environment.api}/api/auth/confirmation`,
           user
         )
         .subscribe(
@@ -161,7 +162,7 @@ export class InscriptionComponent implements OnInit {
             let templateParam = {
               to_name: user.surname,
               to_email: user.email,
-              URL: `https://localhost:4200/intermediaire?token=${this.uniqueToken}`,
+              URL: `https://data-geek.fr/intermediaire?token=${this.uniqueToken}`,
             };
             emailjs
               .send(

@@ -5,6 +5,7 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToggleService } from 'src/app/services/toggleservice.service';
 import { AuthServiceService } from 'src/app/services/auth-service.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -47,7 +48,7 @@ export class LoginComponent implements OnInit {
       const loginData = this.loginForm.value;
       loginData.username = loginData.username.toLowerCase();
       this.http
-        .post('https://localhost:8080/api/auth/login', loginData, {
+        .post(`${environment.api}/api/auth/login`, loginData, {
           withCredentials: true,
         })
         .subscribe({

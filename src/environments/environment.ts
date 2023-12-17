@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api: 'https://localhost:8080',
+  api: 'https://api.data-geek.fr',
 };

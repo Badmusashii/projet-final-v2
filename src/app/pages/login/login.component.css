@@ -85,3 +85,63 @@ h2 {
 .button-container button {
   width: 7rem;
 }
+
+@media screen and (max-width: 540px) {
+  * {
+    font-size: 0.7rem;
+  }
+  h2 {
+    /* color: red; */
+    font-size: 1.5rem;
+  }
+  .form-group {
+    /* border: 1px solid red; */
+    width: 23rem;
+  }
+  .form-group label {
+    font-size: 0.7rem;
+  }
+  .form-group input {
+    width: 10rem;
+  }
+}
+@media screen and (max-width: 440px) {
+  /* h2 {
+    color: red;
+  } */
+  .login-container {
+    width: 22rem;
+  }
+  .username-input,
+  .password-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .username-input label,
+  .password-input label {
+    margin-bottom: 0.5rem;
+  }
+}
+@media screen and (max-width: 368px) {
+  .container {
+    /* overflow-y: hidden; */
+    overflow-x: hidden;
+  }
+  .login-container {
+    width: 17rem;
+  }
+  .username-input label,
+  .password-input label {
+    font-size: 0.6rem;
+  }
+  .login-container {
+    height: 16rem;
+  }
+  .button-container {
+    width: 17rem;
+    margin: 2rem auto 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+  }
+}

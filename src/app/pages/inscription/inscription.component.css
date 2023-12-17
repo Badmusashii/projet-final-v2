@@ -62,3 +62,51 @@
 .button-container button {
   width: 5.5rem;
 }
+@media screen and (max-width: 550px) {
+  * {
+    font-size: 0.7rem;
+  }
+  .form-group {
+    width: 20rem;
+    display: flex;
+  }
+  .name,
+  .surname,
+  .username,
+  .email,
+  .password,
+  .confirm-password {
+    /* border: 1px solid rgb(25, 236, 50); */
+    display: flex;
+    align-items: center;
+    width: 22rem;
+  }
+  .name input,
+  .surname input,
+  .username input,
+  .email input,
+  .password input,
+  .confirm-password input {
+    width: 10rem;
+    font-size: 0.5rem;
+  }
+}
+@media screen and (max-width: 420px) {
+  .name,
+  .surname,
+  .username,
+  .email,
+  .password,
+  .confirm-password {
+    width: 16rem;
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 324px) {
+  .form {
+    border: 2px solid red;
+    width: 18rem;
+    display: flex;
+    justify-content: space-around;
+  }
+}

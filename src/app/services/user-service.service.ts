@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { UserDg } from '../components/models/user-dg';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly apiUrl = 'https://localhost:8080/api';
+  private readonly apiUrl = environment.api + `/api`;
   private _accessToken: BehaviorSubject<string | null> = new BehaviorSubject<
     string | null
   >(null);
@@ -63,9 +64,23 @@ export class AuthService {
   getOne(): Observable<UserDg> {
     return this.http.get<UserDg>(`${this.apiUrl}/userdg/user/find`);
   }
+  resetState(): void {
+    this._accessToken.next(null);
+  }
   updateProfile(updateDto: { [key: string]: any }): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/auth/update`, updateDto, {
-      withCredentials: true,
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': updateDto['csrfToken'], // Envoyer le CSRF token dans les en-têtes
     });
+    const options = {
+      headers: headers,
+      withCredentials: true,
+    };
+    return this.http.patch(`${this.apiUrl}/auth/update`, updateDto, options);
+  }
+  getCsrfToken() {
+    return this.http.get<{ csrfToken: string }>(
+      `${this.apiUrl}/auth/csrf-token`
+    );
   }
 }

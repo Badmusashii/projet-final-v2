@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 import { MediaWithPlatform } from '../components/models/myApiResponse';
 import { MovieDetails } from '../components/models/movie-detail';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class MediaService {
   constructor(private http: HttpClient, private toast: ToastrService) {}
   addMediaToUserAndPlatform(platformId: number, mediaData: any): void {
     console.log("envoyé de l'input" + JSON.stringify(mediaData));
-    const apiUrl = `https://localhost:8080/api/platforms/${platformId}/medias`; // Remplacer par l'URL de votre API
+    const apiUrl = `${environment.api}/api/platforms/${platformId}/medias`; // Remplacer par l'URL de votre API
     // const token = localStorage.getItem('token');
     console.log(mediaData, "l'input envoyé");
 
@@ -57,7 +58,7 @@ export class MediaService {
     );
     console.log(platformId);
     return this.http.post(
-      `https://localhost:8080/api/media/search/${platformId}`,
+      `${environment.api}/api/media/search/${platformId}`,
       {
         title: sanitizedSearchText,
       },
@@ -68,50 +69,45 @@ export class MediaService {
     platformId: number
   ): Observable<MediaWithPlatform[]> {
     return this.http.get<MediaWithPlatform[]>(
-      `https://localhost:8080/api/media/all/${platformId}`,
+      `${environment.api}/api/media/all/${platformId}`,
       { withCredentials: true }
     );
   }
   removeMediaRelation(mediaId: number): Observable<any> {
     return this.http.delete(
-      `https://localhost:8080/api/media/deleteTitle/${mediaId}`,
+      `${environment.api}/api/media/deleteTitle/${mediaId}`,
       { withCredentials: true }
     );
   }
   getGameInfoByGuid(guid: any): Observable<any> {
-    return this.http.get(`https://localhost:8080/api/media/game-info/${guid}`, {
+    return this.http.get(`${environment.api}/api/media/game-info/${guid}`, {
       withCredentials: true,
     });
   }
   getAdditionalImages(guid: any): Observable<any> {
-    return this.http.get(
-      `https://localhost:8080/api/media/game-images/${guid}`,
-      {
-        withCredentials: true,
-      }
-    );
+    return this.http.get(`${environment.api}/api/media/game-images/${guid}`, {
+      withCredentials: true,
+    });
   }
   getMovieDetails(id: number): Observable<MovieDetails> {
     return this.http.get<MovieDetails>(
-      `https://localhost:8080/api/media/movie-videos/${id}`
+      `${environment.api}/api/media/movie-videos/${id}`
     );
   }
   getRandomTitle(type: string): Observable<any> {
     const body = { type: type }; // Crée un objet avec la propriété 'type'
-    return this.http.post<any>(
-      'https://localhost:8080/api/media/random',
-      body,
-      { withCredentials: true }
-    );
+    return this.http.post<any>(`${environment.api}/api/media/random`, body, {
+      withCredentials: true,
+    });
   }
   getMoviePoster(idApi: string, platformId: number): Observable<any> {
     if (platformId <= 3) {
       return this.http
-        .get<any>(`https://localhost:8080/api/media/movie-poster/${idApi}`)
+        .get<any>(`${environment.api}/api/media/movie-poster/${idApi}`)
         .pipe(map((res) => `https://image.tmdb.org/t/p/w500${res.posterPath}`));
     } else {
       return this.http
-        .get<any>(`https://localhost:8080/api/media/game-poster/${idApi}`)
+        .get<any>(`${environment.api}/api/media/game-poster/${idApi}`)
         .pipe(map((res) => res.posterPath));
     }
   }

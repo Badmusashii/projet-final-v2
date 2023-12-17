@@ -35,7 +35,7 @@ export class CardselectComponent implements OnInit {
   ngOnInit(): void {
     this.platformsService.getPlatforms().subscribe((data) => {
       this.platforms = data;
-      this.toggles = this.toggleService.getCurrentToggles();
+      // this.toggles = this.toggleService.getCurrentToggles();
       this.toggleService.toggles$.subscribe((toggles) => {
         this.toggles = toggles;
       });

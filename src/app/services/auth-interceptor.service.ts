@@ -93,6 +93,8 @@ export class AuthInterceptorService implements HttpInterceptor {
         } else {
           // Gérer l'échec du rafraîchissement du token ici
           this.authServiceService.logout(); // Déconnecter l'utilisateur
+          this.authServiceService.isAuthenticatedSubject.next(false);
+          this.authServiceService.authStatusChanged.emit(false);
           return throwError(
             () => new Error('Échec du rafraîchissement du token')
           );
@@ -102,6 +104,7 @@ export class AuthInterceptorService implements HttpInterceptor {
         // Gérer les erreurs de rafraîchissement ici
         this.authServiceService.logout(); // Déconnecter l'utilisateur
         this.authServiceService.isAuthenticatedSubject.next(false);
+        this.authServiceService.authStatusChanged.emit(false);
         return throwError(() => error);
       })
     );

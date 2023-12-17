@@ -3,6 +3,9 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { ToggleService } from './toggleservice.service';
+import { AuthService } from './user-service.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +20,9 @@ export class AuthServiceService {
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
-    private route: Router
+    private route: Router,
+    private toggle: ToggleService,
+    private auth: AuthService
   ) {
     // this.checkInitialAuthentication().then(() => {
     //   console.log('l/etat dautentification à été verifie');
@@ -32,9 +37,11 @@ export class AuthServiceService {
 
   setAccessToken(token: string | null): void {
     this.accessToken = token;
+    console.log(this.accessToken);
   }
 
   getAccessToken(): string | null {
+    console.log(this.accessToken);
     return this.accessToken;
   }
 
@@ -88,12 +95,9 @@ export class AuthServiceService {
 
   private validateToken(token: string) {
     // Envoie une requête au backend pour valider le token
-    return this.http.post<boolean>(
-      'https://localhost:8080/api/userdg/validate',
-      {
-        token: token,
-      }
-    );
+    return this.http.post<boolean>(`${environment.api}/api/userdg/validate`, {
+      token: token,
+    });
   }
 
   // Méthode pour mettre à jour l'état d'authentification
@@ -109,18 +113,18 @@ export class AuthServiceService {
     console.log('ce que je veut', this.getAccessToken());
   }
   logout(): Observable<any> {
+    this.toggle.resetToggles();
     return this.http
-      .post(
-        'https://localhost:8080/api/auth/logout',
-        {},
-        { withCredentials: true }
-      )
+      .post(environment.api + `/api/auth/logout`, {}, { withCredentials: true })
       .pipe(
         tap(() => {
           this.setAccessToken(null); // Efface l'access token du BehaviorSubject
 
           this.isAuthenticatedSubject.next(false);
           this.authStatusChanged.emit(false);
+          this.toggle.resetToggles();
+          this.accessToken = null;
+          this.auth.resetState();
           this.route.navigate(['/acceuil']);
         })
       );

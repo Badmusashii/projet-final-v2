@@ -18,6 +18,7 @@ import { AuthService } from 'src/app/services/user-service.service';
 export class AccountupdateComponent implements OnInit {
   userUpdateForm!: FormGroup;
   user!: UserDg;
+  csrfToken: string | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,6 +40,15 @@ export class AccountupdateComponent implements OnInit {
     );
   }
   ngOnInit(): void {
+    this.userService.getCsrfToken().subscribe({
+      next: (response) => {
+        this.csrfToken = response.csrfToken;
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération du token CSRF', err);
+      },
+    });
+    console.log(this.csrfToken);
     this.userService.getOne().subscribe((data) => {
       this.user = data;
       console.log(this.user, 'dnas le.ts');
@@ -56,6 +66,7 @@ export class AccountupdateComponent implements OnInit {
       'Veuillez entrer votre mot de passe pour toutes modifications.',
       'Information'
     );
+    console.log(this.csrfToken);
   }
   checkPasswordValidation(): void {
     const newPassword = this.userUpdateForm.get('newPassword')?.value;
@@ -279,7 +290,14 @@ export class AccountupdateComponent implements OnInit {
     ];
 
     fields.forEach((field) => {
-      const value = this.userUpdateForm.get(field)?.value;
+      let value = this.userUpdateForm.get(field)?.value;
+      if (value) {
+        // Appliquer toLowerCase uniquement pour certains champs
+        if (['username', 'name', 'surname', 'email'].includes(field)) {
+          value = value.toLowerCase();
+        }
+        formValue[field] = value;
+      }
       if (value && field !== 'oldPassword') {
         // Exclure oldPassword si vide
         formValue[field] = value;
@@ -289,7 +307,8 @@ export class AccountupdateComponent implements OnInit {
     console.log(formValue);
 
     // Envoyer la requête de mise à jour uniquement si formValue contient des données
-    if (Object.keys(formValue).length > 0) {
+    if (this.csrfToken && Object.keys(formValue).length > 0) {
+      formValue['csrfToken'] = this.csrfToken;
       this.userService.updateProfile(formValue).subscribe(
         (res) => {
           console.log('Mise à jour réussie', res);
@@ -303,6 +322,9 @@ export class AccountupdateComponent implements OnInit {
           );
         }
       );
+      console.log('le CSRF Token avant', this.csrfToken);
+      this.csrfToken = null;
+      console.log('le CSRF Token apres', this.csrfToken);
     } else {
       console.log('Aucune modification à soumettre');
       this.toastr.info('Aucune modification détectée.', 'Info');

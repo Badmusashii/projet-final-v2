@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,9 @@ export class ToggleService {
     currentToggles[id] = value;
     this.togglesSubject.next(currentToggles);
   }
+  resetToggles() {
+    this.togglesSubject.next({}); // Réinitialise le BehaviorSubject à un objet vide
+  }
   savePlatformStates(platformStates: { [id: number]: boolean }) {
     // Ici, on suppose que ton API accepte ces données et que ton token d'authentification est correctement configuré dans les intercepteurs HTTP ou ailleurs
     console.log(
@@ -30,7 +34,7 @@ export class ToggleService {
     );
     return this.http
       .post(
-        'https://localhost:8080/api/platforms/assignUserToPlatform',
+        `${environment.api}/api/platforms/assignUserToPlatform`,
         {
           platformStates,
         },
@@ -47,7 +51,7 @@ export class ToggleService {
   fetchInitialToggles() {
     return this.http
       .get<{ [id: number]: boolean }>(
-        `https://localhost:8080/api/platforms/toggle`,
+        `${environment.api}/api/platforms/toggle`,
         { withCredentials: true }
       )
       .pipe(
@@ -61,7 +65,7 @@ export class ToggleService {
   fetchAndSetTogglesForUser() {
     this.http
       .get<{ [id: number]: boolean }>(
-        `https://localhost:8080/api/platforms/toggle`,
+        environment.api + `/api/platforms/toggle`,
         { withCredentials: true }
       )
       .subscribe(

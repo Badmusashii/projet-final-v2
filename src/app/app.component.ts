@@ -31,7 +31,11 @@ export class AppComponent implements OnInit {
       this.authService.authStatusChanged.subscribe((isAuthenticated) => {
         this.setBodyClassBasedOnAuthStatus(isAuthenticated);
         // Redirection seulement si on n'est pas déjà sur la page de login
-        if (!isAuthenticated && this.router.url !== '/login') {
+        if (
+          !isAuthenticated &&
+          this.router.url !== '/login' &&
+          this.router.url !== '/intermediaire'
+        ) {
           this.router.navigate(['/login']);
         }
       });
